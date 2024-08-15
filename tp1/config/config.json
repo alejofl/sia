@@ -1,0 +1,6 @@
+{
+    "board": "config/boards/soko1.txt",
+    "algorithm": "BFS | DFS | GREEDY | A*",
+    "heuristic": "TBD",
+    "outputFile": "Path to the output file (relative to main.py)"
+}
