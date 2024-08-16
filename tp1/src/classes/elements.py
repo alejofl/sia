@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+from .manager import ZokobanManager
 from .movements import Movements
 from .position import Position
 from .parser import WALL, BOX
@@ -7,15 +9,14 @@ class Element(ABC):
     def __init__(self, position):
         self.position = position
 
-    def canMove(self, manager, direction):
-        board = manager.board
+    def canMove(self, direction, currentState):
+        board = ZokobanManager.getInstance().board
         newPosition = self.position.move(direction)
-        return board[newPosition.x][newPosition.y] != WALL and Box(newPosition) not in manager.currentState.boxes
+        return board[newPosition.x][newPosition.y] != WALL
 
-    @abstractmethod
-    def move(self, direction):
-        pass
-    
+    def move(self, direction, currentState):
+        self.position = self.position.move(direction)
+
     def __hash__(self):
         return hash(self.position)
 
@@ -24,23 +25,16 @@ class Element(ABC):
 
 
 class Box(Element):
-    def move(self, direction):
-        match direction:
-            case Movements.UP:
-                self.position = Position(self.position.x, self.position.y + 1)
-            case Movements.DOWN:
-                self.position = Position(self.position.x, self.position.y - 1)
-            case Movements.LEFT:
-                self.position = Position(self.position.x - 1, self.position.y)
-            case Movements.RIGHT:
-                self.position = Position(self.position.x + 1, self.position.y)
-    
+    def canMove(self, direction, currentState):
+        newPosition = self.position.move(direction)
+        return super().canMove(direction, currentState) and Box(newPosition) not in currentState.boxes
+
     def __str__(self):
         return "Box: " + str(self.position)
-    
+
     def __hash__(self):
         return super().__hash__()
-    
+
     def __eq__(self, other):
         if not isinstance(other, Box):
             return False
@@ -48,15 +42,30 @@ class Box(Element):
 
 
 class Player(Element):
-    def move(self, direction):
-        pass
-    
+    def canMove(self, direction, currentState):
+        if not super().canMove(direction, currentState):
+            return False
+
+        newPosition = self.position.move(direction)
+        for box in currentState.boxes:
+            if box.position == newPosition:
+                return box.canMove(direction)
+        return True
+
+    def move(self, direction, currentState):
+        newPosition = self.position.move(direction)
+        for box in currentState.boxes:
+            if box.position == newPosition:
+                box.move(direction)
+                break
+        super().move(direction, currentState)
+
     def __str__(self):
         return "Player: " + str(self.position)
-    
+
     def __hash__(self):
         return super().__hash__()
-    
+
     def __eq__(self, other):
         if not isinstance(other, Player):
             return False
