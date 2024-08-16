@@ -3,6 +3,8 @@ from state import StateNode
 from collections import deque
 import sys
 
+from tp1.src.classes.elements import Player
+from tp1.src.classes.movements import Movements
 from tp1.src.classes.parser import Parser
 
 class ZokobanManager:
@@ -34,9 +36,33 @@ class ZokobanManager:
         while queue:
             node = queue.popleft()
 
-            # move in 4 directions...
-            # left
-            node.player.move()
+            currentState = StateNode(node.player, node.boxes)
+
+            upPlayer = Player(currentState.player.position)
+            upState = StateNode(upPlayer, currentState.boxes.copy())
+            upPlayer.move(Movements.UP, upState)
+            currentState.up = upState
+            queue.append(upState)
+
+            rightPlayer = Player(currentState.player.position)
+            rightState = StateNode(rightPlayer, currentState.boxes.copy())
+            rightPlayer.move(Movements.RIGHT, rightState)
+            currentState.right = rightState
+            queue.append(rightState)
+
+            downPlayer = Player(currentState.player.position)
+            downState = StateNode(downPlayer, currentState.boxes.copy())
+            downPlayer.move(Movements.DOWN, downState)
+            currentState.down = downState
+            queue.append(downState)
+
+            leftPlayer = Player(currentState.player.position)
+            leftState = StateNode(leftPlayer, currentState.boxes.copy())
+            leftPlayer.move(Movements.LEFT, leftState)
+            currentState.left = leftState
+            queue.append(leftState)
+
+            # Check if winning state
 
 
 if __name__ == "__main__":
