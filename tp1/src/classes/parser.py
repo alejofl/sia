@@ -1,13 +1,6 @@
 from .elements import Box, Player
 from .position import Position
-
-
-WALL = "#"
-BOX = "$"
-BOX_ON_GOAL = "*"
-GOAL = "."
-PLAYER = "@"
-EMPTY = " "
+from .constants import *
 
 
 class Parser:

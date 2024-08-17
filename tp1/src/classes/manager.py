@@ -1,18 +1,14 @@
-from _typeshed import Self
-from state import StateNode
 from collections import deque
-import sys
+from .state import StateNode
+from .movements import Movements
 
-from tp1.src.classes.elements import Player
-from tp1.src.classes.movements import Movements
-from tp1.src.classes.parser import Parser
 
-class ZokobanManager:
-    __instance = None
+class SokobanManager:
+    _instance = None
 
     def __new__(cls, board, goals, player, boxes):
         if cls._instance is None:
-            cls._instance = super(ZokobanManager, cls).__new__(cls)
+            cls._instance = super(SokobanManager, cls).__new__(cls)
             cls._instance._initialize(board, goals, player, boxes)
         return cls._instance
 
@@ -20,52 +16,47 @@ class ZokobanManager:
         self.board = board
         self.goals = goals
         self.root = StateNode(player, boxes)
+        self.winningPath = deque()
 
     @staticmethod
     def getInstance():
-        if ZokobanManager.__instance is None:
-            raise ValueError("Zokoban Manager hasn't been instantiated")
-        return ZokobanManager.__instance
+        if SokobanManager._instance is None:
+            raise ValueError("Sokoban Manager hasn't been instantiated")
+        return SokobanManager._instance
 
     def bfs(self):
         if self.root is None:
-                return
+            return
 
         queue = deque([self.root])
 
         while queue:
             node = queue.popleft()
+            
+            # TODO: Check if winning state
+            #       If so, backtrack to get the path and save each node in self.winningPath using append
+            # TODO: Check if losing state
+            
+            upNode = node.clone()
+            if upNode.player.canMove(Movements.UP, upNode):
+                upNode.player.move(Movements.UP, upNode)
+                node.children.append(upNode)
+                queue.append(upNode)
 
-            currentState = StateNode(node.player, node.boxes)
-
-            upPlayer = Player(currentState.player.position)
-            upState = StateNode(upPlayer, currentState.boxes.copy())
-            upPlayer.move(Movements.UP, upState)
-            currentState.up = upState
-            queue.append(upState)
-
-            rightPlayer = Player(currentState.player.position)
-            rightState = StateNode(rightPlayer, currentState.boxes.copy())
-            rightPlayer.move(Movements.RIGHT, rightState)
-            currentState.right = rightState
-            queue.append(rightState)
-
-            downPlayer = Player(currentState.player.position)
-            downState = StateNode(downPlayer, currentState.boxes.copy())
-            downPlayer.move(Movements.DOWN, downState)
-            currentState.down = downState
-            queue.append(downState)
-
-            leftPlayer = Player(currentState.player.position)
-            leftState = StateNode(leftPlayer, currentState.boxes.copy())
-            leftPlayer.move(Movements.LEFT, leftState)
-            currentState.left = leftState
-            queue.append(leftState)
-
-            # Check if winning state
-
-
-if __name__ == "__main__":
-    if sys.argv[1] is not None:
-        board, player, boxes, goals = Parser(sys.argv[1]).parse()
-        zokobanManager = ZokobanManager(board, player, boxes, goals)
+            downNode = node.clone()
+            if downNode.player.canMove(Movements.DOWN, downNode):
+                downNode.player.move(Movements.DOWN, downNode)
+                node.children.append(downNode)
+                queue.append(downNode)
+                
+            leftNode = node.clone()
+            if leftNode.player.canMove(Movements.LEFT, leftNode):
+                leftNode.player.move(Movements.LEFT, leftNode)
+                node.children.append(leftNode)
+                queue.append(leftNode)
+                
+            rightNode = node.clone()
+            if rightNode.player.canMove(Movements.RIGHT, rightNode):
+                rightNode.player.move(Movements.RIGHT, rightNode)
+                node.children.append(rightNode)
+                queue.append(rightNode)

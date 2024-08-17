@@ -1,27 +1,24 @@
 from .position import Position
 from .elements import Box
 from .parser import PLAYER, BOX, BOX_ON_GOAL, GOAL
-
+from .manager import SokobanManager
 
 class Printer:
-    def __init__(self, board, player, boxes, goals):
-        self._board = board
-        self._player = player
-        self._boxes = boxes
-        self._goals = goals
+    @staticmethod    
+    def ascii():
+        manager = SokobanManager.getInstance()
         
-    def ascii(self):
-        for i, row in enumerate(self._board):
+        for i, row in enumerate(manager.board):
             for j, element in enumerate(row):
                 position = Position(i, j)
-                if self._player.position == position:
+                if manager.root.player.position == position:
                     print(PLAYER, end="")
-                elif Box(position) in self._boxes:
-                    if position in self._goals:
+                elif Box(position) in manager.root.boxes:
+                    if position in manager.goals:
                         print(BOX_ON_GOAL, end="")
                     else:
                         print(BOX, end="")
-                elif position in self._goals:
+                elif position in manager.goals:
                     print(GOAL, end="")
                 else:
                     print(element, end="")

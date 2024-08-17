@@ -1,16 +1,14 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
-from .manager import ZokobanManager
-from .movements import Movements
-from .position import Position
-from .parser import WALL, BOX
+from .manager import SokobanManager
+from .constants import WALL
 
 class Element(ABC):
     def __init__(self, position):
         self.position = position
 
     def canMove(self, direction, currentState):
-        board = ZokobanManager.getInstance().board
+        board = SokobanManager.getInstance().board
         newPosition = self.position.move(direction)
         return board[newPosition.x][newPosition.y] != WALL
 
@@ -49,7 +47,7 @@ class Player(Element):
         newPosition = self.position.move(direction)
         for box in currentState.boxes:
             if box.position == newPosition:
-                return box.canMove(direction)
+                return box.canMove(direction, currentState)
         return True
 
     def move(self, direction, currentState):

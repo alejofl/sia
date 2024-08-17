@@ -1,11 +1,14 @@
+from copy import deepcopy
+
 class StateNode:
-    def __init__(self, player, boxes, left = None, right = None, up = None, down = None):
+    def __init__(self, player, boxes, parent=None, children=set()):
         self.player = player
         self.boxes = boxes
-        self.left = left
-        self.right = right
-        self.up = up
-        self.down = down
-
+        self.parent = parent
+        self.children = children
+        
+    def clone(self):
+        return StateNode(deepcopy(self.player), deepcopy(self.boxes), self)
+        
     def __hash__(self):
         return hash((self.player, tuple(self.boxes)))

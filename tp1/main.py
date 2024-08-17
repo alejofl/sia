@@ -2,6 +2,7 @@ import json
 import sys
 from src.classes.parser import Parser
 from src.classes.printer import Printer
+from src.classes.manager import SokobanManager
 
 
 if __name__ == "__main__":
@@ -9,6 +10,7 @@ if __name__ == "__main__":
         config = json.load(configFile)
         board, player, boxes, goals = Parser(config["board"]).parse()
         
-        Printer(board, player, boxes, goals).ascii()
+        sm = SokobanManager(board, goals, player, boxes)
+        Printer.ascii()
 
     sys.exit(0)

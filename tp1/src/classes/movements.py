@@ -1,4 +1,6 @@
 from enum import Enum
+
+
 class Movements(Enum):
     LEFT = 1
     RIGHT = 2
