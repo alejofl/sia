@@ -11,6 +11,8 @@ if __name__ == "__main__":
         board, player, boxes, goals = Parser(config["board"]).parse()
         
         sm = SokobanManager(board, goals, player, boxes)
+        sm.bfs()
+        print("Winning path found")
         Printer.ascii()
 
     sys.exit(0)
