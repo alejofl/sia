@@ -13,6 +13,7 @@ if __name__ == "__main__":
         sm = SokobanManager(board, goals, player, boxes)
         sm.bfs()
         print("Winning path found")
-        Printer.ascii()
+        # Printer.ascii()
+        Printer.gif("output.gif")
 
     sys.exit(0)
