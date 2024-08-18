@@ -91,3 +91,48 @@ class SokobanManager:
                 rightNode.player.move(Movements.RIGHT, rightNode)
                 node.children.add(rightNode)
                 queue.append(rightNode)
+
+    def dfs(self):
+            if self.root is None:
+                return
+
+            queue = deque([self.root])
+            
+            while queue:
+                node = queue.pop()
+                
+                if node.isWinningState():
+                    while node is not None:
+                        self.winningPath.append(node)
+                        node = node.parent
+                    break
+                
+                if node.isLosingState():
+                    continue
+                
+                self.visitedNodes.add(node)
+                
+                upNode = node.clone()
+                if upNode.player.canMove(Movements.UP, upNode):
+                    upNode.player.move(Movements.UP, upNode)
+                    node.children.add(upNode)
+                    queue.append(upNode)
+                    
+
+                downNode = node.clone()
+                if downNode.player.canMove(Movements.DOWN, downNode):
+                    downNode.player.move(Movements.DOWN, downNode)
+                    node.children.add(downNode)
+                    queue.append(downNode)
+                    
+                leftNode = node.clone()
+                if leftNode.player.canMove(Movements.LEFT, leftNode):
+                    leftNode.player.move(Movements.LEFT, leftNode)
+                    node.children.add(leftNode)
+                    queue.append(leftNode)
+                    
+                rightNode = node.clone()
+                if rightNode.player.canMove(Movements.RIGHT, rightNode):
+                    rightNode.player.move(Movements.RIGHT, rightNode)
+                    node.children.add(rightNode)
+                    queue.append(rightNode)
