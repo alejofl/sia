@@ -137,12 +137,13 @@ class SokobanManager:
                     node.children.add(rightNode)
                     queue.append(rightNode)
 
+    @staticmethod
     def manhattanHeuristic(self, stateNode):
         cost = 0
         for box in stateNode.boxes:
             minDistance = float("inf") 
             for goal in self.goals:
-                distance = abs(box.position.x - goal.position.x) + abs(box.position.y - goal.position.y)
+                distance = abs(box.position.x - goal.x) + abs(box.position.y - goal.y)
                 if distance <= minDistance:
                     minDistance = distance
             cost += minDistance
@@ -150,6 +151,7 @@ class SokobanManager:
         return cost
 
     def greedy(self):
+
         if self.root is None:
             return
 
@@ -193,4 +195,4 @@ class SokobanManager:
                 node.children.add(rightNode)
                 l.append(rightNode)
 
-            l.sort(reverse=False, key=manhattanHeuristic)
+        l.sort(reverse=False, key=lambda node: self.manhattanHeuristic(self, node))
