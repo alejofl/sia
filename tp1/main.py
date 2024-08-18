@@ -9,12 +9,11 @@ if __name__ == "__main__":
     with open(sys.argv[1], "r") as configFile:
         config = json.load(configFile)
         board, player, boxes, goals = Parser(config["board"]).parse()
-        algorithm = config["algorithm"]
         
         sm = SokobanManager(board, goals, player, boxes)
-        print(f'Running {algorithm} algorithm')
-        steps = sm.run(algorithm)
-        print(f'Winning path found! ({steps} movements)')
+        print(f'Running {config["algorithm"]} algorithm')
+        sm.run(config["algorithm"], config["heuristic"])
+        print(f'Winning path found! ({len(sm.winningPath)} movements)')
         # Printer.ascii()
         Printer.gif("output.gif")
 

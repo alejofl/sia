@@ -1,6 +1,6 @@
 {
-	"board": "config/boards/soko1.txt",
-	"algorithm": "GREEDY",
-	"heuristic": "TBD",
-	"outputFile": "Path to the output file (relative to main.py)"
+    "board": "config/boards/soko1.txt",
+    "algorithm": "GREEDY",
+    "heuristic": "MANHATTAN",
+    "outputFile": "Path to the output file (relative to main.py)"
 }
