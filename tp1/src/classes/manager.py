@@ -47,6 +47,16 @@ class SokobanManager:
         if SokobanManager._instance is None:
             raise ValueError("Sokoban Manager hasn't been instantiated")
         return SokobanManager._instance
+    
+    def run(self, algorithm):
+        if algorithm == "BFS":
+            return self.bfs()
+        elif algorithm == "DFS":
+            return self.dfs()
+        elif algorithm == "GREEDY":
+            return self.greedy()
+        else:
+            raise ValueError("Invalid algorithm")
 
     def bfs(self):
         if self.root is None:
@@ -54,8 +64,11 @@ class SokobanManager:
 
         queue = deque([self.root])
 
+        movements = 0
+
         while queue:
             node = queue.popleft()
+            print(node)
             
             if node.isWinningState():
                 while node is not None:
@@ -67,6 +80,7 @@ class SokobanManager:
                 continue
             
             self.visitedNodes.add(node)
+            movements += 1
             
             upNode = node.clone()
             if upNode.player.canMove(Movements.UP, upNode):
@@ -91,15 +105,18 @@ class SokobanManager:
                 rightNode.player.move(Movements.RIGHT, rightNode)
                 node.children.add(rightNode)
                 queue.append(rightNode)
+        return movements
 
     def dfs(self):
             if self.root is None:
                 return
 
-            queue = deque([self.root])
+            stack = list([self.root])
+            movements = 0
             
-            while queue:
-                node = queue.pop()
+            while stack:
+                node = stack.pop()
+                print(node)
                 
                 if node.isWinningState():
                     while node is not None:
@@ -111,31 +128,34 @@ class SokobanManager:
                     continue
                 
                 self.visitedNodes.add(node)
+                movements += 1
                 
                 upNode = node.clone()
                 if upNode.player.canMove(Movements.UP, upNode):
                     upNode.player.move(Movements.UP, upNode)
                     node.children.add(upNode)
-                    queue.append(upNode)
+                    stack.append(upNode)
                     
 
                 downNode = node.clone()
                 if downNode.player.canMove(Movements.DOWN, downNode):
                     downNode.player.move(Movements.DOWN, downNode)
                     node.children.add(downNode)
-                    queue.append(downNode)
+                    stack.append(downNode)
                     
                 leftNode = node.clone()
                 if leftNode.player.canMove(Movements.LEFT, leftNode):
                     leftNode.player.move(Movements.LEFT, leftNode)
                     node.children.add(leftNode)
-                    queue.append(leftNode)
+                    stack.append(leftNode)
                     
                 rightNode = node.clone()
                 if rightNode.player.canMove(Movements.RIGHT, rightNode):
                     rightNode.player.move(Movements.RIGHT, rightNode)
                     node.children.add(rightNode)
-                    queue.append(rightNode)
+                    stack.append(rightNode)
+            return movements
+        
 
     @staticmethod
     def manhattanHeuristic(self, stateNode):
@@ -148,6 +168,7 @@ class SokobanManager:
                     minDistance = distance
             cost += minDistance
             minDistance = float("inf")
+        print(cost)
         return cost
 
     def greedy(self):
@@ -157,8 +178,11 @@ class SokobanManager:
 
         l = list([self.root])
 
+        movements = 0
+
         while l:
             node = l.pop(0)
+            print(node)
             
             if node.isWinningState():
                 while node is not None:
@@ -170,6 +194,7 @@ class SokobanManager:
                 continue
             
             self.visitedNodes.add(node)
+            movements += 1
             
             upNode = node.clone()
             if upNode.player.canMove(Movements.UP, upNode):
@@ -195,4 +220,6 @@ class SokobanManager:
                 node.children.add(rightNode)
                 l.append(rightNode)
 
-        l.sort(reverse=False, key=lambda node: self.manhattanHeuristic(self, node))
+            l.sort(reverse=False, key=lambda node: self.manhattanHeuristic(self, node))
+
+        return movements
