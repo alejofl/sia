@@ -136,3 +136,61 @@ class SokobanManager:
                     rightNode.player.move(Movements.RIGHT, rightNode)
                     node.children.add(rightNode)
                     queue.append(rightNode)
+
+    def manhattanHeuristic(self, stateNode):
+        cost = 0
+        for box in stateNode.boxes:
+            minDistance = float("inf") 
+            for goal in self.goals:
+                distance = abs(box.position.x - goal.position.x) + abs(box.position.y - goal.position.y)
+                if distance <= minDistance:
+                    minDistance = distance
+            cost += minDistance
+            minDistance = float("inf")
+        return cost
+
+    def greedy(self):
+        if self.root is None:
+            return
+
+        l = list([self.root])
+
+        while l:
+            node = l.pop(0)
+            
+            if node.isWinningState():
+                while node is not None:
+                    self.winningPath.append(node)
+                    node = node.parent
+                break
+            
+            if node.isLosingState():
+                continue
+            
+            self.visitedNodes.add(node)
+            
+            upNode = node.clone()
+            if upNode.player.canMove(Movements.UP, upNode):
+                upNode.player.move(Movements.UP, upNode)
+                node.children.add(upNode)
+                l.append(upNode)
+
+            downNode = node.clone()
+            if downNode.player.canMove(Movements.DOWN, downNode):
+                downNode.player.move(Movements.DOWN, downNode)
+                node.children.add(downNode)
+                l.append(downNode)
+                
+            leftNode = node.clone()
+            if leftNode.player.canMove(Movements.LEFT, leftNode):
+                leftNode.player.move(Movements.LEFT, leftNode)
+                node.children.add(leftNode)
+                l.append(leftNode)
+                
+            rightNode = node.clone()
+            if rightNode.player.canMove(Movements.RIGHT, rightNode):
+                rightNode.player.move(Movements.RIGHT, rightNode)
+                node.children.add(rightNode)
+                l.append(rightNode)
+
+            l.sort(reverse=False, key=manhattanHeuristic)
