@@ -1,4 +1,5 @@
 import math
+import time
 from copy import deepcopy
 from collections import deque
 from .movements import Movements
@@ -88,17 +89,33 @@ class SokobanManager:
             raise ValueError("Invalid heuristic")
         return heuristicFn
     
+    def startBenchmark(self):
+        self.visitedNodes = set()
+        self.winningPath = deque()
+        self.borderNodesCount = 0
+        self.startTime = time.time()
+        
+    def endBenchmark(self):
+        return {
+            "cost": len(self.winningPath),
+            "expandedNodes": len(self.visitedNodes),
+            "borderNodes": self.borderNodesCount,
+            "executionTime": time.time() - self.startTime
+        }
+    
     def run(self, algorithm, heuristic=None):
+        self.startBenchmark()
         if algorithm == "BFS":
-            return self.bfs()
+            self.bfs()
         elif algorithm == "DFS":
-            return self.dfs()
+            self.dfs()
         elif algorithm == "GREEDY":
-            return self.greedy(self._getHeuristic(heuristic))
+            self.greedy(self._getHeuristic(heuristic))
         elif algorithm == "A*":
-            return self.aStar(self._getHeuristic(heuristic))
+            self.aStar(self._getHeuristic(heuristic))
         else:
             raise ValueError("Invalid algorithm")
+        return self.endBenchmark()
 
     def bfs(self):
         if self.root is None:
@@ -144,6 +161,8 @@ class SokobanManager:
                 node.children.add(rightNode)
                 queue.append(rightNode)
 
+        self.borderNodesCount = len(queue)
+
     def dfs(self):
         if self.root is None:
             return
@@ -187,6 +206,8 @@ class SokobanManager:
                 rightNode.player.move(Movements.RIGHT, rightNode)
                 node.children.add(rightNode)
                 stack.append(rightNode)
+
+        self.borderNodesCount = len(stack)
 
     def aStar(self, heuristic):
         if self.root is None:
@@ -239,6 +260,8 @@ class SokobanManager:
                 g[rightNode] = new_g
 
             l.sort(key=lambda x: g[x] + heuristic(x), reverse=True)
+        
+        self.borderNodesCount = len(l)
 
     def greedy(self, heuristic):
         if self.root is None:
@@ -285,3 +308,5 @@ class SokobanManager:
                 l.append(rightNode)
 
             l.sort(key=heuristic, reverse=True)
+
+        self.borderNodesCount = len(l)
