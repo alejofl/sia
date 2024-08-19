@@ -12,10 +12,14 @@ if __name__ == "__main__":
         
         sm = SokobanManager(board, goals, player, boxes)
         print(f'Running {config["algorithm"]} algorithm')
+        
         benchmark = sm.run(config["algorithm"], config["heuristic"])
         print("Winning path found!")
         print(benchmark)
-        # Printer.ascii()
-        Printer.gif("output.gif")
+        
+        if config["animation"] == "GIF":
+            Printer.gif(config["animationFile"])
+        elif config["animation"] == "ASCII":
+            Printer.ascii(config["animationFile"])
 
     sys.exit(0)

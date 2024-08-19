@@ -2,5 +2,7 @@
     "board": "config/boards/sokoTest.txt",
     "algorithm": "A*",
     "heuristic": "MANHATTAN",
+    "animation": "GIF",
+    "animationFile": "output.gif",
     "outputFile": "Path to the output file (relative to main.py)"
 }

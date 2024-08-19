@@ -2,6 +2,7 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "1"
 import pygame
 import numpy as np
+from contextlib import redirect_stdout
 from PIL import Image
 from .position import Position
 from .constants import WALL, PLAYER, BOX, BOX_ON_GOAL, GOAL, PYGAME_SCALE, PYGAME_FPS
@@ -59,14 +60,17 @@ class PygameHelper:
 
 class Printer:
     @staticmethod    
-    def ascii():
+    def ascii(filename):
         manager = SokobanManager.getInstance()
         path = manager.winningPath.copy()
-        while len(path) > 0:
-            node = path.pop()
-            Printer._asciiNode(node)
-            print()
-            print()
+        
+        with open(filename, "w") as file:
+            with redirect_stdout(file):
+                while len(path) > 0:
+                    node = path.pop()
+                    Printer._asciiNode(node)
+                    print()
+                    print()
 
     @staticmethod
     def _asciiNode(node):
