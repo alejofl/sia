@@ -2,6 +2,7 @@ import math
 import time
 from copy import deepcopy
 from collections import deque
+from queue import PriorityQueue
 from .movements import Movements
 
 
@@ -23,6 +24,11 @@ class StateNode:
     
     def __str__(self):
         return f"Player: {self.player.position} Boxes: [{', '.join([str(box.position) for box in self.boxes])}]"
+
+    def __lt__(self, other):
+        # This method is only implemented for the PriorityQueue to work.
+        # Semantically, StateNodes are not comparable, so this method should not be used.
+        return 0
     
     def isWinningState(self):
         return all(box.position in SokobanManager.getInstance().goals for box in self.boxes)
@@ -213,12 +219,11 @@ class SokobanManager:
         if self.root is None:
             return
 
-        l = [self.root]
-        g = {self.root: 0}
+        queue = PriorityQueue()
+        queue.put((0, 0, self.root))
 
-        while l:
-            node = l.pop()
-            new_g = g[node] + 1
+        while not queue.empty():
+            _, g, node = queue.get()
             
             if node.isWinningState():
                 while node is not None:
@@ -235,42 +240,37 @@ class SokobanManager:
             if upNode.player.canMove(Movements.UP, upNode):
                 upNode.player.move(Movements.UP, upNode)
                 node.children.add(upNode)
-                l.append(upNode)
-                g[upNode] = new_g
+                queue.put((g + 1 + heuristic(upNode), g + 1, upNode))
 
             downNode = node.clone()
             if downNode.player.canMove(Movements.DOWN, downNode):
                 downNode.player.move(Movements.DOWN, downNode)
                 node.children.add(downNode)
-                l.append(downNode)
-                g[downNode] = new_g
+                queue.put((g + 1 + heuristic(downNode), g + 1, downNode))
                 
             leftNode = node.clone()
             if leftNode.player.canMove(Movements.LEFT, leftNode):
                 leftNode.player.move(Movements.LEFT, leftNode)
                 node.children.add(leftNode)
-                l.append(leftNode)
-                g[leftNode] = new_g
+                queue.put((g + 1 + heuristic(leftNode), g + 1, leftNode))
                 
             rightNode = node.clone()
             if rightNode.player.canMove(Movements.RIGHT, rightNode):
                 rightNode.player.move(Movements.RIGHT, rightNode)
                 node.children.add(rightNode)
-                l.append(rightNode)
-                g[rightNode] = new_g
-
-            l.sort(key=lambda x: g[x] + heuristic(x), reverse=True)
+                queue.put((g + 1 + heuristic(rightNode), g + 1, rightNode))
         
-        self.borderNodesCount = len(l)
+        self.borderNodesCount = queue.qsize()
 
     def greedy(self, heuristic):
         if self.root is None:
             return
 
-        l = [self.root]
+        queue = PriorityQueue()
+        queue.put((0, self.root))
 
-        while l:
-            node = l.pop()
+        while not queue.empty():
+            _, node = queue.get()
             
             if node.isWinningState():
                 while node is not None:
@@ -287,26 +287,24 @@ class SokobanManager:
             if upNode.player.canMove(Movements.UP, upNode):
                 upNode.player.move(Movements.UP, upNode)
                 node.children.add(upNode)
-                l.append(upNode)
+                queue.put((heuristic(upNode), upNode))
 
             downNode = node.clone()
             if downNode.player.canMove(Movements.DOWN, downNode):
                 downNode.player.move(Movements.DOWN, downNode)
                 node.children.add(downNode)
-                l.append(downNode)
+                queue.put((heuristic(downNode), downNode))
                 
             leftNode = node.clone()
             if leftNode.player.canMove(Movements.LEFT, leftNode):
                 leftNode.player.move(Movements.LEFT, leftNode)
                 node.children.add(leftNode)
-                l.append(leftNode)
+                queue.put((heuristic(leftNode), leftNode))
                 
             rightNode = node.clone()
             if rightNode.player.canMove(Movements.RIGHT, rightNode):
                 rightNode.player.move(Movements.RIGHT, rightNode)
                 node.children.add(rightNode)
-                l.append(rightNode)
+                queue.put((heuristic(rightNode), rightNode))
 
-            l.sort(key=heuristic, reverse=True)
-
-        self.borderNodesCount = len(l)
+        self.borderNodesCount = queue.qsize()
