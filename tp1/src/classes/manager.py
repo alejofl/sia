@@ -1,3 +1,4 @@
+import math
 from copy import deepcopy
 from collections import deque
 from .movements import Movements
@@ -40,6 +41,19 @@ class StateNode:
                     minDistance = distance
             cost += minDistance
         return cost
+    
+    def euclideanDistance(self):
+        manager = SokobanManager.getInstance()
+        cost = 0
+        
+        for box in self.boxes:
+            minDistance = float("inf")
+            for goal in manager.goals:
+                distance = math.sqrt((box.position.x - goal.x) ** 2 + (box.position.y - goal.y) ** 2)
+                if distance < minDistance:
+                    minDistance = distance
+            cost += minDistance
+        return cost
 
 
 class SokobanManager:
@@ -64,22 +78,25 @@ class SokobanManager:
             raise ValueError("Sokoban Manager hasn't been instantiated")
         return SokobanManager._instance
     
+    def _getHeuristic(self, heuristic):
+        heuristicFn = None
+        if heuristic == "MANHATTAN":
+            heuristicFn = lambda node: node.manhattanDistance()
+        elif heuristic == "EUCLIDEAN":
+            heuristicFn = lambda node: node.euclideanDistance()
+        else:
+            raise ValueError("Invalid heuristic")
+        return heuristicFn
+    
     def run(self, algorithm, heuristic=None):
         if algorithm == "BFS":
             return self.bfs()
         elif algorithm == "DFS":
             return self.dfs()
         elif algorithm == "GREEDY":
-            heuristicFn = None
-            if heuristic == "MANHATTAN":
-                heuristicFn = lambda node: node.manhattanDistance()
-            elif heuristic == "EUCLIDEAN":
-                heuristicFn = None #TODO
-            else:
-                raise ValueError("Invalid heuristic")
-            return self.greedy(heuristicFn)
+            return self.greedy(self._getHeuristic(heuristic))
         elif algorithm == "A*":
-            return None #TODO
+            return self.aStar(self._getHeuristic(heuristic))
         else:
             raise ValueError("Invalid algorithm")
 
@@ -91,7 +108,6 @@ class SokobanManager:
 
         while queue:
             node = queue.popleft()
-            print(node)
             
             if node.isWinningState():
                 while node is not None:
@@ -172,6 +188,58 @@ class SokobanManager:
                 node.children.add(rightNode)
                 stack.append(rightNode)
 
+    def aStar(self, heuristic):
+        if self.root is None:
+            return
+
+        l = [self.root]
+        g = {self.root: 0}
+
+        while l:
+            node = l.pop()
+            new_g = g[node] + 1
+            
+            if node.isWinningState():
+                while node is not None:
+                    self.winningPath.append(node)
+                    node = node.parent
+                break
+            
+            if node.isLosingState():
+                continue
+            
+            self.visitedNodes.add(node)
+            
+            upNode = node.clone()
+            if upNode.player.canMove(Movements.UP, upNode):
+                upNode.player.move(Movements.UP, upNode)
+                node.children.add(upNode)
+                l.append(upNode)
+                g[upNode] = new_g
+
+            downNode = node.clone()
+            if downNode.player.canMove(Movements.DOWN, downNode):
+                downNode.player.move(Movements.DOWN, downNode)
+                node.children.add(downNode)
+                l.append(downNode)
+                g[downNode] = new_g
+                
+            leftNode = node.clone()
+            if leftNode.player.canMove(Movements.LEFT, leftNode):
+                leftNode.player.move(Movements.LEFT, leftNode)
+                node.children.add(leftNode)
+                l.append(leftNode)
+                g[leftNode] = new_g
+                
+            rightNode = node.clone()
+            if rightNode.player.canMove(Movements.RIGHT, rightNode):
+                rightNode.player.move(Movements.RIGHT, rightNode)
+                node.children.add(rightNode)
+                l.append(rightNode)
+                g[rightNode] = new_g
+
+            l.sort(key=lambda x: g[x] + heuristic(x), reverse=True)
+
     def greedy(self, heuristic):
         if self.root is None:
             return
@@ -179,7 +247,7 @@ class SokobanManager:
         l = [self.root]
 
         while l:
-            node = l.pop(0)
+            node = l.pop()
             
             if node.isWinningState():
                 while node is not None:
@@ -216,4 +284,4 @@ class SokobanManager:
                 node.children.add(rightNode)
                 l.append(rightNode)
 
-            l.sort(key=heuristic)
+            l.sort(key=heuristic, reverse=True)
