@@ -2,7 +2,5 @@
     "board": "Path to the representation of the board (http://www.game-sokoban.com/index.php) (relative to main.py)",
     "algorithm": "BFS | DFS | GREEDY | A*",
     "heuristic": "MANHATTAN | EUCLIDEAN",
-    "outputFile": "Path to the output file (relative to main.py)",
-    "animation": "GIF | ASCII | NONE",
-    "animationFile": "Path to the output animation file (relative to main.py)"
+    "animation": "GIF | ASCII | NONE"
 }
