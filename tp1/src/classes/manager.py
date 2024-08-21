@@ -62,6 +62,21 @@ class StateNode:
             cost += minDistance
         return cost
 
+    def boundingBox(self):
+        manager = SokobanManager.getInstance()
+        cost = 0
+        
+        for box in self.boxes:
+            minDistance = float("inf")
+            for goal in manager.goals:
+                distance =  abs(box.position.x - goal.x) + abs(box.position.y - goal.y)
+                if distance < minDistance:
+                    minDistance = distance
+                
+            if minDistance > cost:
+                cost = minDistance
+        return cost
+
 
 class SokobanManager:
     _instance = None
@@ -91,6 +106,8 @@ class SokobanManager:
             heuristicFn = lambda node: node.manhattanDistance()
         elif heuristic == "EUCLIDEAN":
             heuristicFn = lambda node: node.euclideanDistance()
+        elif heuristic == "BOUNDING_BOX":
+            heuristicFn = lambda node: node.boundingBox()
         else:
             raise ValueError("Invalid heuristic")
         return heuristicFn

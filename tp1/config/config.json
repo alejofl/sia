@@ -1,6 +1,6 @@
 {
     "board": "config/boards/sokoTest.txt",
-    "algorithm": "IDDFS",
-    "heuristic": "MANHATTAN",
+    "algorithm": "A*",
+    "heuristic": "BOUNDING_BOX",
     "animation": "GIF"
 }
