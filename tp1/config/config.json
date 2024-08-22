@@ -1,6 +1,7 @@
 {
-    "board": "config/boards/sokoTest.txt",
-    "algorithm": "A*",
-    "heuristic": "BOUNDING_BOX",
-    "animation": "GIF"
+    "board": "config/boards/sokoEasy1.txt",
+    "algorithm": "GREEDY",
+    "heuristic": "MANHATTAN",
+    "animation": "GIF",
+    "reps": 1
 }
