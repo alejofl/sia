@@ -1,6 +1,7 @@
 import json
 import sys
 import time
+import csv
 from src.classes.parser import Parser
 from src.classes.printer import Printer
 from src.classes.manager import SokobanManager
@@ -11,18 +12,28 @@ if __name__ == "__main__":
         config = json.load(configFile)
         filenameTemplate = f"{str(int(time.time()))}_{config['algorithm'].replace('*', 'STAR')}{'_' + config['heuristic'] if config['algorithm'] in ('GREEDY', 'A*') else ''}_%s"
 
-        board, player, boxes, goals = Parser(config["board"]).parse()
+        writer = csv.DictWriter(open(filenameTemplate % ("results.csv"), "w", newline=""), fieldnames=None)
         
-        sm = SokobanManager(board, goals, player, boxes)
-        print(f"Running {config['algorithm']} algorithm")
-        
-        benchmark = sm.run(config["algorithm"], config["heuristic"])
-        print("Winning path found!")
-        print(benchmark)
+        print(f"Running {config['algorithm']} algorithm {config['reps']} times.")
+        for i in range(0, config["reps"]):
+            board, player, boxes, goals = Parser(config["board"]).parse()
+            
+            sm = SokobanManager(board, goals, player, boxes)
+            
+            benchmark = sm.run(config["algorithm"], config["heuristic"])
+            
+            if i == 0:
+                writer.fieldnames = benchmark.keys()
+                writer.writeheader()
+            writer.writerow(benchmark)
 
-        if config["animation"] == "GIF":
-            Printer.gif(filenameTemplate % ("animation.gif"))
-        elif config["animation"] == "ASCII":
-            Printer.ascii(filenameTemplate % ("animation.txt"))
+            print(f"Rep {i+1}/{config['reps']} finished.")
+            if i == 0:
+                if config["animation"] == "GIF":
+                    Printer.gif(filenameTemplate % ("animation.gif"))
+                elif config["animation"] == "ASCII":
+                    Printer.ascii(filenameTemplate % ("animation.txt"))
+        
+        
 
     sys.exit(0)
