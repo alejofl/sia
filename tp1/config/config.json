@@ -1,7 +1,0 @@
-{
-    "board": "config/boards/sokoEasy1.txt",
-    "algorithm": "GREEDY",
-    "heuristic": "MANHATTAN",
-    "animation": "GIF",
-    "reps": 1
-}

@@ -136,8 +136,6 @@ class SokobanManager:
             self.greedy(self._getHeuristic(heuristic))
         elif algorithm == "A*":
             self.aStar(self._getHeuristic(heuristic))
-        elif algorithm == "IDDFS":
-            self.iddfs()
         else:
             raise ValueError("Invalid algorithm")
         return self.endBenchmark()
@@ -327,64 +325,3 @@ class SokobanManager:
                 queue.put((heuristic(rightNode), rightNode))
 
         self.borderNodesCount = queue.qsize()
-
-    def dls(self, node, depth):
-        if depth == 0:
-            if node.isWinningState():
-                self.winningPath.appendleft(node)
-                return True
-            return False
-            
-        if node.isLosingState():
-            return False
-            
-        self.visitedNodes.add(node)
-
-        upNode = node.clone()
-        if upNode.player.canMove(Movements.UP, upNode):
-            upNode.player.move(Movements.UP, upNode)
-            node.children.add(upNode)
-            if upNode not in self.visitedNodes:
-                if self.dls(upNode, depth - 1):
-                    self.winningPath.appendleft(node)
-                    return True
-
-        downNode = node.clone()
-        if downNode.player.canMove(Movements.DOWN, downNode):
-            downNode.player.move(Movements.DOWN, downNode)
-            node.children.add(downNode)
-            if downNode not in self.visitedNodes:
-                if self.dls(downNode, depth - 1):
-                    self.winningPath.appendleft(node)
-                    return True
-                
-        leftNode = node.clone()
-        if leftNode.player.canMove(Movements.LEFT, leftNode):
-            leftNode.player.move(Movements.LEFT, leftNode)
-            node.children.add(leftNode)
-            if leftNode not in self.visitedNodes:
-                if self.dls(leftNode, depth - 1):
-                    self.winningPath.appendleft(node)
-                    return True
-                
-        rightNode = node.clone()
-        if rightNode.player.canMove(Movements.RIGHT, rightNode):
-            rightNode.player.move(Movements.RIGHT, rightNode)
-            node.children.add(rightNode)
-            if rightNode not in self.visitedNodes:
-                if self.dls(rightNode, depth - 1):
-                    self.winningPath.appendleft(node)
-                    return True
-                
-        return False
-    
-    def iddfs(self):
-        depth = 0
-
-        while True:
-            self.visitedNodes.clear()
-            self.winningPath.clear()
-            self.borderNodesCount = 0
-            if self.dls(self.root, depth):
-                break
-            depth += 1

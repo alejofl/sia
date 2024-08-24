@@ -1,0 +1,1 @@
+{"board": "config/boards/soko04.txt", "algorithm": "GREEDY", "heuristic": "BOUNDING_BOX", "animation": "GIF", "reps": 10}

@@ -10,7 +10,9 @@ from src.classes.manager import SokobanManager
 if __name__ == "__main__":
     with open(sys.argv[1], "r") as configFile:
         config = json.load(configFile)
-        filenameTemplate = f"{str(int(time.time()))}_{config['algorithm'].replace('*', 'STAR')}{'_' + config['heuristic'] if config['algorithm'] in ('GREEDY', 'A*') else ''}_%s"
+        
+        boardFile = config["board"].split("/")[-1].split(".")[0]
+        filenameTemplate = f"{str(int(time.time()))}_{config['algorithm'].replace('*', 'STAR')}{'_' + config['heuristic'] if config['algorithm'] in ('GREEDY', 'A*') else ''}_{boardFile}_%s"
 
         output = open(filenameTemplate % ("results.csv"), "w", newline="")
         writer = csv.DictWriter(output, fieldnames=None)

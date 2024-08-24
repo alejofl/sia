@@ -1,0 +1,1 @@
+{"board": "config/boards/soko06.txt", "algorithm": "A*", "heuristic": "MANHATTAN", "animation": "GIF", "reps": 10}
