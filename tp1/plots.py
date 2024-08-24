@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 def plot_all_algs(level, heur, variable):
     csv_files_no_heur = glob.glob(f'results/{level}/*_*_{level}_results.csv')
-    csv_files_heur = glob.glob(f'results/*_*_{heur}_{level}_results.csv')
+    csv_files_heur = glob.glob(f'results/{level}/*_*_{heur}_{level}_results.csv')
     csv_files = csv_files_no_heur + csv_files_heur
 
     result_df = pd.DataFrame()
