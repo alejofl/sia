@@ -1,2 +1,4 @@
 *.gif
+!results/**/*.gif
 *.csv
+!results/**/*.csv
