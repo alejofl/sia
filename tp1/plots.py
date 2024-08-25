@@ -35,7 +35,6 @@ def plot_bfs_vs_dfs_cost(level):
 
     result_df = pd.DataFrame()
     for file in csv_files:
-        print("reading: ",file)
         df = pd.read_csv(file)
         alg_name = file.split("_")[1]
         cost = df["cost"][0]
@@ -67,9 +66,9 @@ def plot_bfs_vs_dfs_costs():
         alg_name = file.split("_")[1]
         match alg_name:
             case 'BFS':
-                bfs_costs.append(df["cost"][0])
+                bfs_costs.append(df["cost"].mean())
             case 'DFS':
-                dfs_costs.append(df["cost"][0])
+                dfs_costs.append(df["cost"].mean())
 
     index = np.arange(len(levels))
     width = 0.35  # ancho de las barras
@@ -93,7 +92,7 @@ def plot_bfs_vs_dfs_exectime():
     dfs_csvs = []
     bfs_exectime = []
     dfs_exectime = []
-    levels = ['soko01','soko02','soko03','soko04','soko05','soko06']
+    levels = ['soko01','soko02','soko03','soko04','soko05','soko06'] # perhaps skip soko05?
     for i in range(1,7):
         bfs_csvs += glob.glob(f'results/soko0{i}/*_BFS_soko0{i}_results.csv')
         dfs_csvs += glob.glob(f'results/soko0{i}/*_DFS_soko0{i}_results.csv')
@@ -103,7 +102,6 @@ def plot_bfs_vs_dfs_exectime():
         alg_name = file.split("_")[1]
         match alg_name:
             case 'BFS':
-                print(df["executionTime"].mean())
                 bfs_exectime.append(df["executionTime"].mean())
             case 'DFS':
                 dfs_exectime.append(df["executionTime"].mean())
@@ -125,9 +123,46 @@ def plot_bfs_vs_dfs_exectime():
     plt.show()
 
 
+def plot_bfs_vs_dfs_expanded_nodes():
+    bfs_csvs = []
+    dfs_csvs = []
+    bfs_expanded_nodes = []
+    dfs_expanded_nodes = []
+    levels = ['soko01','soko02','soko03','soko04','soko05','soko06'] # perhaps skip soko05?
+    for i in range(1,7):
+        bfs_csvs += glob.glob(f'results/soko0{i}/*_BFS_soko0{i}_results.csv')
+        dfs_csvs += glob.glob(f'results/soko0{i}/*_DFS_soko0{i}_results.csv')
+
+    for file in bfs_csvs + dfs_csvs:
+        df = pd.read_csv(file)
+        alg_name = file.split("_")[1]
+        match alg_name:
+            case 'BFS':
+                bfs_expanded_nodes.append(df["expandedNodes"].mean())
+            case 'DFS':
+                dfs_expanded_nodes.append(df["expandedNodes"].mean())
+
+    index = np.arange(len(levels))
+    width = 0.35  # ancho de las barras
+
+    plt.figure(figsize=(8, 6))
+
+    plt.bar(index, bfs_expanded_nodes, width=width, label='BFS')
+    plt.bar(index + width, dfs_expanded_nodes, width=width, label='DFS')
+
+    plt.xlabel('Algorithms')
+    plt.ylabel('Amount of nodes expanded')
+    plt.title('Nodes Expanded between Algorithms in Different Levels')
+    plt.xticks(index + width / 2, levels)
+    plt.legend()
+
+    plt.show()
+
+
 if __name__ == "__main__":
     print("Running plots")
     #plot_all_algs("soko01", "MANHATTAN", "meanExecutionTime")
     #plot_bfs_vs_dfs_cost("soko02") #soko02 is dummy level
     #plot_bfs_vs_dfs_costs() # graph that shows cost per level per alg
-    plot_bfs_vs_dfs_exectime()
+    plot_bfs_vs_dfs_exectime() # grpah that shows exec times per level per alg
+    plot_bfs_vs_dfs_expanded_nodes()
