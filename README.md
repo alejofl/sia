@@ -4,7 +4,7 @@ This repository will host all of the code developed as part of the curriculum of
 
 Each directory contains a different project:
 
-* `tp1`: TBD.
+* `tp1`: implementation of a search engine designed to solve the **Sokoban** puzzle using various search methods (BFS, DFS, Greedy & A*). The goal is to find the most efficient solution in terms of the number of moves required to complete the puzzle.
 * `tp2`: TBD.
 * `tp3`: TBD.
 * `tp4`: TBD.
