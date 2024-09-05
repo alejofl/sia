@@ -1,0 +1,51 @@
+{
+  "game": {
+    "playerClass": "WARRIOR",
+    "totalPoints": 120,
+    "maxTime": 80
+  },
+  "eve": {
+    "selection": [
+      {
+        "method": "ELITE",
+        "percentage": 0.6,
+        "options": {}
+      },
+      {
+        "method": "DETERMINISTIC_TOURNAMENT",
+        "percentage": 0.4,
+        "options": {
+          "m": 4
+        }
+      }
+    ],
+    "crossover": {
+      "method": "UNIFORM",
+      "options": {
+        "p": 0.7
+      }
+    },
+    "mutation": {
+      "method": "GEN",
+      "p": 0.273
+    },
+    "pick": {
+      "type": "TRADITIONAL",
+      "selectionMethods": [{
+        "method": "ROULETTE",
+        "percentage": 1,
+        "options": {}
+      }]
+    },
+    "populationSize": 100,
+    "matesPerGeneration": 42,
+    "stopCondition": [
+      {
+        "method": "MAX_GENERATIONS",
+        "options": {
+          "maxGenerations": 732
+        }
+      }
+    ]
+  }
+}

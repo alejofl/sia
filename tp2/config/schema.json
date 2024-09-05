@@ -1,0 +1,384 @@
+{
+  "$id": "/sia/tp2/config",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+  "title": "config",
+  "type": "object",
+  "properties": {
+    "game": {
+      "type": "object",
+      "description": "The configuration for the game.",
+      "properties": {
+        "playerClass": {
+          "enum": ["WARRIOR", "ARCHER", "GUARDIAN", "WIZARD"]
+        },
+        "totalPoints": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 200
+        },
+        "maxTime": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 120
+        }
+      },
+      "required": ["playerClass", "totalPoints", "maxTime"]
+    },
+    "eve": {
+      "type": "object",
+      "description": "The configuration for the genetic algorithm motor.",
+      "properties": {
+        "selection": { "$ref": "#/$defs/selectionSchema" },
+        "crossover": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "enum": ["ONE_POINT", "TWO_POINTS", "ANULAR", "UNIFORM"]
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": ["method", "options"],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "method": { "const": "ONE_POINT" }
+                }
+              },
+              "then": {
+                "properties": {
+                  "options": {
+                    "maxProperties": 0
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "method": { "const": "TWO_POINTS" }
+                }
+              },
+              "then": {
+                "properties": {
+                  "options": {
+                    "maxProperties": 0
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "method": { "const": "ANULAR" }
+                }
+              },
+              "then": {
+                "properties": {
+                  "options": {
+                    "maxProperties": 0
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "method": { "const": "UNIFORM" }
+                }
+              },
+              "then": {
+                "properties": {
+                  "options": {
+                    "properties": {
+                      "p": {
+                        "type": "number",
+                        "minimum": 0,
+                        "exclusiveMaximum": 1
+                      }
+                    },
+                    "required": ["p"]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "mutation": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "enum": ["GEN", "MULTIGEN"]
+            },
+            "p": {
+              "type": "number",
+              "minimum": 0,
+              "exclusiveMaximum": 1
+            }
+          },
+          "required": ["method", "p"]
+        },
+        "pick": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": ["TRADITIONAL", "YOUNG_BIASED"]
+            },
+            "selectionMethods": { "$ref": "#/$defs/selectionSchema" }
+          },
+          "required": ["type", "selectionMethods"]
+        },
+        "stopCondition": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": ["MAX_GENERATIONS", "STRUCTURE", "CONTENT"]
+              },
+              "options": {
+                "type": "object"
+              }
+            },
+            "required": ["method", "options"],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "method": { "const": "MAX_GENERATIONS" }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "options": {
+                      "properties": {
+                        "maxGenerations": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": ["maxGenerations"]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "method": { "const": "STRUCTURE" }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "options": {
+                      "properties": {
+                        "attributeCount": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "delta": {
+                          "type": "number",
+                          "minimum": 0,
+                          "exclusiveMaximum": 1
+                        },
+                        "minRepeatedGenerations": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": ["attributeCount", "delta", "minRepeatedGenerations"]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "method": { "const": "CONTENT" }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "options": {
+                      "properties": {
+                        "minRepeatedGenerations": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": ["minRepeatedGenerations"]
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 1
+        },
+        "populationSize": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "matesPerGeneration": {
+          "type": "integer",
+          "minimum": 2
+        }
+      },
+      "required": ["selection", "crossover", "mutation", "pick", "stopCondition", "matesPerGeneration"]
+    }
+  },
+
+  "$defs": {
+    "selectionSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "enum": ["ELITE", "ROULETTE", "UNIVERSAL", "BOLTZMANN", "RANKING", "DETERMINISTIC_TOURNAMENT", "PROBABILISTIC_TOURNAMENT"]
+          },
+          "percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "options": {
+            "type": "object"
+          }
+        },
+        "required": ["method", "percentage", "options"],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "ELITE" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "maxProperties": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "ROULETTE" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "maxProperties": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "UNIVERSAL" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "maxProperties": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "BOLTZMANN" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "properties": {
+                    "tCritic": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "t0": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "k": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
+                  },
+                  "required": ["tCritic", "t0", "k"]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "RANKING" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "maxProperties": 0
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "DETERMINISTIC_TOURNAMENT" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "properties": {
+                    "m": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": ["m"]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "method": { "const": "PROBABILISTIC_TOURNAMENT" }
+              }
+            },
+            "then": {
+              "properties": {
+                "options": {
+                  "properties": {
+                    "threshold": {
+                      "type": "number",
+                      "minimum": 0,
+                      "exclusiveMaximum": 1
+                    }
+                  },
+                  "required": ["threshold"]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 1
+    }
+  }
+}

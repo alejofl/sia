@@ -13,10 +13,10 @@ class Player(ABC):
         
     def generateRandomPlayer(playerClass, totalPoints):
         PLAYER_CLASSES = {
-            "Warrior": Warrior,
-            "Archer": Archer,
-            "Guardian": Guardian,
-            "Wizard": Wizard
+            "WARRIOR": Warrior,
+            "ARCHER": Archer,
+            "GUARDIAN": Guardian,
+            "WIZARD": Wizard
         }
 
         r = np.random.default_rng()
@@ -39,7 +39,7 @@ class Player(ABC):
 
         return self.__class__(*player1Alleles[:randomIndex], *player2Alleles[randomIndex:]), self.__class__(*player2Alleles[:randomIndex], *player1Alleles[randomIndex:])
 
-    def twoPointCrossover(self, player2, options = None):
+    def twoPointsCrossover(self, player2, options = None):
         gen = np.random.default_rng()
 
         player1Alleles = self.getalleles()
