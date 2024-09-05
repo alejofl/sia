@@ -3,11 +3,12 @@ from .player import Player
 
 
 class EVE:
-    def __init__(self, ):
+    def __init__(self, selectionMethods, ):
         # TODO
         pass
- 
-    def selectElite(population, k):
+
+    @staticmethod
+    def selectElite(population, k, options = None):
         n = len(population)
 
         sortedPopulation = sorted(population, key=lambda x: x.getFitness(), reverse=True)
@@ -21,7 +22,8 @@ class EVE:
 
         return newPopulation
 
-    def selectRoulette(population, k):
+    @staticmethod
+    def selectRoulette(population, k, options = None):
         gen = np.random.default_rng()
 
         totalFitness = np.sum(population.map(lambda x: x.getFitness()))
@@ -36,7 +38,8 @@ class EVE:
 
         return newPopulation
 
-    def selectUniversal(population, k):
+    @staticmethod
+    def selectUniversal(population, k, options = None):
         gen = np.random.default_rng()
 
         totalFitness = np.sum(population.map(lambda x: x.getFitness()))
@@ -50,12 +53,29 @@ class EVE:
             newPopulation.append(population[i])
 
         return newPopulation
- 
-    def selectBoltzmann(population, k):
-        # TODO
-        pass
 
-    def selectRanking(population, k):
+    @staticmethod
+    def selectBoltzmann(population, k, options = None):
+        gen = np.random.default_rng()
+        temp = options["tCritic"] + (options["t0"] - options["tCritic"]) * np.exp(- options["k"] * options["generation"])
+
+        sortedFitness = sorted(population.map(lambda x: x.getFitness()), reverse=True)
+        averageExpFitness = np.average(sortedFitness.map(lambda x: np.exp(x / temp)))
+        pseudoFitness = sortedFitness.map(lambda x: np.exp(x / temp) / averageExpFitness)
+        totalPseudoFitness = np.sum(pseudoFitness)
+        relativePseudoFitness = pseudoFitness / totalPseudoFitness
+        accumulatedPseudoFitness = np.cumsum(relativePseudoFitness)
+        newPopulation = []
+
+        for _ in range(k):
+            r = gen.random()
+            i = np.searchsorted(accumulatedPseudoFitness, r)
+            newPopulation.append(sortedFitness[i])
+
+        return newPopulation
+
+    @staticmethod
+    def selectRanking(population, k, options = None):
         gen = np.random.default_rng()
 
         n = len(population)
@@ -73,10 +93,11 @@ class EVE:
 
         return newPopulation
 
-    def selectDeterministicTournament(population, k):
+    @staticmethod
+    def selectDeterministicTournament(population, k, options = None):
         gen = np.random.default_rng()
 
-        m = len(population) // 3 # TODO: check if this is correct
+        m = options["m"]
         newPopulation = []
 
         for _ in range(k):
@@ -85,10 +106,11 @@ class EVE:
 
         return newPopulation
 
-    def selectProbabilisticTournament(population, k):
+    @staticmethod
+    def selectProbabilisticTournament(population, k, options = None):
         gen = np.random.default_rng()
 
-        threshold = 0.7 # TODO: check if this is correct
+        threshold = options["threshold"]
         newPopulation = []
 
         for _ in range(k):
