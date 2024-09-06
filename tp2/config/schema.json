@@ -137,7 +137,7 @@
             "type": "object",
             "properties": {
               "method": {
-                "enum": ["MAX_GENERATIONS", "STRUCTURE", "CONTENT"]
+                "enum": ["MAX_GENERATIONS", "STRUCTURE", "CONTENT", "DELTA"]
               },
               "options": {
                 "type": "object"
@@ -175,11 +175,7 @@
                   "properties": {
                     "options": {
                       "properties": {
-                        "attributeCount": {
-                          "type": "integer",
-                          "minimum": 1
-                        },
-                        "delta": {
+                        "percentage": {
                           "type": "number",
                           "minimum": 0,
                           "exclusiveMaximum": 1
@@ -189,7 +185,7 @@
                           "minimum": 1
                         }
                       },
-                      "required": ["attributeCount", "delta", "minRepeatedGenerations"]
+                      "required": ["percentage", "minRepeatedGenerations"]
                     }
                   }
                 }
@@ -210,6 +206,31 @@
                         }
                       },
                       "required": ["minRepeatedGenerations"]
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "method": { "const": "DELTA" }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "options": {
+                      "properties": {
+                        "delta": {
+                          "type": "number",
+                          "minimum": 0,
+                          "exclusiveMaximum": 1
+                        },
+                        "minRepeatedGenerations": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": ["delta", "minRepeatedGenerations"]
                     }
                   }
                 }
