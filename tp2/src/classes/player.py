@@ -59,6 +59,10 @@ class Player(ABC):
     def getFitness(self):
         pass
 
+    @abstractmethod
+    def getName(self):
+        pass
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
@@ -66,23 +70,41 @@ class Player(ABC):
 
     def __hash__(self):
         return hash((self.height, self.strength, self.skill, self.intelligence, self.courage, self.physique))
+    
+    def __str__(self):
+        return f"{self.getName()}(\n\tHeight: {self.height},\n\tStrength: {self.strength},\n\tSkill: {self.skill},\n\tIntelligence: {self.intelligence},\n\tCourage: {self.courage},\n\tPhysique: {self.physique}\n)"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Warrior(Player):
     def getFitness(self):
         return 0.6 * self.getAttackStat() + 0.4 * self.getDefenseStat()
 
+    def getName(self):
+        return "Warrior"
+
 
 class Archer(Player):
     def getFitness(self):
         return 0.9 * self.getAttackStat() + 0.1 * self.getDefenseStat()
+
+    def getName(self):
+        return "Archer"
 
 
 class Guardian(Player):
     def getFitness(self):
         return 0.1 * self.getAttackStat() + 0.9 * self.getDefenseStat()
 
+    def getName(self):
+        return "Guardian"
+
 
 class Wizard(Player):
     def getFitness(self):
         return 0.8 * self.getAttackStat() + 0.3 * self.getDefenseStat()
+
+    def getName(self):
+        return "Wizard"

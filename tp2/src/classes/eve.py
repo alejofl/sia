@@ -15,7 +15,7 @@ class EVE:
         newPopulation = []
 
         for i in range(n):
-            p = np.max(np.ceil((k - i) / n), 0)
+            p = int(np.max(np.ceil((k - i) / n), 0))
 
             for _ in range(p):
                 newPopulation.append(sortedPopulation[i]) 
@@ -26,8 +26,8 @@ class EVE:
     def selectRoulette(population, k, options = None):
         gen = np.random.default_rng()
 
-        totalFitness = np.sum(population.map(lambda x: x.getFitness()))
-        relativeFitness = population.map(lambda x: x.getFitness() / totalFitness)
+        totalFitness = np.sum(list(map(lambda x: x.getFitness(), population)))
+        relativeFitness = list(map(lambda x: x.getFitness() / totalFitness, population))
         accumulatedFitness = np.cumsum(relativeFitness)
         newPopulation = []
 
@@ -42,8 +42,8 @@ class EVE:
     def selectUniversal(population, k, options = None):
         gen = np.random.default_rng()
 
-        totalFitness = np.sum(population.map(lambda x: x.getFitness()))
-        relativeFitness = population.map(lambda x: x.getFitness() / totalFitness)
+        totalFitness = np.sum(list(map(lambda x: x.getFitness(), population)))
+        relativeFitness = list(map(lambda x: x.getFitness() / totalFitness, population))
         accumulatedFitness = np.cumsum(relativeFitness)
         newPopulation = []
 
@@ -59,9 +59,9 @@ class EVE:
         gen = np.random.default_rng()
         temp = options["tCritic"] + (options["t0"] - options["tCritic"]) * np.exp(- options["k"] * options["generation"])
 
-        sortedFitness = sorted(population.map(lambda x: x.getFitness()), reverse=True)
-        averageExpFitness = np.average(sortedFitness.map(lambda x: np.exp(x / temp)))
-        pseudoFitness = sortedFitness.map(lambda x: np.exp(x / temp) / averageExpFitness)
+        sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
+        averageExpFitness = np.average(list(map(lambda x: np.exp(x / temp), sortedFitness)))
+        pseudoFitness = list(map(lambda x: np.exp(x / temp) / averageExpFitness, sortedFitness))
         totalPseudoFitness = np.sum(pseudoFitness)
         relativePseudoFitness = pseudoFitness / totalPseudoFitness
         accumulatedPseudoFitness = np.cumsum(relativePseudoFitness)
@@ -79,7 +79,7 @@ class EVE:
         gen = np.random.default_rng()
 
         n = len(population)
-        sortedFitness = sorted(population.map(lambda x: x.getFitness()), reverse=True)
+        sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
         pseudoFitness = [(n - i + 1) / n for i in range(n)]
         totalPseudoFitness = np.sum(pseudoFitness)
         relativePseudoFitness = pseudoFitness / totalPseudoFitness
@@ -282,14 +282,17 @@ class EVE:
         return stopCondition
 
     def run(self, playerClass, totalPoints, maxTime):
+        self.startExecution(maxTime)
         population = [Player.generateRandomPlayer(playerClass, totalPoints) for _ in range(self.config["populationSize"])]
-        
+
         keepRunning = True
         while keepRunning:
             parents = []
             for selectionMethod in self.config["selection"]:
-                matesForSelection = np.ceil(self.config["matesPerGeneration"] * selectionMethod["percentage"])
-                parents.extend(self.SELECTION_FUNCTIONS[selectionMethod["method"]](population, matesForSelection, selectionMethod["options"]))
+                matesForSelection = int(np.ceil(self.config["matesPerGeneration"] * selectionMethod["percentage"]))
+                options = selectionMethod["options"]
+                options["generation"] = self.generationCount
+                parents.extend(self.SELECTION_FUNCTIONS[selectionMethod["method"]](population, matesForSelection, options))
 
             children = []
             parentsCount = len(parents)
@@ -323,3 +326,9 @@ class EVE:
 
             population = newPopulation[:self.config["populationSize"]]
             keepRunning = not self.evaluateStopCondition(population)
+
+        return {
+            "bestIndividual": self.bestIndividual,
+            "generationCount": self.generationCount,
+            "executionTime": time.time() - self.startTime
+        }

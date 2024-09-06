@@ -1,8 +1,8 @@
 {
   "game": {
-    "playerClass": "WARRIOR",
+    "playerClass": "WIZARD",
     "totalPoints": 120,
-    "maxTime": 80
+    "maxTime": 30
   },
   "eve": {
     "selection": [
@@ -38,12 +38,12 @@
       }]
     },
     "populationSize": 100,
-    "matesPerGeneration": 42,
+    "matesPerGeneration": 50,
     "stopCondition": [
       {
         "method": "MAX_GENERATIONS",
         "options": {
-          "maxGenerations": 732
+          "maxGenerations": 10
         }
       }
     ]
