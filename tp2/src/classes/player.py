@@ -6,13 +6,47 @@ class Player(ABC):
     def __init__(self, totalPoints, height, strength, skill, intelligence, courage, physique):
         self.totalPoints = totalPoints
         self.height = height
+        self.strength = strength
+        self.skill = skill
+        self.intelligence = intelligence
+        self.courage = courage
+        self.physique = physique
+        self.normalizePlayer()
+        
+    def normalizePlayer(self):
+        currentPoints = self.strength + self.skill + self.intelligence + self.courage + self.physique
+        self.strength = self.strength * self.totalPoints / currentPoints
+        self.skill = self.skill * self.totalPoints / currentPoints
+        self.intelligence = self.intelligence * self.totalPoints / currentPoints
+        self.courage = self.courage * self.totalPoints / currentPoints
+        self.physique = self.physique * self.totalPoints / currentPoints
 
-        currentPoints = strength + skill + intelligence + courage + physique
-        self.strength = strength * totalPoints / currentPoints
-        self.skill = skill * totalPoints / currentPoints
-        self.intelligence = intelligence * totalPoints / currentPoints
-        self.courage = courage * totalPoints / currentPoints
-        self.physique = physique * totalPoints / currentPoints
+    def setHeight(self, height):
+        self.height = height
+        self.normalizePlayer()
+
+    def setStrength(self, strength):
+        self.strength = strength
+        self.normalizePlayer()
+
+    def setSkill(self, skill):
+        self.skill = skill
+        self.normalizePlayer()
+
+    def setIntelligence(self, intelligence):
+        self.intelligence = intelligence
+        self.normalizePlayer()
+
+    def setCourage(self, courage):
+        self.courage = courage
+        self.normalizePlayer()
+
+    def setPhysique(self, physique):
+        self.physique = physique
+        self.normalizePlayer()
+
+    def getAttributeTuples(self):
+        return [(self.height, self.setHeight), (self.strength, self.setStrength), (self.skill, self.setSkill), (self.intelligence, self.setIntelligence), (self.courage, self.setCourage), (self.physique, self.setPhysique)]
         
     def generateRandomPlayer(playerClass, totalPoints):
         PLAYER_CLASSES = {

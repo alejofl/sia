@@ -191,6 +191,23 @@ class EVE:
 
         return player1.__class__(player1.totalPoints, *child1), player1.__class__(player1.totalPoints, *child2)
 
+    @staticmethod
+    def genMutation(player, probability):
+        gen = np.random.default_rng()
+        if gen.random() < probability:
+            randomGen = gen.choice(player.getAttributeTuples())
+            randomDelta = gen.uniform(0.65, 1.35)
+            randomGen[1](randomGen[0] * randomDelta)
+
+    @staticmethod
+    def multigenMutation(player, probability):
+        gen = np.random.default_rng()
+        attributeTuples = player.getAttributeTuples()
+        for attr, setter in attributeTuples:
+            if gen.random() < probability:
+                randomDelta = gen.uniform(0.65, 1.35)
+                setter(attr * randomDelta)
+
     def evaluateMaxGenerationsStopCondition(self, population, options):
         return self.generationCount >= options["maxGenerations"]
 
@@ -249,6 +266,11 @@ class EVE:
         "ANULAR": anularCrossover,
         "UNIFORM": uniformCrossover
     }
+
+    MUTATION_FUNCTIONS = {
+        "GEN": genMutation,
+        "MULTIGEN": multigenMutation
+    }
     
     def startExecution(self, maxTime):
         self.startTime = time.time()
@@ -300,8 +322,11 @@ class EVE:
             while i < parentsCount:
                 parent1 = parents[i]
                 parent2 = parents[i + 1 if i + 1 < parentsCount else i]
-                children.extend(self.CROSSOVER_FUNCTIONS[self.config["crossover"]["method"]](parent1, parent2, self.config["crossover"]["options"]))
-                # TODO: Mutation
+                child1, child2 = self.CROSSOVER_FUNCTIONS[self.config["crossover"]["method"]](parent1, parent2, self.config["crossover"]["options"])
+                self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child1, self.config["mutation"]["p"])
+                self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child2, self.config["mutation"]["p"])
+                children.append(child1)
+                children.append(child2)
                 i += 2
 
             newPopulation = []
