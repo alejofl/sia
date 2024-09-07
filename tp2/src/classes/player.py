@@ -20,6 +20,7 @@ class Player(ABC):
         self.intelligence = self.intelligence * self.totalPoints / currentPoints
         self.courage = self.courage * self.totalPoints / currentPoints
         self.physique = self.physique * self.totalPoints / currentPoints
+        self.height=1.3 if self.height < 1.3 else 2.0 if self.height > 2.0 else self.height
 
     def setHeight(self, height):
         self.height = height
