@@ -1,6 +1,7 @@
 import time
 import numpy as np
 from .player import Player
+from .random import RandomGenerator
 
 
 class EVE:    
@@ -24,7 +25,7 @@ class EVE:
 
     @staticmethod
     def selectRoulette(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         totalFitness = np.sum(list(map(lambda x: x.getFitness(), population)))
         relativeFitness = list(map(lambda x: x.getFitness() / totalFitness, population))
@@ -40,7 +41,7 @@ class EVE:
 
     @staticmethod
     def selectUniversal(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         totalFitness = np.sum(list(map(lambda x: x.getFitness(), population)))
         relativeFitness = list(map(lambda x: x.getFitness() / totalFitness, population))
@@ -56,7 +57,7 @@ class EVE:
 
     @staticmethod
     def selectBoltzmann(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
         temp = options["tCritic"] + (options["t0"] - options["tCritic"]) * np.exp(- options["k"] * options["generation"])
 
         sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
@@ -76,7 +77,7 @@ class EVE:
 
     @staticmethod
     def selectRanking(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         n = len(population)
         sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
@@ -95,7 +96,7 @@ class EVE:
 
     @staticmethod
     def selectDeterministicTournament(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         m = options["m"]
         newPopulation = []
@@ -108,7 +109,7 @@ class EVE:
 
     @staticmethod
     def selectProbabilisticTournament(population, k, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         threshold = options["threshold"]
         newPopulation = []
@@ -128,7 +129,7 @@ class EVE:
     
     @staticmethod
     def onePointCrossover(player1, player2, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         player1Alleles = player1.getalleles()
         player2Alleles = player2.getalleles()
@@ -139,7 +140,7 @@ class EVE:
 
     @staticmethod
     def twoPointsCrossover(player1, player2, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         player1Alleles = player1.getalleles()
         player2Alleles = player2.getalleles()
@@ -153,7 +154,7 @@ class EVE:
 
     @staticmethod
     def anularCrossover(player1, player2, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         player1Alleles = player1.getalleles()
         player2Alleles = player2.getalleles()
@@ -171,7 +172,7 @@ class EVE:
 
     @staticmethod
     def uniformCrossover(player1, player2, options = None):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
 
         player1Alleles = player1.getalleles()
         player2Alleles = player2.getalleles()
@@ -193,7 +194,7 @@ class EVE:
 
     @staticmethod
     def genMutation(player, probability):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
         if gen.random() < probability:
             randomGen = gen.choice(player.getAttributeTuples())
             randomDelta = gen.uniform(0.65, 1.35)
@@ -201,7 +202,7 @@ class EVE:
 
     @staticmethod
     def multigenMutation(player, probability):
-        gen = np.random.default_rng()
+        gen = RandomGenerator.getInstance().generator
         attributeTuples = player.getAttributeTuples()
         for attr, setter in attributeTuples:
             if gen.random() < probability:

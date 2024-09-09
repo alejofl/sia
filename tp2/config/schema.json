@@ -246,9 +246,13 @@
         "matesPerGeneration": {
           "type": "integer",
           "minimum": 2
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 1
         }
       },
-      "required": ["selection", "crossover", "mutation", "pick", "stopCondition", "matesPerGeneration"]
+      "required": ["selection", "crossover", "mutation", "pick", "stopCondition", "matesPerGeneration", "seed"]
     }
   },
 

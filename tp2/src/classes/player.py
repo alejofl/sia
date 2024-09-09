@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
+from .random import RandomGenerator
 
 
 class Player(ABC):
@@ -57,7 +58,7 @@ class Player(ABC):
             "WIZARD": Wizard
         }
 
-        r = np.random.default_rng()
+        r = RandomGenerator.getInstance().generator
         height = r.uniform(1.3, 2.0)
         attributes = r.random(5)
         attributes = attributes / np.sum(attributes) * totalPoints
