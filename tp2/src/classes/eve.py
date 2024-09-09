@@ -199,15 +199,20 @@ class EVE:
             randomGen = gen.choice(player.getAttributeTuples())
             randomDelta = gen.uniform(0.65, 1.35)
             randomGen[1](randomGen[0] * randomDelta)
+            return True
+        return False
 
     @staticmethod
     def multigenMutation(player, probability):
         gen = RandomGenerator.getInstance().generator
         attributeTuples = player.getAttributeTuples()
+        didMutate = False
         for attr, setter in attributeTuples:
             if gen.random() < probability:
                 randomDelta = gen.uniform(0.65, 1.35)
                 setter(attr * randomDelta)
+                didMutate = True
+        return didMutate
 
     def evaluateMaxGenerationsStopCondition(self, population, options):
         return self.generationCount >= options["maxGenerations"]
@@ -309,6 +314,8 @@ class EVE:
         population = [Player.generateRandomPlayer(playerClass, totalPoints) for _ in range(self.config["populationSize"])]
 
         keepRunning = True
+        childrenCount = 0
+        mutationCount = 0
         while keepRunning:
             parents = []
             for selectionMethod in self.config["selection"]:
@@ -324,11 +331,16 @@ class EVE:
                 parent1 = parents[i]
                 parent2 = parents[i + 1 if i + 1 < parentsCount else i]
                 child1, child2 = self.CROSSOVER_FUNCTIONS[self.config["crossover"]["method"]](parent1, parent2, self.config["crossover"]["options"])
-                self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child1, self.config["mutation"]["p"])
-                self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child2, self.config["mutation"]["p"])
+                didMutateChild1 = self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child1, self.config["mutation"]["p"])
+                didMutateChild2 = self.MUTATION_FUNCTIONS[self.config["mutation"]["method"]](child2, self.config["mutation"]["p"])
+                if didMutateChild1:
+                    mutationCount += 1
+                if didMutateChild2:
+                    mutationCount += 1
                 children.append(child1)
                 children.append(child2)
                 i += 2
+            childrenCount += len(children)
 
             newPopulation = []
             if self.config["pick"]["type"] == "YOUNG_BIASED":
@@ -356,5 +368,7 @@ class EVE:
         return {
             "bestIndividual": self.bestIndividual,
             "generationCount": self.generationCount,
-            "executionTime": time.time() - self.startTime
+            "executionTime": time.time() - self.startTime,
+            "childrenCount": childrenCount,
+            "mutationCount": mutationCount,
         }

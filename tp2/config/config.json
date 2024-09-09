@@ -2,7 +2,8 @@
   "game": {
     "playerClass": "WIZARD",
     "totalPoints": 200,
-    "maxTime": 120
+    "maxTime": 120,
+    "runs": 10
   },
   "eve": {
     "selection": [

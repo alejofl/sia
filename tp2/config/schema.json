@@ -21,6 +21,10 @@
           "type": "integer",
           "minimum": 10,
           "maximum": 120
+        },
+        "runs": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": ["playerClass", "totalPoints", "maxTime"]
