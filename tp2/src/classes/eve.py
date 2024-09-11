@@ -60,7 +60,8 @@ class EVE:
         gen = RandomGenerator.getInstance().generator
         temp = options["tCritic"] + (options["t0"] - options["tCritic"]) * np.exp(- options["k"] * options["generation"])
 
-        sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
+        sortedPopulation = sorted(population, key = lambda x: x.getFitness(), reverse=True)
+        sortedFitness = sorted(list(map(lambda x: x.getFitness(), population)), reverse=True)
         averageExpFitness = np.average(list(map(lambda x: np.exp(x / temp), sortedFitness)))
         pseudoFitness = list(map(lambda x: np.exp(x / temp) / averageExpFitness, sortedFitness))
         totalPseudoFitness = np.sum(pseudoFitness)
@@ -71,7 +72,7 @@ class EVE:
         for _ in range(k):
             r = gen.random()
             i = np.searchsorted(accumulatedPseudoFitness, r)
-            newPopulation.append(sortedFitness[i])
+            newPopulation.append(sortedPopulation[i])
 
         return newPopulation
 
@@ -80,7 +81,8 @@ class EVE:
         gen = RandomGenerator.getInstance().generator
 
         n = len(population)
-        sortedFitness = sorted(list(map(lambda x: x.getFitness(), population), reverse=True))
+        
+        sortedPopulation = sorted(population, key = lambda x: x.getFitness(), reverse=True)
         pseudoFitness = [(n - i + 1) / n for i in range(n)]
         totalPseudoFitness = np.sum(pseudoFitness)
         relativePseudoFitness = pseudoFitness / totalPseudoFitness
@@ -90,7 +92,7 @@ class EVE:
         for _ in range(k):
             r = gen.random()
             i = np.searchsorted(accumulatedPseudoFitness, r)
-            newPopulation.append(sortedFitness[i])
+            newPopulation.append(sortedPopulation[i])
 
         return newPopulation
 

@@ -8,42 +8,31 @@
 	"eve": {
 		"selection": [
 			{
-				"method": "DETERMINISTIC_TOURNAMENT",
-				"percentage": 0.7,
-				"options": {
-					"m": 10
-				}
-			},
-			{
-				"method": "PROBABILISTIC_TOURNAMENT",
-				"percentage": 0.3,
-				"options": {
-					"threshold": 0.7
-				}
+				"method": "ELITE",
+				"percentage": 1,
+				"options": {}
 			}
 		],
 		"crossover": {
-			"method": "UNIFORM",
-			"options": {
-				"p": 0.5
-			}
+			"method": "TWO_POINTS",
+			"options": {}
 		},
 		"mutation": {
-			"method": "MULTIGEN",
-			"p": 0.273
+			"method": "GEN",
+			"p": 0.5
 		},
 		"pick": {
 			"type": "TRADITIONAL",
 			"selectionMethods": [
 				{
-					"method": "ROULETTE",
+					"method": "ELITE",
 					"percentage": 1,
 					"options": {}
 				}
 			]
 		},
-		"populationSize": 100,
-		"matesPerGeneration": 10,
+		"populationSize": 1000,
+		"matesPerGeneration": 100,
 		"seed": 732,
 		"stopCondition": [
 			{
