@@ -51,11 +51,18 @@ mutationCount = "Mutations"
 if __name__ == "__main__":
     print("Plotter is running")
     # This function receives a list of tuples [method results filename, method name to show)] and a tuple [variable for comparison in csv, variable name to show]
+
+    #Diapo 11
     # comparison([['results/crossover/ONE_POINT-results.csv', 'One Point'], ['results/crossover/TWO_POINTS-results.csv', 'Two Points'], ['results/crossover/ANULAR-results.csv', 'Anular'], ['results/crossover/UNIFORM_p06-results.csv', 'Uniform (p=0.6)']], 'fitness', "Crossover: Fitness", "Crossover method", 'Fitness (%)')
     # comparison([['results/crossover/ONE_POINT-results.csv', 'One Point'], ['results/crossover/TWO_POINTS-results.csv', 'Two Points'], ['results/crossover/ANULAR-results.csv', 'Anular'], ['results/crossover/UNIFORM_p06-results.csv', 'Uniform (p=0.6)']], 'executionTime', "Crossover: Execution Time", "Crossover method", 'Execution Time (s)')
 
+    #Diapo 12
     # comparison([['results/crossover/UNIFORM_p01-results.csv', 'p=0.1'], ['results/crossover/UNIFORM_p02-results.csv', 'p=0.2'], ['results/crossover/UNIFORM_p03-results.csv', 'p=0.3'], ['results/crossover/UNIFORM_p04-results.csv', 'p=0.4'], ['results/crossover/UNIFORM_p05-results.csv', 'p=0.5'], ['results/crossover/UNIFORM_p06-results.csv', 'p=0.6'], ['results/crossover/UNIFORM_p07-results.csv', 'p=0.7'], ['results/crossover/UNIFORM_p08-results.csv', 'p=0.8'], ['results/crossover/UNIFORM_p09-results.csv', 'p=0.9']], 'fitness', "Uniform cross method probabilities: Fitness", "Uniform probability", 'Fitness (%)')
     # comparison([['results/crossover/UNIFORM_p01-results.csv', 'p=0.1'], ['results/crossover/UNIFORM_p02-results.csv', 'p=0.2'], ['results/crossover/UNIFORM_p03-results.csv', 'p=0.3'], ['results/crossover/UNIFORM_p04-results.csv', 'p=0.4'], ['results/crossover/UNIFORM_p05-results.csv', 'p=0.5'], ['results/crossover/UNIFORM_p06-results.csv', 'p=0.6'], ['results/crossover/UNIFORM_p07-results.csv', 'p=0.7'], ['results/crossover/UNIFORM_p08-results.csv', 'p=0.8'], ['results/crossover/UNIFORM_p09-results.csv', 'p=0.9']], 'executionTime', "Uniform cross method probabilities: Execution Time", "Uniform probability", 'Execution Time (s)')
+
+    #Diapo 13
+    # comparison([['results/crossover/ONE_POINT-results.csv', 'One Point'], ['results/crossover/TWO_POINTS-results.csv', 'Two Points'], ['results/crossover/ANULAR-results.csv', 'Anular'], ['results/crossover/UNIFORM_p03-results.csv', 'Uniform (p=0.3)']], 'fitness', "Crossover: Fitness", "Crossover method", 'Fitness (%)')
+    # comparison([['results/crossover/ONE_POINT-results.csv', 'One Point'], ['results/crossover/TWO_POINTS-results.csv', 'Two Points'], ['results/crossover/ANULAR-results.csv', 'Anular'], ['results/crossover/UNIFORM_p03-results.csv', 'Uniform (p=0.3)']], 'executionTime', "Crossover: Execution Time", "Crossover method", 'Execution Time (s)')
 
     # comparison(
     #     [['results/mutation/gen-0,1-results.csv', 'p=0.1'], ['results/mutation/gen-0,2-results.csv', 'p=0.2'],
@@ -102,10 +109,10 @@ if __name__ == "__main__":
     #      ['results/mutation/multigen-0,9-results.csv', 'p=0.9']], 'mutationCount',
     #     "Multigen mutation method probabilities: Mutation count", "Mutation probability", 'Mutations')
     
-    comparison(
-        [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'fitness',
-        "Gen vs Multigen mutation: Best fitness", "Mutation method", fitnessLabel)
+    # comparison(
+    #     [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'fitness',
+    #     "Gen vs Multigen mutation: Best fitness", "Mutation method", fitnessLabel)
     
-    comparison(
-        [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'executionTime',
-        "Gen vs Multigen mutation: Execution time", "Mutation method", executionTimeLabel)
+    # comparison(
+    #     [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'executionTime',
+    #     "Gen vs Multigen mutation: Execution time", "Mutation method", executionTimeLabel)
