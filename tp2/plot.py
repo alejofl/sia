@@ -117,5 +117,56 @@ if __name__ == "__main__":
     #     [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'executionTime',
     #     "Gen vs Multigen mutation: Execution time", "Mutation method", executionTimeLabel)
 
-    comparison([['results/selection/detTournament-2,2%-results.csv', 'm=22'],['results/selection/detTournament-2,4%-results.csv', 'm=24'],['results/selection/detTournament-2,5%-results.csv', 'm=25'],['results/selection/detTournament-2,6%-results.csv', 'm=26'],['results/selection/detTournament-2,7%-results.csv', 'm=27'],['results/selection/detTournament-5%-results.csv', 'm=50'], ['results/selection/detTournament-7,5%-results.csv', 'm=75'],['results/selection/detTournament-10%-results.csv', 'm=100'],['results/selection/detTournament-25%-results.csv', 'm=250'], ['results/selection/detTournament-50%-results.csv', 'm=500'],
-          ['results/selection/detTournament-75%-results.csv', 'm=750']], 'fitness', "Deterministic Tournament Selection: Fitness", "Selection method", 'Fitness (%)')
+    #Diapo 18 PROBABILISTIC TOURNAMENT
+    # comparison(
+    #      [['results/selection/probTournament-0,1-results.csv', 'th=0.1'],
+    #       ['results/selection/probTournament-0,2-results.csv', 'th=0.2'],
+    #       ['results/selection/probTournament-0,3-results.csv', 'th=0.3'],
+    #       ['results/selection/probTournament-0,4-results.csv', 'th=0.4'],
+    #       ['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
+    #       ['results/selection/probTournament-0,6-results.csv', 'th=0.6'],
+    #       ['results/selection/probTournament-0,7-results.csv', 'th=0.7'],
+    #       ['results/selection/probTournament-0,8-results.csv', 'th=0.8'],
+    #       ['results/selection/probTournament-0,9-results.csv', 'th=0.9'], ], 'fitness',
+    #      "Probabilistic Tournament selection method probabilities: best fitness", "Threshhold", fitnessLabel)
+    
+    # comparison(
+    #      [['results/selection/probTournament-0,1-results.csv', 'th=0.1'],
+    #       ['results/selection/probTournament-0,2-results.csv', 'th=0.2'],
+    #       ['results/selection/probTournament-0,3-results.csv', 'th=0.3'],
+    #       ['results/selection/probTournament-0,4-results.csv', 'th=0.4'],
+    #       ['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
+    #       ['results/selection/probTournament-0,6-results.csv', 'th=0.6'],
+    #       ['results/selection/probTournament-0,7-results.csv', 'th=0.7'],
+    #       ['results/selection/probTournament-0,8-results.csv', 'th=0.8'],
+    #       ['results/selection/probTournament-0,9-results.csv', 'th=0.9'], ], 'executionTime',
+    #      "Probabilistic Tournament selection method probabilities: execution time", "Threshhold", executionTimeLabel)
+
+    #Diapo 19 - DETERMINISTIC TOURNAMENT
+    # comparison(
+    #      [['results/selection/detTournament-2,2%-results.csv', 'm=22'],
+    #       ['results/selection/detTournament-2,4%-results.csv', 'm=24'],
+    #       ['results/selection/detTournament-2,5%-results.csv', 'm=25'],
+    #       ['results/selection/detTournament-2,6%-results.csv', 'm=26'],
+    #       ['results/selection/detTournament-2,7%-results.csv', 'm=27'],
+    #       ['results/selection/detTournament-5%-results.csv', 'm=50'], 
+    #       ['results/selection/detTournament-7,5%-results.csv', 'm=75'],
+    #       ['results/selection/detTournament-10%-results.csv', 'm=100'],
+    #       ['results/selection/detTournament-25%-results.csv', 'm=250'],
+    #       ['results/selection/detTournament-50%-results.csv', 'm=500'],
+    #       ['results/selection/detTournament-75%-results.csv', 'm=750'] ], 'fitness',
+    #      "Deterministic Tournament selection method probabilities: best fitness", "m", fitnessLabel)
+    
+    # comparison(
+    #      [['results/selection/detTournament-2,2%-results.csv', 'm=22'],
+    #       ['results/selection/detTournament-2,4%-results.csv', 'm=24'],
+    #       ['results/selection/detTournament-2,5%-results.csv', 'm=25'],
+    #       ['results/selection/detTournament-2,6%-results.csv', 'm=26'],
+    #       ['results/selection/detTournament-2,7%-results.csv', 'm=27'],
+    #       ['results/selection/detTournament-5%-results.csv', 'm=50'], 
+    #       ['results/selection/detTournament-7,5%-results.csv', 'm=75'],
+    #       ['results/selection/detTournament-10%-results.csv', 'm=100'],
+    #       ['results/selection/detTournament-25%-results.csv', 'm=250'],
+    #       ['results/selection/detTournament-50%-results.csv', 'm=500'],
+    #       ['results/selection/detTournament-75%-results.csv', 'm=750'] ], 'executionTime',
+    #      "Deterministic Tournament selection method probabilities: execution time", "m", executionTimeLabel)
