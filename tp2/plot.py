@@ -116,3 +116,6 @@ if __name__ == "__main__":
     # comparison(
     #     [['results/mutation/gen-0,7-results.csv', 'Gen (p=0.7)'], ['results/mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)'], ['results/mutation/multigen-0,2-results.csv', 'Multigen (p=0.2)']], 'executionTime',
     #     "Gen vs Multigen mutation: Execution time", "Mutation method", executionTimeLabel)
+
+    comparison([['results/selection/detTournament-2,2%-results.csv', 'm=22'],['results/selection/detTournament-2,4%-results.csv', 'm=24'],['results/selection/detTournament-2,5%-results.csv', 'm=25'],['results/selection/detTournament-2,6%-results.csv', 'm=26'],['results/selection/detTournament-2,7%-results.csv', 'm=27'],['results/selection/detTournament-5%-results.csv', 'm=50'], ['results/selection/detTournament-7,5%-results.csv', 'm=75'],['results/selection/detTournament-10%-results.csv', 'm=100'],['results/selection/detTournament-25%-results.csv', 'm=250'], ['results/selection/detTournament-50%-results.csv', 'm=500'],
+          ['results/selection/detTournament-75%-results.csv', 'm=750']], 'fitness', "Deterministic Tournament Selection: Fitness", "Selection method", 'Fitness (%)')
