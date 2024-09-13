@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import matplotlib.pyplot as plt
 import scipy.stats as ss 
+import matplotlib.ticker as mticker
 
 COLORS = ["#003049", "#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#007F83", "#BC3C28", "#FFD56B"]
 
@@ -34,7 +35,7 @@ def comparison(results, variable, title, xLabel, yLabel):
     if variable=='fitness':
             plt.text(resultDf[variable].idxmax(), max_value, f'{max_value:.6f}', ha='center', va='bottom', fontweight='bold')
 
-
+    # plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.5f'))
 
     plt.title(title)
     plt.xlabel(xLabel)
@@ -119,28 +120,20 @@ if __name__ == "__main__":
 
     #Diapo 18 PROBABILISTIC TOURNAMENT
     # comparison(
-    #      [['results/selection/probTournament-0,1-results.csv', 'th=0.1'],
-    #       ['results/selection/probTournament-0,2-results.csv', 'th=0.2'],
-    #       ['results/selection/probTournament-0,3-results.csv', 'th=0.3'],
-    #       ['results/selection/probTournament-0,4-results.csv', 'th=0.4'],
-    #       ['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
+    #      [['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
     #       ['results/selection/probTournament-0,6-results.csv', 'th=0.6'],
     #       ['results/selection/probTournament-0,7-results.csv', 'th=0.7'],
     #       ['results/selection/probTournament-0,8-results.csv', 'th=0.8'],
     #       ['results/selection/probTournament-0,9-results.csv', 'th=0.9'], ], 'fitness',
-    #      "Probabilistic Tournament selection method probabilities: best fitness", "Threshhold", fitnessLabel)
+    #      "Probabilistic Tournament selection method probabilities: best fitness", "Threshold", fitnessLabel)
     
     # comparison(
-    #      [['results/selection/probTournament-0,1-results.csv', 'th=0.1'],
-    #       ['results/selection/probTournament-0,2-results.csv', 'th=0.2'],
-    #       ['results/selection/probTournament-0,3-results.csv', 'th=0.3'],
-    #       ['results/selection/probTournament-0,4-results.csv', 'th=0.4'],
-    #       ['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
+    #      [['results/selection/probTournament-0,5-results.csv', 'th=0.5'],
     #       ['results/selection/probTournament-0,6-results.csv', 'th=0.6'],
     #       ['results/selection/probTournament-0,7-results.csv', 'th=0.7'],
     #       ['results/selection/probTournament-0,8-results.csv', 'th=0.8'],
     #       ['results/selection/probTournament-0,9-results.csv', 'th=0.9'], ], 'executionTime',
-    #      "Probabilistic Tournament selection method probabilities: execution time", "Threshhold", executionTimeLabel)
+    #      "Probabilistic Tournament selection method probabilities: execution time", "Threshold", executionTimeLabel)
 
     #Diapo 19 - DETERMINISTIC TOURNAMENT
     # comparison(
@@ -155,7 +148,7 @@ if __name__ == "__main__":
     #       ['results/selection/detTournament-25%-results.csv', 'm=250'],
     #       ['results/selection/detTournament-50%-results.csv', 'm=500'],
     #       ['results/selection/detTournament-75%-results.csv', 'm=750'] ], 'fitness',
-    #      "Deterministic Tournament selection method probabilities: best fitness", "m", fitnessLabel)
+    #      "Deterministic Tournament selection method probabilities: best fitness", "Mates amount", fitnessLabel)
     
     # comparison(
     #      [['results/selection/detTournament-2,2%-results.csv', 'm=22'],
@@ -169,4 +162,25 @@ if __name__ == "__main__":
     #       ['results/selection/detTournament-25%-results.csv', 'm=250'],
     #       ['results/selection/detTournament-50%-results.csv', 'm=500'],
     #       ['results/selection/detTournament-75%-results.csv', 'm=750'] ], 'executionTime',
-    #      "Deterministic Tournament selection method probabilities: execution time", "m", executionTimeLabel)
+    #      "Deterministic Tournament selection method probabilities: execution time", "Mates amount", executionTimeLabel)
+
+    # comparison(
+    #      [['results/selection/elite-results.csv', 'ELI'],
+    #       ['results/selection/roulette-results.csv', 'ROU'],
+    #       ['results/selection/universal-results.csv', 'UNI'],
+    #       ['results/selection/boltzmann-results.csv', 'BOL'],
+    #       ['results/selection/ranking-results.csv', 'RAN'],
+    #       ['results/selection/detTournament-2,5%-results.csv', 'DET'],
+    #       ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'fitness',
+    #      "Probabilistic Tournament selection method probabilities: best fitness", "Method", fitnessLabel)
+    
+    comparison(
+          [['results/selection/elite-results.csv', 'ELI'],
+           ['results/selection/roulette-results.csv', 'ROU'],
+           ['results/selection/universal-results.csv', 'UNI'],
+           ['results/selection/boltzmann-results.csv', 'BOL'],
+           ['results/selection/ranking-results.csv', 'RAN'],
+           ['results/selection/detTournament-2,5%-results.csv', 'DET'],
+           ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'executionTime',
+          "Probabilistic Tournament selection method probabilities: execution time", "Method", executionTimeLabel)
+    

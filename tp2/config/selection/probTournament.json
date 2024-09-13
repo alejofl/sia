@@ -11,7 +11,7 @@
 				"method": "PROBABILISTIC_TOURNAMENT",
 				"percentage": 1,
 				"options": {
-					"threshold": 0.9
+					"threshold": 0.6
 				}
 			}
 		],
