@@ -174,13 +174,17 @@ if __name__ == "__main__":
     #       ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'fitness',
     #      "Probabilistic Tournament selection method probabilities: best fitness", "Method", fitnessLabel)
     
-    comparison(
-          [['results/selection/elite-results.csv', 'ELI'],
-           ['results/selection/roulette-results.csv', 'ROU'],
-           ['results/selection/universal-results.csv', 'UNI'],
-           ['results/selection/boltzmann-results.csv', 'BOL'],
-           ['results/selection/ranking-results.csv', 'RAN'],
-           ['results/selection/detTournament-2,5%-results.csv', 'DET'],
-           ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'executionTime',
-          "Probabilistic Tournament selection method probabilities: execution time", "Method", executionTimeLabel)
+    # comparison(
+    #      [['results/selection/elite-results.csv', 'ELI'],
+    #       ['results/selection/roulette-results.csv', 'ROU'],
+    #       ['results/selection/universal-results.csv', 'UNI'],
+    #       ['results/selection/boltzmann-results.csv', 'BOL'],
+    #       ['results/selection/ranking-results.csv', 'RAN'],
+    #       ['results/selection/detTournament-2,5%-results.csv', 'DET'],
+    #       ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'executionTime',
+    #      "Probabilistic Tournament selection method probabilities: execution time", "Method", executionTimeLabel)
     
+
+    #Diapo 27
+    comparison([['results/mutation/gen-0,1-noTime-results.csv', 'p=0.1'], ['results/mutation/gen-0,2-noTime-results.csv', 'p=0.2'],['results/mutation/gen-0,3-noTime-results.csv', 'p=0.3'], ['results/mutation/gen-0,4-noTime-results.csv', 'p=0.4'],['results/mutation/gen-0,5-noTime-results.csv', 'p=0.5'], ['results/mutation/gen-0,6-noTime-results.csv', 'p=0.6'],['results/mutation/gen-0,7-noTime-results.csv', 'p=0.7'], ['results/mutation/gen-0,8-noTime-results.csv', 'p=0.8'],['results/mutation/gen-0,9-noTime-results.csv', 'p=0.9']], 'fitness',"Gen mutation method probabilities: Fitness", "Mutation probability", 'Fitness (%)')
+    comparison([['results/mutation/multigen-0,1-noTime-results.csv', 'p=0.1'], ['results/mutation/multigen-0,2-noTime-results.csv', 'p=0.2'], ['results/mutation/multigen-0,3-noTime-results.csv', 'p=0.3'], ['results/mutation/multigen-0,4-noTime-results.csv', 'p=0.4'], ['results/mutation/multigen-0,5-noTime-results.csv', 'p=0.5'], ['results/mutation/multigen-0,6-noTime-results.csv', 'p=0.6'], ['results/mutation/multigen-0,7-noTime-results.csv', 'p=0.7'], ['results/mutation/multigen-0,8-noTime-results.csv', 'p=0.8'], ['results/mutation/multigen-0,9-noTime-results.csv', 'p=0.9']], 'fitness',"Multigen mutation method probabilities: Fitness", "Mutation probability", 'Fitness (%)')
