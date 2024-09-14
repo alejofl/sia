@@ -1,0 +1,52 @@
+{
+	"game": {
+		"playerClass": "WIZARD",
+		"totalPoints": 200,
+		"maxTime": 120,
+		"runs": 10
+	},
+	"eve": {
+		"selection": [
+			{
+				"method": "BOLTZMANN",
+				"percentage": 1,
+				"options": {
+					"tCritic": 0.05,
+					"t0": 20,
+					"k": 0.06
+				}
+			}
+		],
+		"crossover": {
+			"method": "UNIFORM",
+			"options": {
+				"p": 0.3
+			}
+		},
+		"mutation": {
+			"method": "GEN",
+			"p": 0.8
+		},
+		"pick": {
+			"type": "TRADITIONAL",
+			"selectionMethods": [
+				{
+					"method": "ELITE",
+					"percentage": 1,
+					"options": {}
+				}
+			]
+		},
+		"populationSize": 1000,
+		"matesPerGeneration": 100,
+		"seed": 732,
+		"stopCondition": [
+			{
+				"method": "CONTENT",
+				"options": {
+					"minRepeatedGenerations": 5
+				}
+			}
+		]
+	}
+}

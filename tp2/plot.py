@@ -34,8 +34,8 @@ def comparison(results, variable, title, xLabel, yLabel):
 
     if variable=='fitness':
             plt.text(resultDf[variable].idxmax(), max_value, f'{max_value:.6f}', ha='center', va='bottom', fontweight='bold')
+            plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.5f'))
 
-    # plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.5f'))
 
     plt.title(title)
     plt.xlabel(xLabel)
@@ -173,6 +173,78 @@ if __name__ == "__main__":
     #       ['results/selection/detTournament-2,5%-results.csv', 'DET'],
     #       ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'fitness',
     #      "Probabilistic Tournament selection method probabilities: best fitness", "Method", fitnessLabel)
+
+    #Diapo 20
+
+#     comparison(
+#           [['results/selection/boltzmann/t-critic/boltzmann-tc0,00-results.csv', '0,00'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,01-results.csv', '0,01'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,02-results.csv', '0,02'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,03-results.csv', '0,03'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,04-results.csv', '0,04'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,05-results.csv', '0,05'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,06-results.csv', '0,06'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,07-results.csv', '0,07'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,08-results.csv', '0,08'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,09-results.csv', '0,09'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,10-results.csv', '0,10'] ], 'fitness',
+#           "Selection Boltzmann (T-Critic): fitness", "T-Critic", fitnessLabel)
+    
+#     comparison(
+#           [['results/selection/boltzmann/t-critic/boltzmann-tc0,00-results.csv', '0,00'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,01-results.csv', '0,01'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,02-results.csv', '0,02'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,03-results.csv', '0,03'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,04-results.csv', '0,04'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,05-results.csv', '0,05'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,06-results.csv', '0,06'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,07-results.csv', '0,07'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,08-results.csv', '0,08'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,09-results.csv', '0,09'],
+#            ['results/selection/boltzmann/t-critic/boltzmann-tc0,10-results.csv', '0,10'] ], 'executionTime',
+#           "Selection Boltzmann (T-Critic): Execution Time", "T-Critic", executionTimeLabel)
+    
+    #Diapo 21
+#     comparison(
+#           [['results/selection/boltzmann/t0/boltzmann-t0-10-results.csv', '10'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-20-results.csv', '20'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-30-results.csv', '30'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-40-results.csv', '40'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-50-results.csv', '50'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-60-results.csv', '60'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-70-results.csv', '70'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-80-results.csv', '80'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-90-results.csv', '90'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-100-results.csv', '100'] ], 'fitness',
+#           "Selection Boltzmann (t0): Fitness", "t0", fitnessLabel)
+    
+#     comparison(
+#           [['results/selection/boltzmann/t0/boltzmann-t0-10-results.csv', '10'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-20-results.csv', '20'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-30-results.csv', '30'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-40-results.csv', '40'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-50-results.csv', '50'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-60-results.csv', '60'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-70-results.csv', '70'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-80-results.csv', '80'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-90-results.csv', '90'],
+#            ['results/selection/boltzmann/t0/boltzmann-t0-100-results.csv', '100'] ], 'executionTime',
+#           "Selection Boltzmann (t0): Execution time", "t0", executionTimeLabel)
+    
+    #Diapo 22
+    comparison(
+          [['results/selection/boltzmann/k/boltzmann-k-0,001-results.csv', '0,001'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,010-results.csv', '0,01'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,020-results.csv', '0,02'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,030-results.csv', '0,03'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,040-results.csv', '0,04'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,050-results.csv', '0,05'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,060-results.csv', '0,06'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,070-results.csv', '0,07'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,080-results.csv', '0,08'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,090-results.csv', '0,09'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,100-results.csv', '0,1'] ], 'fitness',
+          "Selection Boltzmann (k): Fitness", "k", fitnessLabel)
     
     # comparison(
     #      [['results/selection/elite-results.csv', 'ELI'],
@@ -188,3 +260,29 @@ if __name__ == "__main__":
     #Diapo 27
     comparison([['results/mutation/gen-0,1-noTime-results.csv', 'p=0.1'], ['results/mutation/gen-0,2-noTime-results.csv', 'p=0.2'],['results/mutation/gen-0,3-noTime-results.csv', 'p=0.3'], ['results/mutation/gen-0,4-noTime-results.csv', 'p=0.4'],['results/mutation/gen-0,5-noTime-results.csv', 'p=0.5'], ['results/mutation/gen-0,6-noTime-results.csv', 'p=0.6'],['results/mutation/gen-0,7-noTime-results.csv', 'p=0.7'], ['results/mutation/gen-0,8-noTime-results.csv', 'p=0.8'],['results/mutation/gen-0,9-noTime-results.csv', 'p=0.9']], 'fitness',"Gen mutation method probabilities: Fitness", "Mutation probability", 'Fitness (%)')
     comparison([['results/mutation/multigen-0,1-noTime-results.csv', 'p=0.1'], ['results/mutation/multigen-0,2-noTime-results.csv', 'p=0.2'], ['results/mutation/multigen-0,3-noTime-results.csv', 'p=0.3'], ['results/mutation/multigen-0,4-noTime-results.csv', 'p=0.4'], ['results/mutation/multigen-0,5-noTime-results.csv', 'p=0.5'], ['results/mutation/multigen-0,6-noTime-results.csv', 'p=0.6'], ['results/mutation/multigen-0,7-noTime-results.csv', 'p=0.7'], ['results/mutation/multigen-0,8-noTime-results.csv', 'p=0.8'], ['results/mutation/multigen-0,9-noTime-results.csv', 'p=0.9']], 'fitness',"Multigen mutation method probabilities: Fitness", "Mutation probability", 'Fitness (%)')
+    comparison(
+          [['results/selection/boltzmann/k/boltzmann-k-0,001-results.csv', '0,001'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,010-results.csv', '0,01'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,020-results.csv', '0,02'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,030-results.csv', '0,03'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,040-results.csv', '0,04'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,050-results.csv', '0,05'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,060-results.csv', '0,06'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,070-results.csv', '0,07'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,080-results.csv', '0,08'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,090-results.csv', '0,09'],
+           ['results/selection/boltzmann/k/boltzmann-k-0,100-results.csv', '0,1'] ], 'executionTime',
+          "Selection Boltzmann (k): Execution Time", "k", executionTimeLabel)
+    
+    
+    
+    # comparison(
+    #       [['results/selection/elite-results.csv', 'ELI'],
+    #        ['results/selection/roulette-results.csv', 'ROU'],
+    #        ['results/selection/universal-results.csv', 'UNI'],
+    #        ['results/selection/boltzmann-results.csv', 'BOL'],
+    #        ['results/selection/ranking-results.csv', 'RAN'],
+    #        ['results/selection/detTournament-2,5%-results.csv', 'DET'],
+    #        ['results/selection/probTournament-0,6-results.csv', 'PRO'], ], 'executionTime',
+    #       "Probabilistic Tournament selection method probabilities: execution time", "Method", executionTimeLabel)
+    
