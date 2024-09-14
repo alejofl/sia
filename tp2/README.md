@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a series of genetic algorithms to select the best player for the ITBUM ONLINE game. The game is a role-playing game where the player can choose between different characters (warrior, archer, guardian and wizard), build their army and fight against other players. The goal of the project is to find the best player for the game by using genetic algorithms, given the character type and a maximum number of points that can be used to create the character.
+This project implements a series of genetic algorithms to select the best player for the ITBUM ONLINE game. The game is a role-playing game where the player can choose between different characters (warrior, archer, guardian and wizard), build their army and fight against other players. The goal of the project is to find the best player for the game using genetic algorithms, given the character type and a maximum number of points that can be used to create the character.
 
 ## Features
 
@@ -38,13 +38,13 @@ The project implements the following features:
     * Maximum number of generations in which the best individual has not changed.
     * Maximum number of generations in which the best individual has been inside a delta.
 
-- **Performance Metrics**: After running the genetic algorithms, the engine outputs:
-  - Characteristics of the best individual.
-  - Fitness of the best individual.
-  - Number of generations.
-  - Execution time.
-  - Number of created children.
-  - Number of mutations.
+* **Performance Metrics**: After running the genetic algorithms, the engine outputs:
+    * Characteristics of the best individual.
+    * Fitness of the best individual.
+    * Number of generations.
+    * Execution time.
+    * Number of created children.
+    * Number of mutations.
 
 ## How to Run
 
