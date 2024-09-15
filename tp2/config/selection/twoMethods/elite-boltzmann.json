@@ -8,10 +8,17 @@
 	"eve": {
 		"selection": [
 			{
-				"method": "DETERMINISTIC_TOURNAMENT",
-				"percentage": 1,
+				"method": "ELITE",
+				"percentage": 0.5,
+				"options": {}
+			},
+			{
+				"method": "BOLTZMANN",
+				"percentage": 0.5,
 				"options": {
-					"m": 25
+					"tCritic": 0.02,
+					"t0": 20,
+					"k": 0.9
 				}
 			}
 		],

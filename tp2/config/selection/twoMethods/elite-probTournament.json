@@ -8,10 +8,15 @@
 	"eve": {
 		"selection": [
 			{
-				"method": "DETERMINISTIC_TOURNAMENT",
-				"percentage": 1,
+				"method": "ELITE",
+				"percentage": 0.5,
+				"options": {}
+			},
+			{
+				"method": "PROBABILISTIC_TOURNAMENT",
+				"percentage": 0.5,
 				"options": {
-					"m": 25
+					"threshold": 0.6
 				}
 			}
 		],

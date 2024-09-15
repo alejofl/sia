@@ -11,9 +11,9 @@
 				"method": "BOLTZMANN",
 				"percentage": 1,
 				"options": {
-					"tCritic": 2,
-					"t0": 6.5,
-					"k": 0.1
+					"tCritic": 0.02,
+					"t0": 20,
+					"k": 0.9
 				}
 			}
 		],
