@@ -34,7 +34,7 @@ def comparison(results, variable, title, xLabel, yLabel):
 
     if variable=='fitness':
             plt.text(resultDf[variable].idxmax(), max_value, f'{max_value:.6f}', ha='center', va='bottom', fontweight='bold')
-            #plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.5f'))
+            plt.gca().yaxis.set_major_formatter(mticker.FormatStrFormatter('%.5f'))
 
 
     plt.title(title)
@@ -113,4 +113,31 @@ if __name__ == "__main__":
     
     #Diapo 30
     # comparison([['results/selection/noTime/elite-notime-results.csv', 'ELI'],['results/selection/noTime/roulette-notime-results.csv', 'ROU'],['results/selection/noTime/universal-notime-results.csv', 'UNI'],['results/selection/noTime/boltzmann-notime-results.csv', 'BOL'],['results/selection/noTime/ranking-notime-results.csv', 'RAN'],['results/selection/noTime/detTournament-notime-results.csv', 'DET'],['results/selection/noTime/probTournament-notime-results.csv', 'PRO'], ], 'fitness',"All selection method probabilities: best fitness", "Method", fitnessLabel)
-    
+
+    #Diapo 29
+    # comparison([['results/pick/traditional-results.csv', 'Traditional'],['results/pick/young_biased-results.csv', 'Young Bias']], 'fitness', "Pick type: fitness", "Pick type", fitnessLabel)
+    # comparison([['results/pick/traditional-results.csv', 'Traditional'],['results/pick/young_biased-results.csv', 'Young Bias']], 'executionTime', "Pick type: Execution time", "Pick type", executionTimeLabel)
+
+    #Diapo 30
+    # comparison([['results/mates/mates-10-results.csv', '10%'],['results/mates/mates-30-results.csv', '30%'], ['results/mates/mates-50-results.csv', '50%'], ['results/mates/mates-70-results.csv', '70%'], ['results/mates/mates-100-results.csv', '100%']], 'fitness', "Mates per generation: fitness", "Individuals (%)", fitnessLabel)
+    # comparison([['results/mates/mates-10-results.csv', '10%'],['results/mates/mates-30-results.csv', '30%'], ['results/mates/mates-50-results.csv', '50%'], ['results/mates/mates-70-results.csv', '70%'], ['results/mates/mates-100-results.csv', '100%']], 'executionTime', "Mates per generation: Execution time", "Individuals (%)", executionTimeLabel)    
+
+
+    # Ejercicio 1.2
+
+    # Diapo 44: mutación - gen
+
+    # comparison([['results/ej1.2/2.mutation/gen-0,1-results.csv', 'p=0.1'],['results/ej1.2/2.mutation/gen-0,2-results.csv', 'p=0.2'], ['results/ej1.2/2.mutation/gen-0,3-results.csv', 'p=0.3'], ['results/ej1.2/2.mutation/gen-0,4-results.csv', 'p=0.4'], ['results/ej1.2/2.mutation/gen-0,5-results.csv', 'p=0.5'], ['results/ej1.2/2.mutation/gen-0,6-results.csv', 'p=0.6'], ['results/ej1.2/2.mutation/gen-0,7-results.csv', 'p=0.7'], ['results/ej1.2/2.mutation/gen-0,8-results.csv', 'p=0.8'], ['results/ej1.2/2.mutation/gen-0,9-results.csv', 'p=0.9']], 'fitness',"Gen mutation method probabilities: Fitness", "Mutation probability", fitnessLabel)
+    # comparison([['results/ej1.2/2.mutation/gen-0,1-results.csv', 'p=0.1'],['results/ej1.2/2.mutation/gen-0,2-results.csv', 'p=0.2'], ['results/ej1.2/2.mutation/gen-0,3-results.csv', 'p=0.3'], ['results/ej1.2/2.mutation/gen-0,4-results.csv', 'p=0.4'], ['results/ej1.2/2.mutation/gen-0,5-results.csv', 'p=0.5'], ['results/ej1.2/2.mutation/gen-0,6-results.csv', 'p=0.6'], ['results/ej1.2/2.mutation/gen-0,7-results.csv', 'p=0.7'], ['results/ej1.2/2.mutation/gen-0,8-results.csv', 'p=0.8'], ['results/ej1.2/2.mutation/gen-0,9-results.csv', 'p=0.9']], 'executionTime',"Gen mutation method probabilities: Execution time", "Mutation probability", executionTimeLabel)
+
+    # # Diapo 45: mutación - multigen
+
+    # comparison([['results/ej1.2/2.mutation/multigen-0,1-results.csv', 'p=0.1'],['results/ej1.2/2.mutation/multigen-0,2-results.csv', 'p=0.2'], ['results/ej1.2/2.mutation/multigen-0,3-results.csv', 'p=0.3'], ['results/ej1.2/2.mutation/multigen-0,4-results.csv', 'p=0.4'], ['results/ej1.2/2.mutation/multigen-0,5-results.csv', 'p=0.5'], ['results/ej1.2/2.mutation/multigen-0,6-results.csv', 'p=0.6'], ['results/ej1.2/2.mutation/multigen-0,7-results.csv', 'p=0.7'], ['results/ej1.2/2.mutation/multigen-0,8-results.csv', 'p=0.8'], ['results/ej1.2/2.mutation/multigen-0,9-results.csv', 'p=0.9']], 'fitness',"Multigen mutation method probabilities: Fitness", "Mutation probability", fitnessLabel)
+    # comparison([['results/ej1.2/2.mutation/multigen-0,1-results.csv', 'p=0.1'],['results/ej1.2/2.mutation/multigen-0,2-results.csv', 'p=0.2'], ['results/ej1.2/2.mutation/multigen-0,3-results.csv', 'p=0.3'], ['results/ej1.2/2.mutation/multigen-0,4-results.csv', 'p=0.4'], ['results/ej1.2/2.mutation/multigen-0,5-results.csv', 'p=0.5'], ['results/ej1.2/2.mutation/multigen-0,6-results.csv', 'p=0.6'], ['results/ej1.2/2.mutation/multigen-0,7-results.csv', 'p=0.7'], ['results/ej1.2/2.mutation/multigen-0,8-results.csv', 'p=0.8'], ['results/ej1.2/2.mutation/multigen-0,9-results.csv', 'p=0.9']], 'executionTime',"Multigen mutation method probabilities: Execution time", "Mutation probability", executionTimeLabel)
+
+    # #Diapo 41
+    # comparison([['results/ej1.2/2.mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/ej1.2/2.mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)']], 'fitness',"Gen vs Multigen mutation: Best fitness", "Mutation method", fitnessLabel)
+    # comparison([['results/ej1.2/2.mutation/gen-0,8-results.csv', 'Gen (p=0.8)'], ['results/ej1.2/2.mutation/multigen-0,1-results.csv', 'Multigen (p=0.1)']], "executionTime", "Gen vs Multigen mutation: Execution time", "Mutation method", executionTimeLabel)
+
+    comparison([['results/ej1.2/3.selection/elite-results.csv', 'ELI'],['results/ej1.2/3.selection/roulette-results.csv', 'ROU'],['results/ej1.2/3.selection/universal-results.csv', 'UNI'],['results/ej1.2/3.selection/boltzmann-results.csv', 'BOL'],['results/ej1.2/3.selection/ranking-results.csv', 'RAN'],['results/ej1.2/3.selection/detTournament-results.csv', 'DET'],['results/ej1.2/3.selection/probTournament-results.csv', 'PRO']], 'fitness',"All selection methods: Fitness", "Method", fitnessLabel)
+    comparison([['results/ej1.2/3.selection/elite-results.csv', 'ELI'],['results/ej1.2/3.selection/roulette-results.csv', 'ROU'],['results/ej1.2/3.selection/universal-results.csv', 'UNI'],['results/ej1.2/3.selection/boltzmann-results.csv', 'BOL'],['results/ej1.2/3.selection/ranking-results.csv', 'RAN'],['results/ej1.2/3.selection/detTournament-results.csv', 'DET'],['results/ej1.2/3.selection/probTournament-results.csv', 'PRO']], 'executionTime',"All selection methods: Execution time", "Method", executionTimeLabel)
