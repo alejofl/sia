@@ -11,6 +11,19 @@ class ActivationFunction(ABC):
     @abstractmethod
     def derivative(self, x, w):
         pass
+    
+    @staticmethod
+    def getFunction(name):
+        if name == "STEP":
+            return StepFunction()
+        elif name == "LINEAR":
+            return LinearFunction()
+        elif name == "LOGISTIC":
+            return LogisticFunction()
+        elif name == "TANH":
+            return HyperbolicTangentFunction()
+        else:
+            raise ValueError("Invalid activation function")
 
 
 class StepFunction(ActivationFunction):

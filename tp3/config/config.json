@@ -1,0 +1,16 @@
+{
+    "epsilon": 0,
+    "maxEpochs": 1000,
+    "learningRate": 0.1,
+    "seed": 732,
+    "perceptron": {
+        "problem": "SET",
+        "type": "SINGLE",
+        "activationFunction": [
+            {
+                "type": "LINEAR",
+                "beta": 1
+            }
+        ]
+    }
+}

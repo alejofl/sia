@@ -8,7 +8,7 @@ class Perceptron(ABC):
         self.activationFunction = activationFunction
         self.weights = weights
         self.weightsCount = len(weights)
-        self.weightsHistory = np.array([weights])
+        self.weightsHistory = [weights]
         self.constants = Constants.getInstance()
 
     @abstractmethod
@@ -30,11 +30,12 @@ class SingleLayerPerceptron(Perceptron):
             for input, expectedOutput in zip(inputs, expectedOutputs):
                 output = self.activationFunction(input, self.weights)
                 deltaW = self.constants.learningRate * (expectedOutput - output) * self.activationFunction.derivative(input, self.weights) * input
-                self.weights += deltaW
+                self.weights = np.add(self.weights, deltaW)
                 self.weightsHistory.append(np.copy(self.weights))
 
-                if self.calculateError(inputs, expectedOutputs) <= self.constants.epsilon:
+                if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
                     return
+        print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):
         error = 0

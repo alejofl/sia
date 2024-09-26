@@ -1,0 +1,16 @@
+{
+    "epsilon": 1e-5,
+    "maxEpochs": 1000,
+    "learningRate": 0.1,
+    "seed": 732,
+    "perceptron": {
+        "problem": "AND | XOR | SET | PARITY | DIGITS",
+        "type": "SINGLE | MULTI",
+        "activationFunction": [
+            {
+                "type": "STEP | LINEAR | LOGISTIC | TANH",
+                "beta": 1
+            }
+        ]
+    }
+}

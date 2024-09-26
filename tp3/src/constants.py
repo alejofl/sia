@@ -8,7 +8,7 @@ class Constants:
         return cls._instance
 
     def _initialize(self, **kwargs):
-        self.beta = kwargs.get("beta", 0.1)
+        self.beta = kwargs.get("beta", 1)
         self.epsilon = kwargs.get("epsilon", 1e-5)
         self.seed = kwargs.get("seed", None)
         self.maxEpochs = kwargs.get("maxEpochs", 1000)
