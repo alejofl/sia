@@ -1,14 +1,14 @@
 {
-    "epsilon": 0,
-    "maxEpochs": 1000,
-    "learningRate": 0.1,
+    "epsilon": 1e-2,
+    "maxEpochs": 10000,
+    "learningRate": 5e-3,
     "seed": 732,
     "perceptron": {
         "problem": "SET",
         "type": "SINGLE",
         "activationFunction": [
             {
-                "type": "LINEAR",
+                "type": "LOGISTIC",
                 "beta": 1
             }
         ]
