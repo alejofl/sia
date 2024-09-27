@@ -44,11 +44,11 @@ def solveXor(config):
 SET_DATASET_PATH = os.path.join(os.path.dirname(__file__), "resources", "ej2", "set.csv")
 def solveSet(config):
     dataset = pd.read_csv(SET_DATASET_PATH)
-    testingSet = dataset.sample(frac=0.2)
-    trainingSet = dataset - testingSet
-    
+    testingSet = dataset.sample(frac=0.2) # TODO: change this to k cross validation
+    trainingSet = dataset.drop(testingSet.index)
+
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
-    trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
+    trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"])
     w = np.zeros(len(trainingInputs[0])) # TODO: change this to random weights
     p = SingleLayerPerceptron(f, w)
