@@ -11,6 +11,18 @@ class ActivationFunction(ABC):
     @abstractmethod
     def derivative(self, x, w):
         pass
+
+    @abstractmethod
+    def normalize(self, x, w):
+        pass
+
+    @abstractmethod
+    def denormalize(self, x, w):
+        pass
+
+    def configureNormalization(self, trainingSet):
+        self.min = np.min(trainingSet)
+        self.max = np.max(trainingSet)
     
     @staticmethod
     def getFunction(name):
@@ -35,6 +47,12 @@ class StepFunction(ActivationFunction):
 
     def derivative(self, x, w):
         return 1
+    
+    def normalize(self, x):
+        return x
+    
+    def denormalize(self, x):
+        return x
 
 
 class LinearFunction(ActivationFunction):
@@ -43,6 +61,12 @@ class LinearFunction(ActivationFunction):
 
     def derivative(self, x, w):
         return 1
+    
+    def normalize(self, x):
+        return x
+    
+    def denormalize(self, x):
+        return x
 
 
 class LogisticFunction(ActivationFunction):
@@ -53,6 +77,12 @@ class LogisticFunction(ActivationFunction):
     def derivative(self, x, w):
         beta = Constants.getInstance().beta
         return 2 * beta * self.__call__(x, w) * (1 - self.__call__(x, w))
+    
+    def normalize(self, x):
+        return ((x-self.min)/(self.max-self.min))*(1-0)+0
+    
+    def denormalize(self, x):
+        return (((x-0)*(self.max-self.min))/(1-0))+self.min
 
 
 class HyperbolicTangentFunction(ActivationFunction):
@@ -63,3 +93,9 @@ class HyperbolicTangentFunction(ActivationFunction):
     def derivative(self, x, w):
         beta = Constants.getInstance().beta
         return beta * (1 - np.power(self.__call__(x, w), 2))
+    
+    def normalize(self, x):
+        return ((x-self.min)/(self.max-self.min))*(1-(-1))-1
+    
+    def denormalize(self, x):
+        return (((x-(-1))*(self.max-self.min))/(1-(-1)))+self.min

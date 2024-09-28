@@ -1,16 +1,16 @@
 {
-    "epsilon": 1e-2,
-    "maxEpochs": 10000,
-    "learningRate": 5e-3,
-    "seed": 732,
-    "perceptron": {
-        "problem": "SET",
-        "type": "SINGLE",
-        "activationFunction": [
-            {
-                "type": "LOGISTIC",
-                "beta": 1
-            }
-        ]
-    }
+	"epsilon": 3e-4,
+	"maxEpochs": 10000,
+	"learningRate": 1e-2,
+	"seed": 732,
+	"perceptron": {
+		"problem": "SET",
+		"type": "SINGLE",
+		"activationFunction": [
+			{
+				"type": "TANH",
+				"beta": 0.5
+			}
+		]
+	}
 }
