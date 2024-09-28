@@ -9,6 +9,7 @@ class Perceptron(ABC):
         self.weights = weights
         self.weightsCount = len(weights)
         self.weightsHistory = [weights]
+        self.weightsPerEpoch = []
         self.constants = Constants.getInstance()
 
     @abstractmethod
@@ -35,6 +36,7 @@ class SingleLayerPerceptron(Perceptron):
 
                 if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
                     return
+            self.weightsPerEpoch.append(np.copy(self.weights))
         print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):

@@ -6,9 +6,10 @@ import numpy as np
 from src.constants import Constants
 from src.function import ActivationFunction
 from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
+from src.utils import Utils
 
 
-AND_DATASET_PATH = os.path.join(os.path.dirname(__file__), "resources", "ej1", "and.csv")
+AND_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "and.csv")
 def solveAnd(config):
     dataset = pd.read_csv(AND_DATASET_PATH)
     expectedOutputs = dataset["y"].to_numpy()
@@ -25,7 +26,7 @@ def solveAnd(config):
     print(p.test(np.array([1, 1, 1]))) # 1
 
 
-XOR_DATASET_PATH = os.path.join(os.path.dirname(__file__), "resources", "ej1", "xor.csv")
+XOR_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "xor.csv")
 def solveXor(config):
     dataset = pd.read_csv(XOR_DATASET_PATH)
     expectedOutputs = dataset["y"].to_numpy()
@@ -40,8 +41,8 @@ def solveXor(config):
     print(p.test(np.array([1, -1, 1]))) # 1
     print(p.test(np.array([1, 1, -1]))) # 1
     print(p.test(np.array([1, 1, 1]))) # -1
-    
-SET_DATASET_PATH = os.path.join(os.path.dirname(__file__), "resources", "ej2", "set.csv")
+
+SET_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej2", "set.csv")
 def solveSet(config):
     dataset = pd.read_csv(SET_DATASET_PATH)
     testingSet = dataset.sample(frac=0.2) # TODO: change this to k cross validation
@@ -59,19 +60,20 @@ def solveSet(config):
     for input, expectedOutput in zip(testingInputs, testingExpectedOutputs):
         output = p.test(input)
         print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
+    Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
 
 
 if __name__ == "__main__":
     with open(sys.argv[1], 'r') as configFile:
         config = json.load(configFile)
-        
+
         Constants(
             epsilon=config["epsilon"],
             seed=config["seed"],
             maxEpochs=config["maxEpochs"],
             learningRate=config["learningRate"]
         )
-        
+
         match config["perceptron"]["problem"]:
             case "AND":
                 solveAnd(config)
@@ -83,5 +85,5 @@ if __name__ == "__main__":
                 pass
             case "DIGITS":
                 pass
-    
+
     sys.exit(0)
