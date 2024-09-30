@@ -4,6 +4,9 @@ from .constants import Constants
 
 
 class ActivationFunction(ABC):
+    def __init__(self, options=None):
+        self.options = options
+
     @abstractmethod
     def __call__(self, x, w):
         pass
@@ -25,15 +28,15 @@ class ActivationFunction(ABC):
         self.max = np.max(trainingSet)
     
     @staticmethod
-    def getFunction(name):
+    def getFunction(name, options=None):
         if name == "STEP":
-            return StepFunction()
+            return StepFunction(options)
         elif name == "LINEAR":
-            return LinearFunction()
+            return LinearFunction(options)
         elif name == "LOGISTIC":
-            return LogisticFunction()
+            return LogisticFunction(options)
         elif name == "TANH":
-            return HyperbolicTangentFunction()
+            return HyperbolicTangentFunction(options)
         else:
             raise ValueError("Invalid activation function")
 
@@ -71,11 +74,11 @@ class LinearFunction(ActivationFunction):
 
 class LogisticFunction(ActivationFunction):
     def __call__(self, x, w):
-        beta = Constants.getInstance().beta
+        beta = self.options["beta"]
         return 1 / (1 + np.exp(-2 * beta * (np.dot(w, x))))
 
     def derivative(self, x, w):
-        beta = Constants.getInstance().beta
+        beta = self.options["beta"]
         return 2 * beta * self.__call__(x, w) * (1 - self.__call__(x, w))
     
     def normalize(self, x):
@@ -87,11 +90,11 @@ class LogisticFunction(ActivationFunction):
 
 class HyperbolicTangentFunction(ActivationFunction):
     def __call__(self, x, w):
-        beta = Constants.getInstance().beta
+        beta = self.options["beta"]
         return np.tanh(beta * (np.dot(w, x)))
 
     def derivative(self, x, w):
-        beta = Constants.getInstance().beta
+        beta = self.options["beta"]
         return beta * (1 - np.power(self.__call__(x, w), 2))
     
     def normalize(self, x):

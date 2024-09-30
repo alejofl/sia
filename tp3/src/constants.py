@@ -8,11 +8,11 @@ class Constants:
         return cls._instance
 
     def _initialize(self, **kwargs):
-        self.beta = kwargs.get("beta", 1)
         self.epsilon = kwargs.get("epsilon", 1e-5)
         self.seed = kwargs.get("seed", None)
         self.maxEpochs = kwargs.get("maxEpochs", 1000)
         self.learningRate = kwargs.get("learningRate", 0.1)
+        self.updateWeightsEveryXInputs = kwargs.get("updateWeightsEveryXInputs", 1) # 1: online; -1: batch; 1 < x < len(inputs): mini-batch
 
     @staticmethod
     def getInstance():

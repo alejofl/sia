@@ -1,15 +1,23 @@
 {
     "epsilon": 1e-5,
     "maxEpochs": 1000,
-    "learningRate": 0.1,
     "seed": 732,
+    "learning": {
+        "rate": 0.1,
+        "type": "BATCH | MINI-BATCH | ONLINE",
+        "options": {
+            "updateEveryXInputs": 15
+        }
+    },
     "perceptron": {
         "problem": "AND | XOR | SET | PARITY | DIGITS",
         "type": "SINGLE | MULTI",
         "activationFunction": [
             {
                 "type": "STEP | LINEAR | LOGISTIC | TANH",
-                "beta": 1
+                "options": {
+                    "beta": 1
+                }
             }
         ]
     }

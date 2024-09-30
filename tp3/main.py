@@ -15,7 +15,7 @@ def solveAnd(config):
     expectedOutputs = dataset["y"].to_numpy()
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"])
+    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
     w = np.zeros(len(inputs[0])) # TODO: change this to random weights
     p = SingleLayerPerceptron(f, w)
     p.train(inputs, expectedOutputs)
@@ -32,7 +32,7 @@ def solveXor(config):
     expectedOutputs = dataset["y"].to_numpy()
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"])
+    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
     w = np.zeros(len(inputs[0])) # TODO: change this to random weights
     p = SingleLayerPerceptron(f, w)
     p.train(inputs, expectedOutputs)
@@ -50,7 +50,7 @@ def solveSet(config):
 
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
     trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"])
+    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
     w = np.zeros(len(trainingInputs[0])) # TODO: change this to random weights
     p = SingleLayerPerceptron(f, w)
     p.train(trainingInputs, trainingExpectedOutputs)
@@ -67,11 +67,18 @@ if __name__ == "__main__":
     with open(sys.argv[1], 'r') as configFile:
         config = json.load(configFile)
 
+        updateWeightsEveryXInputs = 1
+        if config["learning"]["type"] == "BATCH":
+            updateWeightsEveryXInputs = -1
+        elif config["learning"]["type"] == "MINI-BATCH":
+            updateWeightsEveryXInputs = config["learning"]["options"]["updateEveryXInputs"]
+            
         Constants(
             epsilon=config["epsilon"],
             seed=config["seed"],
             maxEpochs=config["maxEpochs"],
-            learningRate=config["learningRate"]
+            learningRate=config["learning"]["rate"],
+            updateWeightsEveryXInputs=updateWeightsEveryXInputs
         )
 
         match config["perceptron"]["problem"]:
