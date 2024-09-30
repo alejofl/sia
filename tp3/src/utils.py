@@ -3,9 +3,17 @@ import sys
 import csv
 import numpy as np
 from .perceptron import Perceptron
+from .constants import Constants
 
 
 class Utils:
+    @staticmethod
+    def initializeWeights(length, zeros=False):
+        if zeros:
+            return np.zeros(length)
+        r = Constants.getInstance().random
+        return r.uniform(-1, 1, length)
+
     @staticmethod
     def mseVsEpoch(perceptron: Perceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, filename):
         filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)

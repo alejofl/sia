@@ -16,7 +16,7 @@ def solveAnd(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
-    w = np.zeros(len(inputs[0])) # TODO: change this to random weights
+    w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, w)
     p.train(inputs, expectedOutputs)
 
@@ -33,7 +33,7 @@ def solveXor(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
-    w = np.zeros(len(inputs[0])) # TODO: change this to random weights
+    w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, w)
     p.train(inputs, expectedOutputs)
 
@@ -41,6 +41,7 @@ def solveXor(config):
     print(p.test(np.array([1, -1, 1]))) # 1
     print(p.test(np.array([1, 1, -1]))) # 1
     print(p.test(np.array([1, 1, 1]))) # -1
+
 
 SET_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej2", "set.csv")
 def solveSet(config):
@@ -51,7 +52,7 @@ def solveSet(config):
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
     trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
-    w = np.zeros(len(trainingInputs[0])) # TODO: change this to random weights
+    w = Utils.initializeWeights(len(trainingInputs[0]))
     p = SingleLayerPerceptron(f, w)
     p.train(trainingInputs, trainingExpectedOutputs)
 
