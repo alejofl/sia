@@ -6,7 +6,10 @@
 		"optimizer": {
 			"type": "GRADIENT_DESCENT",
 			"options": {
-				"rate": 1e-2
+				"rate": 1e-2,
+				"alpha": 0.9,
+				"beta1": 0.9,
+                "beta2": 0.999 
 			}
 		},
 		"updater": {
@@ -17,15 +20,44 @@
 		}        
     },
 	"perceptron": {
-		"problem": "SET",
-		"type": "SINGLE",
-		"activationFunction": [
+		"problem": "MULTILAYER_XOR",
+		"architecture": [
+            {
+                "neuronQty": 7,
+                "activationFunction": {
+                    "type": "TANH",
+                    "options": {
+                        "beta": 0.5
+                    }
+                }
+            },
 			{
-				"type": "TANH",
-				"options": {
-					"beta": 0.5
-				}
-			}
-		]
+                "neuronQty": 3,
+                "activationFunction": {
+                    "type": "LOGISTIC",
+                    "options": {
+                        "beta": 0.3
+                    }
+                }
+            },
+			{
+                "neuronQty": 2,
+                "activationFunction": {
+                    "type": "LINEAR",
+                    "options": {
+
+                    }
+                }
+            },
+			{
+                "neuronQty": 1,
+                "activationFunction": {
+                    "type": "STEP",
+                    "options": {
+
+                    }
+                }
+            }
+        ]
 	}
 }

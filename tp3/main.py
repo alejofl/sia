@@ -16,7 +16,7 @@ def solveAnd(config):
     expectedOutputs = dataset["y"].to_numpy()
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, o, w)
@@ -34,7 +34,7 @@ def solveXor(config):
     expectedOutputs = dataset["y"].to_numpy()
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, o, w)
@@ -54,7 +54,7 @@ def solveSet(config):
 
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
     trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
-    f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(trainingInputs[0]))
     p = SingleLayerPerceptron(f, o, w)
@@ -66,6 +66,35 @@ def solveSet(config):
         output = p.test(input)
         print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
     Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
+
+
+def solveMultilayerXor(config):
+    dataset = pd.read_csv(XOR_DATASET_PATH)
+    tmp = dataset["y"].to_numpy()
+    expectedOutputs = []
+    for o in tmp:
+        expectedOutputs.append([o])
+    inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
+
+    architecture = []
+    for i, layer in enumerate(config["perceptron"]["architecture"]):
+        neuronQty = layer["neuronQty"]
+        f = ActivationFunction.getFunction(layer["activationFunction"]["type"], layer["activationFunction"]["options"])
+        weights = []
+        for _ in range(neuronQty):
+            weightsQty = config["perceptron"]["architecture"][i-1]["neuronQty"] if i > 0 else len(inputs[0])
+            weights.append(Utils.initializeWeights(weightsQty))
+        architecture.append((neuronQty, f, weights))
+
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
+    p = MultiLayerPerceptron(architecture, o)
+
+    p.train(inputs, expectedOutputs)
+
+    print(p.test(np.array([1, -1, -1]))) # -1
+    print(p.test(np.array([1, -1, 1]))) # 1
+    print(p.test(np.array([1, 1, -1]))) # 1
+    print(p.test(np.array([1, 1, 1]))) # -1
 
 
 if __name__ == "__main__":
@@ -92,6 +121,8 @@ if __name__ == "__main__":
                 solveXor(config)
             case "SET":
                 solveSet(config)
+            case "MULTILAYER_XOR":
+                solveMultilayerXor(config)
             case "PARITY":
                 pass
             case "DIGITS":

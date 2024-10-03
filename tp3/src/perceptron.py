@@ -60,7 +60,7 @@ class SingleLayerPerceptron(Perceptron):
         return error / len(expectedOutputs)
 
     def test(self, input):
-        return self.activationFunction.denormalize(self.activationFunction(input, self.weights))
+        return self.activationFunction(input, self.weights)
 
     def incrementDeltaW(self, deltaW):
         self.deltaW = np.add(self.deltaW, deltaW)
@@ -78,7 +78,7 @@ class MultiLayerPerceptron(Perceptron):
         for qty, activationFn, weights in architecture:
             layer = []
             for i in range(qty):
-                n = SingleLayerPerceptron(activationFn, weights[i])
+                n = SingleLayerPerceptron(activationFn, None, weights[i])
                 layer.append(n)
             self.layers.append(layer)
         self.optimizer = optimizer
@@ -90,23 +90,25 @@ class MultiLayerPerceptron(Perceptron):
             for input, expectedOutput in zip(inputs, expectedOutputs):
                 seenInputs += 1
 
-                outputs = np.array()
+                outputs = []
                 for i, layer in enumerate(self.layers):
                     layerInput = outputs[i-1] if i>0 else input
-                    layerOutput = map(lambda n: n.test(layerInput), layer)
-                    outputs = np.append(outputs, [layerOutput])
+                    layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+                    outputs.append(layerOutput)
 
                 deltas = []
                 for i, layer in reversed(list(enumerate(self.layers))):
                     layerDeltas = []
                     for k, n in enumerate(layer):
                         delta = 0
-                        if i == len(self.layers):
+                        if i == len(self.layers) - 1:
                             delta = (expectedOutput[k] - outputs[i][k]) * n.activationFunction.derivative(outputs[i-1], n.weights)
                         else:
-                            delta = np.dot(deltas[-1], self.layers[i+1][k].weights) * n.activationFunction.derivative(outputs[i-1], n.weights)
+                            weightsBetweenMeAndNextLayer = np.array([r.weights[k] for r in self.layers[i+1]])
+                            layerInput = outputs[i-1] if i>0 else input
+                            delta = np.dot(deltas[-1], weightsBetweenMeAndNextLayer) * n.activationFunction.derivative(layerInput, n.weights)
                         layerDeltas.append(delta)
-                        deltaW = self.optimizer(delta * outputs[i-1], previousDeltaW=n.weights - n.weightsHistory[-2])
+                        deltaW = self.optimizer(delta * layerInput, previousDeltaW=n.weights - n.weightsHistory[-2] if len(n.weightsHistory) > 1 else 0)
                         n.incrementDeltaW(deltaW)
                     deltas.append(layerDeltas)
 
@@ -136,9 +138,9 @@ class MultiLayerPerceptron(Perceptron):
         return error / qty
 
     def test(self, input):
-        outputs = np.array()
+        outputs = []
         for i, layer in enumerate(self.layers):
             layerInput = outputs[i-1] if i>0 else input
-            layerOutput = map(lambda n: n.test(layerInput), layer)
-            outputs = np.append(outputs, [layerOutput])
+            layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+            outputs.append(layerOutput)
         return outputs[-1]

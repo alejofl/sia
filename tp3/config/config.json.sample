@@ -9,7 +9,7 @@
                 "rate": 0.1,
                 "alpha": 0.8, // Only needed for MOMENTUM
                 "beta1": 0.9, // Only needed for ADAM
-                "beta2" 0.999 // Only needed for ADAM
+                "beta2": 0.999 // Only needed for ADAM
             }
         },
         "updater": {
@@ -20,13 +20,15 @@
         }
     },
     "perceptron": {
-        "problem": "AND | XOR | SET | PARITY | DIGITS",
-        "type": "SINGLE | MULTI",
-        "activationFunction": [
+        "problem": "AND | XOR | SET | MULTILAYER_XOR | PARITY | DIGITS",
+        "architecture": [
             {
-                "type": "STEP | LINEAR | LOGISTIC | TANH",
-                "options": {
-                    "beta": 1 // Only needed for LOGISTIC or TANH
+                "neuronQty": 1,
+                "activationFunction": {
+                    "type": "STEP | LINEAR | LOGISTIC | TANH",
+                    "options": {
+                        "beta": 1 // Only needed for LOGISTIC or TANH
+                    }
                 }
             }
         ]
