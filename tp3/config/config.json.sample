@@ -3,10 +3,20 @@
     "maxEpochs": 1000,
     "seed": 732,
     "learning": {
-        "rate": 0.1,
-        "type": "BATCH | MINI-BATCH | ONLINE",
-        "options": {
-            "updateEveryXInputs": 15
+        "optimizer": {
+            "type": "GRADIENT_DESCENT | MOMENTUM | ADAM",
+            "options": {
+                "rate": 0.1,
+                "alpha": 0.8, // Only needed for MOMENTUM
+                "beta1": 0.9, // Only needed for ADAM
+                "beta2" 0.999 // Only needed for ADAM
+            }
+        },
+        "updater": {
+            "type": "BATCH | MINI-BATCH | ONLINE",
+            "options": {
+                "updateEveryXInputs": 15 // Only needed for MINI-BATCH
+            }
         }
     },
     "perceptron": {
@@ -16,7 +26,7 @@
             {
                 "type": "STEP | LINEAR | LOGISTIC | TANH",
                 "options": {
-                    "beta": 1
+                    "beta": 1 // Only needed for LOGISTIC or TANH
                 }
             }
         ]

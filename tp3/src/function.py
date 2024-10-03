@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from .constants import Constants
 
 
 class ActivationFunction(ABC):

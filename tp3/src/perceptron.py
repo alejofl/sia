@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from .constants import Constants
 from .function import ActivationFunction
+from .optimizer import OptimizerFunction
 
 
 class Perceptron(ABC):
@@ -19,8 +20,9 @@ class Perceptron(ABC):
 
 
 class SingleLayerPerceptron(Perceptron):
-    def __init__(self, activationFunction: ActivationFunction, weights):
+    def __init__(self, activationFunction: ActivationFunction, optimizer: OptimizerFunction, weights):
         self.activationFunction = activationFunction
+        self.optimizer = optimizer
         self.weights = weights
         self.deltaW = np.zeros(len(weights))
         self.weightsCount = len(weights)
@@ -36,7 +38,7 @@ class SingleLayerPerceptron(Perceptron):
                 seenInputs += 1
 
                 output = self.activationFunction(input, self.weights)
-                deltaW = self.constants.learningRate * (self.activationFunction.normalize(expectedOutput) - output) * self.activationFunction.derivative(input, self.weights) * input
+                deltaW = self.optimizer((self.activationFunction.normalize(expectedOutput) - output) * self.activationFunction.derivative(input, self.weights) * input)
                 self.incrementDeltaW(deltaW)
 
                 if self.constants.updateWeightsEveryXInputs != -1 and seenInputs % self.constants.updateWeightsEveryXInputs == 0:
@@ -71,7 +73,7 @@ class SingleLayerPerceptron(Perceptron):
 
  # architecture: [ [neuronQty, actFn, [[w11, w12, ..], [w21, w22, ...]]], .... ]
 class MultiLayerPerceptron(Perceptron):
-    def __init__(self, architecture):
+    def __init__(self, architecture, optimizer: OptimizerFunction):
         self.layers = []
         for qty, activationFn, weights in architecture:
             layer = []
@@ -79,10 +81,10 @@ class MultiLayerPerceptron(Perceptron):
                 n = SingleLayerPerceptron(activationFn, weights[i])
                 layer.append(n)
             self.layers.append(layer)
+        self.optimizer = optimizer
         self.constants = Constants.getInstance()
 
     def train(self, inputs, expectedOutputs):
-        # TODO: define normalization
         for _ in range(self.constants.maxEpochs):
             seenInputs = 0
             for input, expectedOutput in zip(inputs, expectedOutputs):
@@ -104,7 +106,7 @@ class MultiLayerPerceptron(Perceptron):
                         else:
                             delta = np.dot(deltas[-1], self.layers[i+1][k].weights) * n.activationFunction.derivative(outputs[i-1], n.weights)
                         layerDeltas.append(delta)
-                        deltaW = self.constants.learningRate * delta * outputs[i-1]
+                        deltaW = self.optimizer(delta * outputs[i-1], previousDeltaW=n.weights - n.weightsHistory[-2])
                         n.incrementDeltaW(deltaW)
                     deltas.append(layerDeltas)
 

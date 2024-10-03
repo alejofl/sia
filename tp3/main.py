@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from src.constants import Constants
 from src.function import ActivationFunction
+from src.optimizer import OptimizerFunction
 from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
 from src.utils import Utils
 
@@ -16,8 +17,9 @@ def solveAnd(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
-    p = SingleLayerPerceptron(f, w)
+    p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
     print(p.test(np.array([1, -1, -1]))) # -1
@@ -33,8 +35,9 @@ def solveXor(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
-    p = SingleLayerPerceptron(f, w)
+    p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
     print(p.test(np.array([1, -1, -1]))) # -1
@@ -52,8 +55,9 @@ def solveSet(config):
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
     trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
     f = ActivationFunction.getFunction(config["perceptron"]["activationFunction"][0]["type"], config["perceptron"]["activationFunction"][0]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(trainingInputs[0]))
-    p = SingleLayerPerceptron(f, w)
+    p = SingleLayerPerceptron(f, o, w)
     p.train(trainingInputs, trainingExpectedOutputs)
 
     testingExpectedOutputs = testingSet["y"].to_numpy()
@@ -69,16 +73,15 @@ if __name__ == "__main__":
         config = json.load(configFile)
 
         updateWeightsEveryXInputs = 1
-        if config["learning"]["type"] == "BATCH":
+        if config["learning"]["updater"]["type"] == "BATCH":
             updateWeightsEveryXInputs = -1
-        elif config["learning"]["type"] == "MINI-BATCH":
-            updateWeightsEveryXInputs = config["learning"]["options"]["updateEveryXInputs"]
+        elif config["learning"]["updater"]["type"] == "MINI-BATCH":
+            updateWeightsEveryXInputs = config["learning"]["updater"]["options"]["updateEveryXInputs"]
             
         Constants(
             epsilon=config["epsilon"],
             seed=config["seed"],
             maxEpochs=config["maxEpochs"],
-            learningRate=config["learning"]["rate"],
             updateWeightsEveryXInputs=updateWeightsEveryXInputs
         )
 
