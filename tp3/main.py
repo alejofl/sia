@@ -9,6 +9,7 @@ from src.optimizer import OptimizerFunction
 from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
 from src.utils import Utils
 
+# Exercise 1
 
 AND_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "and.csv")
 def solveAnd(config):
@@ -27,7 +28,6 @@ def solveAnd(config):
     print(p.test(np.array([1, 1, -1]))) # -1
     print(p.test(np.array([1, 1, 1]))) # 1
 
-
 XOR_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "xor.csv")
 def solveXor(config):
     dataset = pd.read_csv(XOR_DATASET_PATH)
@@ -45,6 +45,7 @@ def solveXor(config):
     print(p.test(np.array([1, 1, -1]))) # 1
     print(p.test(np.array([1, 1, 1]))) # -1
 
+# Exercise 2
 
 SET_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej2", "set.csv")
 def solveSet(config):
@@ -67,6 +68,7 @@ def solveSet(config):
         print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
     Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
 
+# Exercise 3
 
 def solveMultilayerXor(config):
     dataset = pd.read_csv(XOR_DATASET_PATH)

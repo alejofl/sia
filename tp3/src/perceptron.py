@@ -20,7 +20,7 @@ class Perceptron(ABC):
 
 
 class SingleLayerPerceptron(Perceptron):
-    def __init__(self, activationFunction: ActivationFunction, optimizer: OptimizerFunction, weights):
+    def __init__(self, activationFunction: ActivationFunction, optimizer: OptimizerFunction, weights, isMultiLayer=False):
         self.activationFunction = activationFunction
         self.optimizer = optimizer
         self.weights = weights
@@ -29,6 +29,7 @@ class SingleLayerPerceptron(Perceptron):
         self.weightsHistory = [weights]
         self.weightsPerEpoch = []
         self.constants = Constants.getInstance()
+        self.isMultiLayer = isMultiLayer
 
     def train(self, inputs, expectedOutputs):
         self.activationFunction.configureNormalization(expectedOutputs)
@@ -60,7 +61,8 @@ class SingleLayerPerceptron(Perceptron):
         return error / len(expectedOutputs)
 
     def test(self, input):
-        return self.activationFunction(input, self.weights)
+        x = self.activationFunction(input, self.weights)
+        return x if self.isMultiLayer else self.activationFunction.denormalize(x)
 
     def incrementDeltaW(self, deltaW):
         self.deltaW = np.add(self.deltaW, deltaW)
@@ -78,7 +80,7 @@ class MultiLayerPerceptron(Perceptron):
         for qty, activationFn, weights in architecture:
             layer = []
             for i in range(qty):
-                n = SingleLayerPerceptron(activationFn, optimizerClass(optimizerOptions), weights[i])
+                n = SingleLayerPerceptron(activationFn, optimizerClass(optimizerOptions), weights[i], True)
                 layer.append(n)
             self.layers.append(layer)
         self.constants = Constants.getInstance()
