@@ -20,33 +20,8 @@
 		}
 	},
 	"perceptron": {
-		"problem": "MULTILAYER_XOR",
+		"problem": "XOR",
 		"architecture": [
-			{
-				"neuronQty": 7,
-				"activationFunction": {
-					"type": "TANH",
-					"options": {
-						"beta": 0.5
-					}
-				}
-			},
-			{
-				"neuronQty": 3,
-				"activationFunction": {
-					"type": "LOGISTIC",
-					"options": {
-						"beta": 0.3
-					}
-				}
-			},
-			{
-				"neuronQty": 2,
-				"activationFunction": {
-					"type": "LINEAR",
-					"options": {}
-				}
-			},
 			{
 				"neuronQty": 1,
 				"activationFunction": {
