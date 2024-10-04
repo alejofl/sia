@@ -11,13 +11,13 @@ class OptimizerFunction(ABC):
         pass
 
     @staticmethod
-    def getFunction(name, options=None):
+    def getFunction(name):
         if name == "GRADIENT_DESCENT":
-            return GradientDescentOptimizer(options)
+            return GradientDescentOptimizer
         elif name == "MOMENTUM":
-            return MomentumOptimizer(options)
+            return MomentumOptimizer
         elif name == "ADAM":
-            return AdamOptimizer(options)
+            return AdamOptimizer
         else:
             raise ValueError("Invalid optimizer function")
 

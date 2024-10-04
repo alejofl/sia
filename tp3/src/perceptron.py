@@ -73,15 +73,14 @@ class SingleLayerPerceptron(Perceptron):
 
  # architecture: [ [neuronQty, actFn, [[w11, w12, ..], [w21, w22, ...]]], .... ]
 class MultiLayerPerceptron(Perceptron):
-    def __init__(self, architecture, optimizer: OptimizerFunction):
+    def __init__(self, architecture, optimizerClass, optimizerOptions):
         self.layers = []
         for qty, activationFn, weights in architecture:
             layer = []
             for i in range(qty):
-                n = SingleLayerPerceptron(activationFn, None, weights[i])
+                n = SingleLayerPerceptron(activationFn, optimizerClass(optimizerOptions), weights[i])
                 layer.append(n)
             self.layers.append(layer)
-        self.optimizer = optimizer
         self.constants = Constants.getInstance()
 
     def train(self, inputs, expectedOutputs):
@@ -108,7 +107,7 @@ class MultiLayerPerceptron(Perceptron):
                             layerInput = outputs[i-1] if i>0 else input
                             delta = np.dot(deltas[-1], weightsBetweenMeAndNextLayer) * n.activationFunction.derivative(layerInput, n.weights)
                         layerDeltas.append(delta)
-                        deltaW = self.optimizer(delta * layerInput, previousDeltaW=n.weights - n.weightsHistory[-2] if len(n.weightsHistory) > 1 else 0)
+                        deltaW = n.optimizer(delta * layerInput, previousDeltaW=n.weights - n.weightsHistory[-2] if len(n.weightsHistory) > 1 else 0)
                         n.incrementDeltaW(deltaW)
                     deltas.append(layerDeltas)
 

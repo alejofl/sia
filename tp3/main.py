@@ -17,7 +17,7 @@ def solveAnd(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
-    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
@@ -35,7 +35,7 @@ def solveXor(config):
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
-    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(inputs[0]))
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
@@ -55,7 +55,7 @@ def solveSet(config):
     trainingExpectedOutputs = trainingSet["y"].to_numpy()
     trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
-    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
     w = Utils.initializeWeights(len(trainingInputs[0]))
     p = SingleLayerPerceptron(f, o, w)
     p.train(trainingInputs, trainingExpectedOutputs)
@@ -86,8 +86,8 @@ def solveMultilayerXor(config):
             weights.append(Utils.initializeWeights(weightsQty))
         architecture.append((neuronQty, f, weights))
 
-    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"], config["learning"]["optimizer"]["options"])
-    p = MultiLayerPerceptron(architecture, o)
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
+    p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
 
     p.train(inputs, expectedOutputs)
 
