@@ -72,7 +72,6 @@ class SingleLayerPerceptron(Perceptron):
         self.weightsHistory.append(np.copy(self.weights))
         self.deltaW = np.zeros(self.weightsCount)
 
-
  # architecture: [ [neuronQty, actFn, [[w11, w12, ..], [w21, w22, ...]]], .... ]
 class MultiLayerPerceptron(Perceptron):
     def __init__(self, architecture, optimizerClass, optimizerOptions):
@@ -95,6 +94,7 @@ class MultiLayerPerceptron(Perceptron):
                 for i, layer in enumerate(self.layers):
                     layerInput = outputs[i-1] if i>0 else input
                     layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+                    layerOutput = np.insert(layerOutput, 0, self.constants.bias)
                     outputs.append(layerOutput)
 
                 deltas = []
@@ -102,11 +102,11 @@ class MultiLayerPerceptron(Perceptron):
                     layerDeltas = []
                     for k, n in enumerate(layer):
                         delta = 0
+                        layerInput = outputs[i-1] if i>0 else input
                         if i == len(self.layers) - 1:
-                            delta = (expectedOutput[k] - outputs[i][k]) * n.activationFunction.derivative(outputs[i-1], n.weights)
+                            delta = (expectedOutput[k] - outputs[i][k+1]) * n.activationFunction.derivative(layerInput, n.weights)
                         else:
-                            weightsBetweenMeAndNextLayer = np.array([r.weights[k] for r in self.layers[i+1]])
-                            layerInput = outputs[i-1] if i>0 else input
+                            weightsBetweenMeAndNextLayer = np.array([r.weights[k+1] for r in self.layers[i+1]])
                             delta = np.dot(deltas[-1], weightsBetweenMeAndNextLayer) * n.activationFunction.derivative(layerInput, n.weights)
                         layerDeltas.append(delta)
                         deltaW = n.optimizer(delta * layerInput, previousDeltaW=n.weights - n.weightsHistory[-2] if len(n.weightsHistory) > 1 else 0)
@@ -143,5 +143,7 @@ class MultiLayerPerceptron(Perceptron):
         for i, layer in enumerate(self.layers):
             layerInput = outputs[i-1] if i>0 else input
             layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+            if i != len(self.layers)-1:
+                layerOutput = np.insert(layerOutput, 0, self.constants.bias)
             outputs.append(layerOutput)
         return outputs[-1]

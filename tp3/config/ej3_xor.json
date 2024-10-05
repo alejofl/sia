@@ -23,27 +23,9 @@
 		"problem": "MULTILAYER_XOR",
 		"architecture": [
 			{
-				"neuronQty": 7,
-				"activationFunction": {
-					"type": "TANH",
-					"options": {
-						"beta": 0.5
-					}
-				}
-			},
-			{
-				"neuronQty": 3,
-				"activationFunction": {
-					"type": "LOGISTIC",
-					"options": {
-						"beta": 0.3
-					}
-				}
-			},
-			{
 				"neuronQty": 2,
 				"activationFunction": {
-					"type": "LINEAR",
+					"type": "STEP",
 					"options": {}
 				}
 			},

@@ -103,7 +103,7 @@ def solveMultilayerXor(config):
         f = ActivationFunction.getFunction(layer["activationFunction"]["type"], layer["activationFunction"]["options"])
         weights = []
         for _ in range(neuronQty):
-            weightsQty = config["perceptron"]["architecture"][i-1]["neuronQty"] if i > 0 else len(inputs[0])
+            weightsQty = config["perceptron"]["architecture"][i-1]["neuronQty"]+1 if i > 0 else len(inputs[0])
             weights.append(Utils.initializeWeights(weightsQty))
         architecture.append((neuronQty, f, weights))
 

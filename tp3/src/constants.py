@@ -16,6 +16,7 @@ class Constants:
         self.random = np.random.default_rng(self.seed)
         self.maxEpochs = kwargs.get("maxEpochs", 1000)
         self.updateWeightsEveryXInputs = kwargs.get("updateWeightsEveryXInputs", 1) # 1: online; -1: batch; 1 < x < len(inputs): mini-batch
+        self.bias = 1
 
     @staticmethod
     def getInstance():
