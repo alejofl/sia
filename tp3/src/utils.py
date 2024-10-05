@@ -4,6 +4,7 @@ import csv
 import numpy as np
 from .perceptron import Perceptron
 from .constants import Constants
+from src.metrics import Metrics
 
 
 class Utils:

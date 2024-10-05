@@ -10,6 +10,8 @@ from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
 from src.utils import Utils
 from src.metrics import Metrics
 
+BIAS = 1
+
 # Exercise 1
 
 AND_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "and.csv")
@@ -24,7 +26,7 @@ def solveAnd(config):
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
-    predicted = [p.test(np.array([1, 1, 1])), p.test(np.array([1, -1, 1])), p.test(np.array([1, 1, -1])), p.test(np.array([1, -1, -1]))]
+    predicted = [p.test(np.array([BIAS, 1, 1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, -1, -1]))]
 
     print("Predicted:")
     print(predicted[0]) # 1
@@ -32,13 +34,9 @@ def solveAnd(config):
     print(predicted[2]) # -1
     print(predicted[3]) # -1
 
-
     metrics = Metrics(expectedOutputs, predicted)
+    metrics.displayAll()
     
-    print("Metrics:")
-    print("accuracy", metrics.accuracy())
-    print("precision", metrics.precision())
-    print("recall", metrics.recall())
 
 XOR_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "xor.csv")
 def solveXor(config):
@@ -52,10 +50,15 @@ def solveXor(config):
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
-    print(p.test(np.array([1, -1, -1]))) # -1
-    print(p.test(np.array([1, -1, 1]))) # 1
-    print(p.test(np.array([1, 1, -1]))) # 1
-    print(p.test(np.array([1, 1, 1]))) # -1
+    predicted = [p.test(np.array([BIAS, -1, -1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, 1, 1]))]
+
+    print(predicted[0]) # -1
+    print(predicted[1]) # 1
+    print(predicted[2]) # 1
+    print(predicted[3]) # -1
+
+    metrics = Metrics(expectedOutputs, predicted)
+    metrics.displayAll()
 
 # Exercise 2
 
@@ -75,10 +78,14 @@ def solveSet(config):
 
     testingExpectedOutputs = testingSet["y"].to_numpy()
     testingInputs = testingSet.drop(columns=["y"]).to_numpy()
+    testingOutputs = []
     for input, expectedOutput in zip(testingInputs, testingExpectedOutputs):
         output = p.test(input)
+        testingOutputs.append(output)
         print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
     Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
+
+    #TODO: decide if we want to show metrics
 
 # Exercise 3
 
@@ -105,10 +112,15 @@ def solveMultilayerXor(config):
 
     p.train(inputs, expectedOutputs)
 
-    print(p.test(np.array([1, -1, -1]))) # -1
-    print(p.test(np.array([1, -1, 1]))) # 1
-    print(p.test(np.array([1, 1, -1]))) # 1
-    print(p.test(np.array([1, 1, 1]))) # -1
+    predicted = [p.test(np.array([BIAS, -1, -1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, 1, 1]))]
+
+    print(predicted[0]) # -1
+    print(predicted[1]) # 1
+    print(predicted[2]) # 1
+    print(predicted[3]) # -1
+
+    metrics = Metrics(expectedOutputs, predicted)
+    metrics.displayAll()
 
 
 if __name__ == "__main__":
