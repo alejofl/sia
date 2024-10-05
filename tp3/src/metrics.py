@@ -1,22 +1,14 @@
 import numpy as np
+from sklearn.metrics import confusion_matrix
 
 class Metrics:
-    def __init__(self, expectedOutputs, predictedOutputs, error):
+    def __init__(self, expectedOutputs, predictedOutputs, binary=True):
         self.TP = 0
         self.FN = 0
         self.FP = 0
         self.TN = 0
-        self.error = error
-        # TODO: Create confusion matrix
-        # for expected, predicted in zip(expectedOutputs, predictedOutputs):
-        #     if expected-predicted==0:
-        #         self.TP += 1
-        #     elif expected == 1 and predicted == 0:
-        #         self.FN += 1
-        #     elif expected == 0 and predicted == 1:
-        #         self.FP += 1
-        #     elif expected == 0 and predicted == 0:
-        #         self.TN += 1
+        self.confusionMatrix = confusion_matrix(expectedOutputs, predictedOutputs).ravel() if binary==True else confusion_matrix(expectedOutputs, predictedOutputs)
+        self.TN, self.FP, self.FN, self.TP = self.confusionMatrix
 
     def accuracy(self):
         return (self.TP + self.TN) / (self.TP + self.TN + self.FP + self.FN)
