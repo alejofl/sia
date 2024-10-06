@@ -9,6 +9,7 @@ class Metrics:
     def accuracy(self):
         total = self.TP + self.TN + self.FP + self.FN
         return (self.TP + self.TN) / total if total!=0 else 0
+
     def precision(self):
         denominator = self.TP + self.FP
         return self.TP / (self.TP + self.FP) if denominator!=0 else 0

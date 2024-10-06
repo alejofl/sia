@@ -3,7 +3,6 @@ import json
 import os
 import pandas as pd
 import numpy as np
-from scipy.ndimage import gaussian_filter
 from src.constants import Constants
 from src.function import ActivationFunction
 from src.optimizer import OptimizerFunction
@@ -11,8 +10,9 @@ from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
 from src.utils import Utils
 from src.metrics import Metrics
 
-BIAS = 1
+constants = None
 
+# --------------------------------------------------------------------------------------------------------
 # Exercise 1
 
 AND_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1", "and.csv")
@@ -27,9 +27,8 @@ def solveAnd(config):
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
-    predicted = [p.test(np.array([BIAS, 1, 1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, -1, -1]))]
+    predicted = [p.test(np.array([constants.bias, 1, 1])), p.test(np.array([constants.bias, -1, 1])), p.test(np.array([constants.bias, 1, -1])), p.test(np.array([constants.bias, -1, -1]))]
 
-    print("Predicted:")
     print(predicted[0]) # 1
     print(predicted[1]) # -1
     print(predicted[2]) # -1
@@ -51,7 +50,7 @@ def solveXor(config):
     p = SingleLayerPerceptron(f, o, w)
     p.train(inputs, expectedOutputs)
 
-    predicted = [p.test(np.array([BIAS, -1, -1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, 1, 1]))]
+    predicted = [p.test(np.array([constants.bias, -1, -1])), p.test(np.array([constants.bias, -1, 1])), p.test(np.array([constants.bias, 1, -1])), p.test(np.array([constants.bias, 1, 1]))]
 
     print(predicted[0]) # -1
     print(predicted[1]) # 1
@@ -61,6 +60,7 @@ def solveXor(config):
     metrics = Metrics(expectedOutputs, predicted)
     metrics.displayAll()
 
+# --------------------------------------------------------------------------------------------------------
 # Exercise 2
 
 SET_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej2", "set.csv")
@@ -86,34 +86,25 @@ def solveSet(config):
         print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
     Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
 
-    #TODO: decide if we want to show metrics
+    # TODO: decide if we want to show metrics
 
+# --------------------------------------------------------------------------------------------------------
 # Exercise 3 - Xor
 
 def solveMultilayerXor(config):
     dataset = pd.read_csv(XOR_DATASET_PATH)
-    tmp = dataset["y"].to_numpy()
     expectedOutputs = []
-    for o in tmp:
+    for o in dataset["y"].to_numpy():
         expectedOutputs.append([o])
     inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
 
-    architecture = []
-    for i, layer in enumerate(config["perceptron"]["architecture"]):
-        neuronQty = layer["neuronQty"]
-        f = ActivationFunction.getFunction(layer["activationFunction"]["type"], layer["activationFunction"]["options"])
-        weights = []
-        for _ in range(neuronQty):
-            weightsQty = config["perceptron"]["architecture"][i-1]["neuronQty"]+1 if i > 0 else len(inputs[0])
-            weights.append(Utils.initializeWeights(weightsQty))
-        architecture.append((neuronQty, f, weights))
-
+    architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
     p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
 
     p.train(inputs, expectedOutputs)
 
-    predicted = [p.test(np.array([BIAS, -1, -1])), p.test(np.array([BIAS, -1, 1])), p.test(np.array([BIAS, 1, -1])), p.test(np.array([BIAS, 1, 1]))]
+    predicted = [p.test(np.array([constants.bias, -1, -1])), p.test(np.array([constants.bias, -1, 1])), p.test(np.array([constants.bias, 1, -1])), p.test(np.array([constants.bias, 1, 1]))]
 
     print(predicted[0]) # -1
     print(predicted[1]) # 1
@@ -123,14 +114,13 @@ def solveMultilayerXor(config):
     metrics = Metrics(expectedOutputs, predicted)
     metrics.displayAll()
     
+# --------------------------------------------------------------------------------------------------------
 # Exercise 3 - Digits
 
 DIGITS_REPRESENTATION_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej3", "digits.txt")
 DIGITS_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej3", "digits.csv")
 def solveDigits(config):
-    representation = []
-    with open(DIGITS_REPRESENTATION_PATH, 'r') as file:
-        representation = file.readlines()
+    digits = Utils.getDigitRepresentation(DIGITS_REPRESENTATION_PATH)
     dataset = pd.read_csv(DIGITS_DATASET_PATH)
     expectedOutputs = []
     for o in dataset["y"].to_numpy():
@@ -139,35 +129,23 @@ def solveDigits(config):
             outputRow.append(1 if i == o else 0)
         expectedOutputs.append(outputRow)
 
-    digits = []
-    currentInput = np.zeros((7,5))
-    for i in range(len(representation)):
-        if i != 0 and i % 7 == 0:
-            digits.append(currentInput)
-            currentInput = np.zeros((7,5))
-        row = representation[i][:-2].split(" ")
-        for j in range(len(row)):
-            currentInput[i % 7][j] = 1 if row[j] == "1" else 0
-    digits.append(currentInput)
+    inputs = Utils.getPerceptronInputFromDigits(digits)
     
-    blurred = []
-    for digit in digits:
-        blurred.append(gaussian_filter(digit, sigma=0.4))
+    architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
+    o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
+    p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
+    p.train(inputs, expectedOutputs)
+
+    testingInputs = Utils.getPerceptronInputFromDigits(digits, 0.4)
+    predicted = []
+    for digit in testingInputs:
+        x = p.test(digit)
+        print(x)
+        # predicted.append(np.argmax(x))
+
+    # metrics = Metrics([0,1,2,3,4,5,6,7,8,9], predicted)
+    # metrics.displayAll()
     
-    inputs = []
-    for digit in digits:
-        newDigit = np.array([BIAS])
-        inputs.append(np.append(newDigit, digit.flatten()))
-    
-    architecture = []
-    for i, layer in enumerate(config["perceptron"]["architecture"]):
-        neuronQty = layer["neuronQty"]
-        f = ActivationFunction.getFunction(layer["activationFunction"]["type"], layer["activationFunction"]["options"])
-        weights = []
-        for _ in range(neuronQty):
-            weightsQty = config["perceptron"]["architecture"][i-1]["neuronQty"]+1 if i > 0 else len(inputs[0])
-            weights.append(Utils.initializeWeights(weightsQty))
-        architecture.append((neuronQty, f, weights))
 
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
     p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
@@ -199,7 +177,7 @@ if __name__ == "__main__":
         elif config["learning"]["updater"]["type"] == "MINI-BATCH":
             updateWeightsEveryXInputs = config["learning"]["updater"]["options"]["updateEveryXInputs"]
             
-        Constants(
+        constants = Constants(
             epsilon=config["epsilon"],
             seed=config["seed"],
             maxEpochs=config["maxEpochs"],
