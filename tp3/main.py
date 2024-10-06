@@ -146,25 +146,33 @@ def solveDigits(config):
     # metrics = Metrics([0,1,2,3,4,5,6,7,8,9], predicted)
     # metrics.displayAll()
     
+# --------------------------------------------------------------------------------------------------------
+# Exercise 3 - Parity
 
+PARITY_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej3", "parity.csv")
+def solveParity(config):
+    digits = Utils.getDigitRepresentation(DIGITS_REPRESENTATION_PATH)
+    dataset = pd.read_csv(PARITY_DATASET_PATH)
+    expectedOutputs = []
+    for o in dataset["y"].to_numpy():
+        expectedOutputs.append([o])
+
+    inputs = Utils.getPerceptronInputFromDigits(digits)
+    
+    architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
     p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
     p.train(inputs, expectedOutputs)
 
-    tests = []
-    for digit in blurred:
-        newDigit = np.array([BIAS])
-        tests.append(np.append(newDigit, digit.flatten()))
+    testingInputs = Utils.getPerceptronInputFromDigits(digits, 0.4)
     predicted = []
-    for digit in tests:
+    for digit in testingInputs:
         x = p.test(digit)
         print(x)
-        predicted.append(np.argmax(x))
+        # predicted.append(np.argmax(x))
 
-    metrics = Metrics([0,1,2,3,4,5,6,7,8,9], predicted)
-    metrics.displayAll()
-
-    # Utils.mseVsEpoch(p, inputs, expectedOutputs, inputs, expectedOutputs, "digitsMSE.csv")
+    # metrics = Metrics(dataset["y"].to_numpy(), predicted)
+    # metrics.displayAll()
 
 
 if __name__ == "__main__":
@@ -194,7 +202,7 @@ if __name__ == "__main__":
             case "MULTILAYER_XOR":
                 solveMultilayerXor(config)
             case "PARITY":
-                pass
+                solveParity(config)
             case "DIGITS":
                 solveDigits(config)
 
