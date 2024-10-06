@@ -32,6 +32,9 @@ class Metrics:
         total = self.FP + self.TN
         return self.FP / (total) if total!=0 else 0
     
+    def getAllMetrics(self):
+        return [self.accuracy(), self.precision(), self.recall(), self.f1Score(), self.TPRate(), self.FPRate()]
+    
     def displayAll(self):
         print("---Metrics---")
         print("Accuracy: ", self.accuracy())

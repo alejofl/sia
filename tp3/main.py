@@ -158,6 +158,9 @@ def solveParity(config):
         expectedOutputs.append([o])
 
     inputs = Utils.getPerceptronInputFromDigits(digits)
+    # noisyInputs = Utils.getPerceptronInputFromDigits(digits, 0.2)
+    # inputs = np.vstack((inputs, noisyInputs))
+    # expectedOutputs = np.tile(expectedOutputs, 2)
     
     architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
