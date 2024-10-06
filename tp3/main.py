@@ -75,6 +75,7 @@ def solveSet(config):
 
     trainingMse = []
     testingMse = []
+    # for xTrain, yTrain, xTest, yTest in Utils.getArbitrarySets(inputs, expectedOutputs, 0.8):
     # for xTrain, yTrain, xTest, yTest in Utils.getShuffleSplitSets(inputs, expectedOutputs, 7):
     for xTrain, yTrain, xTest, yTest in Utils.getKFoldCrossValidationSets(inputs, expectedOutputs, 7):
         w = Utils.initializeWeights(len(xTrain[0]))
