@@ -81,10 +81,10 @@ class LogisticFunction(ActivationFunction):
         return 2 * beta * self.__call__(x, w) * (1 - self.__call__(x, w))
     
     def normalize(self, x):
-        return ((x-self.min)/(self.max-self.min))*(1-0)+0
+        return np.interp(x, [self.min, self.max], [0, 1])
     
     def denormalize(self, x):
-        return (((x-0)*(self.max-self.min))/(1-0))+self.min
+        return np.interp(x, [0, 1], [self.min, self.max])
 
 
 class HyperbolicTangentFunction(ActivationFunction):
@@ -97,7 +97,7 @@ class HyperbolicTangentFunction(ActivationFunction):
         return beta * (1 - np.power(self.__call__(x, w), 2))
     
     def normalize(self, x):
-        return ((x-self.min)/(self.max-self.min))*(1-(-1))-1
+        return np.interp(x, [self.min, self.max], [-1, 1])
     
     def denormalize(self, x):
-        return (((x-(-1))*(self.max-self.min))/(1-(-1)))+self.min
+        return np.interp(x, [-1, 1], [self.min, self.max])
