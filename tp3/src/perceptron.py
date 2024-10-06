@@ -32,7 +32,6 @@ class SingleLayerPerceptron(Perceptron):
         self.isMultiLayer = isMultiLayer
 
     def train(self, inputs, expectedOutputs):
-        self.activationFunction.configureNormalization(expectedOutputs)
         for _ in range(self.constants.maxEpochs):
             seenInputs = 0
             for input, expectedOutput in zip(inputs, expectedOutputs):
@@ -40,6 +39,8 @@ class SingleLayerPerceptron(Perceptron):
 
                 output = self.activationFunction(input, self.weights)
                 deltaW = self.optimizer((self.activationFunction.normalize(expectedOutput) - output) * self.activationFunction.derivative(input, self.weights) * input)
+                # FIXME: How to normalize/denormalize? Waiting for response
+                # deltaW = self.optimizer((expectedOutput - self.activationFunction.denormalize(output)) * self.activationFunction.derivative(input, self.weights) * input)
                 self.incrementDeltaW(deltaW)
 
                 if self.constants.updateWeightsEveryXInputs != -1 and seenInputs % self.constants.updateWeightsEveryXInputs == 0:
@@ -58,6 +59,8 @@ class SingleLayerPerceptron(Perceptron):
         error = 0
         for input, expectedOutput in zip(inputs, expectedOutputs):
             error += np.power(self.activationFunction.normalize(expectedOutput) - self.activationFunction(input, self.weights), 2)
+            # FIXME: How to normalize/denormalize? Waiting for response
+            # error += np.power(expectedOutput - self.activationFunction.denormalize(self.activationFunction(input, self.weights)), 2)
         return error / len(expectedOutputs)
 
     def test(self, input):

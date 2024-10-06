@@ -15,16 +15,16 @@ class ActivationFunction(ABC):
         pass
 
     @abstractmethod
-    def normalize(self, x, w):
+    def normalize(self, x):
         pass
 
     @abstractmethod
-    def denormalize(self, x, w):
+    def denormalize(self, x):
         pass
 
-    def configureNormalization(self, trainingSet):
-        self.min = np.min(trainingSet)
-        self.max = np.max(trainingSet)
+    def configureNormalization(self, min, max):
+        self.min = min
+        self.max = max
     
     @staticmethod
     def getFunction(name, options=None):

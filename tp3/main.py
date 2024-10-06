@@ -19,7 +19,7 @@ AND_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1"
 def solveAnd(config):
     dataset = pd.read_csv(AND_DATASET_PATH)
     expectedOutputs = dataset["y"].to_numpy()
-    inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
+    inputs = dataset.drop(columns=["y"]).to_numpy()
 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
@@ -42,7 +42,7 @@ XOR_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej1"
 def solveXor(config):
     dataset = pd.read_csv(XOR_DATASET_PATH)
     expectedOutputs = dataset["y"].to_numpy()
-    inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
+    inputs = dataset.drop(columns=["y"]).to_numpy()
 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
@@ -66,27 +66,30 @@ def solveXor(config):
 SET_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "ej2", "set.csv")
 def solveSet(config):
     dataset = pd.read_csv(SET_DATASET_PATH)
-    testingSet = dataset.sample(frac=0.2) # TODO: change this to k cross validation
-    trainingSet = dataset.drop(testingSet.index)
+    expectedOutputs = dataset["y"].to_numpy()
+    inputs = dataset.drop(columns=["y"]).to_numpy()
 
-    trainingExpectedOutputs = trainingSet["y"].to_numpy()
-    trainingInputs = trainingSet.drop(columns=["y"]).to_numpy() 
     f = ActivationFunction.getFunction(config["perceptron"]["architecture"][0]["activationFunction"]["type"], config["perceptron"]["architecture"][0]["activationFunction"]["options"])
+    f.configureNormalization(np.min(expectedOutputs), np.max(expectedOutputs))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])(config["learning"]["optimizer"]["options"])
-    w = Utils.initializeWeights(len(trainingInputs[0]))
-    p = SingleLayerPerceptron(f, o, w)
-    p.train(trainingInputs, trainingExpectedOutputs)
 
-    testingExpectedOutputs = testingSet["y"].to_numpy()
-    testingInputs = testingSet.drop(columns=["y"]).to_numpy()
-    testingOutputs = []
-    for input, expectedOutput in zip(testingInputs, testingExpectedOutputs):
-        output = p.test(input)
-        testingOutputs.append(output)
-        print(output, expectedOutput, np.abs(output - expectedOutput) <= Constants.getInstance().epsilon, sep=" ")
-    Utils.mseVsEpoch(p, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, "setMSE.csv")
+    trainingMse = []
+    testingMse = []
+    # for xTrain, yTrain, xTest, yTest in Utils.getShuffleSplitSets(inputs, expectedOutputs, 7):
+    for xTrain, yTrain, xTest, yTest in Utils.getKFoldCrossValidationSets(inputs, expectedOutputs, 7):
+        w = Utils.initializeWeights(len(xTrain[0]))
+        p = SingleLayerPerceptron(f, o, w)
+        p.train(xTrain, yTrain)
+        
+        trainingMse.append(p.calculateError(xTrain, yTrain))
+        testingMse.append(p.calculateError(xTest, yTest))
+        # print("Output", "Expected", "Error")
+        # for x, y in zip(xTest, yTest):
+        #     output = p.test(x)
+        #     print(output, y, np.abs(output - y))
 
-    # TODO: decide if we want to show metrics
+    print("Training MSE:", np.mean(trainingMse), "±", np.std(trainingMse))
+    print("Testing MSE:", np.mean(testingMse), "±", np.std(testingMse))
 
 # --------------------------------------------------------------------------------------------------------
 # Exercise 3 - Xor
@@ -96,7 +99,7 @@ def solveMultilayerXor(config):
     expectedOutputs = []
     for o in dataset["y"].to_numpy():
         expectedOutputs.append([o])
-    inputs = dataset.drop(columns=["y"]).to_numpy() # TODO: see how to separate training set from testing set
+    inputs = dataset.drop(columns=["y"]).to_numpy()
 
     architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])

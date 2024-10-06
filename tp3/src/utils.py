@@ -72,9 +72,23 @@ class Utils:
     @staticmethod
     def getKFoldCrossValidationSets(inputs, expectedOutputs, k):
         kf = KFold(n_splits=k)
-        return kf.split(inputs, expectedOutputs)
+        datasets = []
+        for trainingIndexes, testingIndexes in kf.split(inputs, expectedOutputs):
+            trainingInputs = inputs[trainingIndexes]
+            trainingExpectedOutputs = expectedOutputs[trainingIndexes]
+            testingInputs = inputs[testingIndexes]
+            testingExpectedOutputs = expectedOutputs[testingIndexes]
+            datasets.append((trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs))
+        return datasets
     
     @staticmethod
     def getShuffleSplitSets(inputs, expectedOutputs, k):
         rs = ShuffleSplit(n_splits=k, test_size=0.2, random_state=Constants.getInstance().seed)
-        return rs.split(inputs, expectedOutputs)
+        datasets = []
+        for trainingIndexes, testingIndexes in rs.split(inputs, expectedOutputs):
+            trainingInputs = inputs[trainingIndexes]
+            trainingExpectedOutputs = expectedOutputs[trainingIndexes]
+            testingInputs = inputs[testingIndexes]
+            testingExpectedOutputs = expectedOutputs[testingIndexes]
+            datasets.append((trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs))
+        return datasets
