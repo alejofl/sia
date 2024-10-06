@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import numpy as np
+from sklearn.model_selection import KFold, ShuffleSplit
 from scipy.ndimage import gaussian_filter
 from .function import ActivationFunction
 from .perceptron import Perceptron
@@ -42,7 +43,7 @@ class Utils:
                 weights.append(Utils.initializeWeights(weightsQty))
             architecture.append((neuronQty, f, weights))
         return architecture
-    
+
     @staticmethod
     def getDigitRepresentation(filepath):
         with open(filepath, 'r') as file:
@@ -58,7 +59,7 @@ class Utils:
                     currentInput[i % 7][j] = 1 if row[j] == "1" else 0
             digits.append(currentInput)
             return digits
-        
+
     @staticmethod
     def getPerceptronInputFromDigits(digits, sigma=0):
         inputs = []
@@ -67,3 +68,13 @@ class Utils:
             blurredDigit = gaussian_filter(digit, sigma=sigma)
             inputs.append(np.append(newDigit, blurredDigit.flatten()))
         return inputs
+
+    @staticmethod
+    def getKFoldCrossValidationSets(inputs, expectedOutputs, k):
+        kf = KFold(n_splits=k)
+        return kf.split(inputs, expectedOutputs)
+    
+    @staticmethod
+    def getShuffleSplitSets(inputs, expectedOutputs, k):
+        rs = ShuffleSplit(n_splits=k, test_size=0.2, random_state=Constants.getInstance().seed)
+        return rs.split(inputs, expectedOutputs)
