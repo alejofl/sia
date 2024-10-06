@@ -141,10 +141,10 @@ def solveDigits(config):
     for digit in testingInputs:
         x = p.test(digit)
         print(x)
-        # predicted.append(np.argmax(x))
+        predicted.append(int(np.argmax(x)))
 
-    # metrics = Metrics([0,1,2,3,4,5,6,7,8,9], predicted)
-    # metrics.displayAll()
+    metrics = Metrics([0,1,2,3,4,5,6,7,8,9], predicted)
+    metrics.displayAll()
     
 # --------------------------------------------------------------------------------------------------------
 # Exercise 3 - Parity
@@ -172,10 +172,10 @@ def solveParity(config):
     for digit in testingInputs:
         x = p.test(digit)
         print(x)
-        # predicted.append(np.argmax(x))
+        predicted.append(x)
 
-    # metrics = Metrics(dataset["y"].to_numpy(), predicted)
-    # metrics.displayAll()
+    metrics = Metrics(expectedOutputs, predicted)
+    metrics.displayAll()
 
 
 if __name__ == "__main__":
