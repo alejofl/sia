@@ -49,7 +49,7 @@ class Plotter:
             return line,
 
         def update(epoch):
-            ax.set_title(f'Separation Hyperplane (epoch {epoch+1})')
+            ax.set_title(f'Separation Hyperplane (epoch {epoch})')
             x_values = np.array([-1.5, 1.5])
             m = -weightsPerEpoch[epoch][1] / weightsPerEpoch[epoch][2]
             b = -weightsPerEpoch[epoch][0] / weightsPerEpoch[epoch][2]
@@ -60,7 +60,7 @@ class Plotter:
             scatter.set_color(colors)
             return line,
 
-        ani = FuncAnimation(fig, update, frames=len(weightsPerEpoch), init_func=init, blit=True)
+        ani = FuncAnimation(fig, update, frames=list(range(len(weightsPerEpoch))) + [len(weightsPerEpoch)-1]*20, init_func=init, blit=False)
 
-        ani.save('perceptron_animation.gif', writer='imagemagick')
+        ani.save('perceptron_animation.gif', writer='pillow')
         

@@ -44,11 +44,13 @@ class SingleLayerPerceptron(Perceptron):
                 if self.constants.updateWeightsEveryXInputs != -1 and seenInputs % self.constants.updateWeightsEveryXInputs == 0:
                     self.updateWeights()
                     if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
+                        self.weightsPerEpoch.append(np.copy(self.weights))
                         return
 
             if self.constants.updateWeightsEveryXInputs == -1:
                 self.updateWeights()
                 if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
+                    self.weightsPerEpoch.append(np.copy(self.weights))
                     return
             self.weightsPerEpoch.append(np.copy(self.weights))
         print("Training finished without convergence.")
@@ -70,6 +72,9 @@ class SingleLayerPerceptron(Perceptron):
         self.weights = np.add(self.weights, self.deltaW)
         self.weightsHistory.append(np.copy(self.weights))
         self.deltaW = np.zeros(self.weightsCount)
+
+    def getWeightsPerEpoch(self):
+        return self.weightsPerEpoch
 
  # architecture: [ [neuronQty, actFn, [[w11, w12, ..], [w21, w22, ...]]], .... ]
 class MultiLayerPerceptron(Perceptron):
