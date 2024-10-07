@@ -177,3 +177,49 @@ class Plotter:
         plt.ylabel("Accuracy")
         plt.legend()
         plt.show()
+
+    @staticmethod
+    def accuracyVsNoise(accuracies, noises):
+            
+            fig, ax = plt.subplots()
+
+            ax.set_xticks(noises)
+    
+            ax.plot(noises, accuracies, color="#d62828", marker='o')
+    
+            ax.set_xlabel('Noise')
+            ax.set_ylabel('Accuracy')
+            ax.set_title('Accuracy vs Noise')
+    
+            plt.show()
+
+    @staticmethod
+    def digitProbabilities(probs, digit):
+
+        x = np.arange(0, 10)
+
+        fig, ax = plt.subplots()
+
+        ax.set_xticks(range(0, 10))
+
+        ax.fill_between(x, probs, color="#003049", alpha=0.5)
+
+        ax.plot(x, probs, color='#003049', marker='o')
+
+        ax.set_xlabel('Digit')
+        ax.set_ylabel('Confidence')
+        ax.set_title(f'Digit {digit} Identification')
+
+        plt.show()
+
+    if __name__ == "__main__":
+
+        # Digits probabilities
+        digitProbabilities([0.0076611, 0.9546896, 0.00247242, 0.00718809, 0.00806952, 0.00945058, 0.01287464, 0.01402733, 0.00312593, 0.01332043], 1)
+        digitProbabilities([0.01923688, 0.00329674, 0.00909259, 0.8861265,  0.00958678, 0.00830837, 0.00148219, 0.00400826, 0.01834927, 0.00751466], 3)
+
+        # Digits
+        accuracyVsNoise([1.0, 1.0, 0.9, 0.6, 0.4, 0.3, 0.2 ], [0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5])
+
+        # Parity
+        accuracyVsNoise([1.0, 1.0, 0.9, 0.8, 0.7, 0.6, 0.6, 0.6, 0.6 ], [0.3, 0.5, 0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9])

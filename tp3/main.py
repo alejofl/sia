@@ -172,7 +172,7 @@ def solveParity(config):
     p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
     p.train(inputs, expectedOutputs)
 
-    testingInputs = Utils.getPerceptronInputFromDigits(digits, 0.4)
+    testingInputs = Utils.getPerceptronInputFromDigits(digits, 2.1)
     predicted = []
     for digit in testingInputs:
         x = p.test(digit)
