@@ -28,5 +28,16 @@ if __name__ == "__main__":
     #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_digits_accuracy_miniBatch.csv"),
     #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_digits_accuracy_batch.csv")
     # )
+    
+    # Plotter.ex3_accuracyVsEpoch_allOptimizers(
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_gradient.csv"),
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_momentum.csv"),
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_adam.csv")
+    # )
+    # Plotter.ex3_accuracyVsEpoch_allUpdaters(
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_online.csv"),
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_miniBatch.csv"),
+    #     os.path.join(os.path.dirname(sys.argv[0]), "results", "ej3_parity_accuracy_batch.csv")
+    # )
 
     sys.exit(0)

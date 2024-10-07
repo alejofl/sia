@@ -129,7 +129,7 @@ class Utils:
         return datasets
     
     @staticmethod
-    def accuracyVsEpoch(perceptron: MultiLayerPerceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, filename):
+    def digits_accuracyVsEpoch(perceptron: MultiLayerPerceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, filename):
         filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w") as file:
@@ -144,6 +144,29 @@ class Utils:
                 trainingExpected = np.array([np.argmax(expected) for expected in trainingExpectedOutputs])
                 testingPredicted = np.array([np.argmax(perceptron.test(input)) for input in testingInputs])
                 testingExpected = np.array([np.argmax(expected) for expected in testingExpectedOutputs])
+                trainingMetrics = Metrics(trainingExpected, trainingPredicted)
+                testingMetrics = Metrics(testingExpected, testingPredicted)
+                writer.writerow({"epoch": epoch, "trainingAccuracy": trainingMetrics.accuracy(), "testingAccuracy": testingMetrics.accuracy()})
+            for layer in perceptron.layers:
+                for neuron in layer:
+                    neuron.weights = neuron.weightsHistory[-1]
+                    
+    @staticmethod
+    def parity_accuracyVsEpoch(perceptron: MultiLayerPerceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs, filename):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=["epoch", "trainingAccuracy", "testingAccuracy"])
+            writer.writeheader()
+            for epoch in range(len(perceptron.layers[0][0].getWeightsPerEpoch())):
+                for layer in perceptron.layers:
+                    for neuron in layer:
+                        neuron.weights = neuron.getWeightsPerEpoch()[epoch]
+                
+                trainingPredicted = np.array([perceptron.test(input)[0] for input in trainingInputs])
+                trainingExpected = np.array([expected[0] for expected in trainingExpectedOutputs])
+                testingPredicted = np.array([perceptron.test(input)[0] for input in testingInputs])
+                testingExpected = np.array([expected[0] for expected in testingExpectedOutputs])
                 trainingMetrics = Metrics(trainingExpected, trainingPredicted)
                 testingMetrics = Metrics(testingExpected, testingPredicted)
                 writer.writerow({"epoch": epoch, "trainingAccuracy": trainingMetrics.accuracy(), "testingAccuracy": testingMetrics.accuracy()})

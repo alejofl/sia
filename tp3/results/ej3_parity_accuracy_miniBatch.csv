@@ -1,0 +1,4 @@
+epoch,trainingAccuracy,testingAccuracy
+0,0.6,0.6
+1,0.5,0.5
+2,1.0,1.0
