@@ -30,6 +30,31 @@ class Utils:
                 testingMSE = perceptron.calculateError(testingInputs, testingExpectedOutputs)
                 writer.writerow({"epoch": i, "trainingMSE": trainingMSE, "testingMSE": testingMSE})
             perceptron.weights = perceptron.weightsHistory[-1]
+            
+    @staticmethod
+    def mseVsEpochToList(perceptron: Perceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs):
+        mse = []
+        for i, weights in enumerate(perceptron.weightsPerEpoch):
+            perceptron.weights = weights
+            trainingMSE = perceptron.calculateError(trainingInputs, trainingExpectedOutputs)
+            testingMSE = perceptron.calculateError(testingInputs, testingExpectedOutputs)
+            mse.append((trainingMSE, testingMSE))
+        perceptron.weights = perceptron.weightsHistory[-1]
+        return mse
+
+    @staticmethod
+    def meanMseVsEpoch(mse, filename):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=["epoch", "trainingMSE", "stdTrainingMSE", "testingMSE", "stdTestingMSE"])
+            writer.writeheader()
+            for i in range(len(mse[0])):
+                trainingMSE = np.mean([x[i][0] for x in mse])
+                stdTrainingMSE = np.std([x[i][0] for x in mse])
+                testingMSE = np.mean([x[i][1] for x in mse])
+                stdTestingMSE = np.std([x[i][1] for x in mse])
+                writer.writerow({"epoch": i, "trainingMSE": trainingMSE, "stdTrainingMSE": stdTrainingMSE, "testingMSE": testingMSE, "stdTestingMSE": stdTestingMSE})
 
     @staticmethod
     def getMultilayerArchitecture(config, inputLength):

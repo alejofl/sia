@@ -9,6 +9,7 @@ from src.optimizer import OptimizerFunction
 from src.perceptron import SingleLayerPerceptron, MultiLayerPerceptron
 from src.utils import Utils
 from src.metrics import Metrics
+from src.auxiliar import Auxiliar
 
 constants = None
 
@@ -206,6 +207,7 @@ if __name__ == "__main__":
                 solveXor(config)
             case "SET":
                 solveSet(config)
+                # Auxiliar.ex2_studyBeta(config)
             case "MULTILAYER_XOR":
                 solveMultilayerXor(config)
             case "PARITY":
