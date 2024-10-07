@@ -70,6 +70,15 @@ class Utils:
         return inputs
 
     @staticmethod
+    def getArbitrarySets(inputs, expectedOutputs, trainingPercentage):
+        trainingIndices = Constants.getInstance().random.integers(0, len(inputs), np.floor(len(inputs) * trainingPercentage))
+        trainingInputs = inputs[trainingIndices]
+        trainingExpectedOutputs = expectedOutputs[trainingIndices]
+        testingInputs = np.delete(inputs, trainingIndices, axis=0)
+        testingExpectedOutputs = np.delete(expectedOutputs, trainingIndices, axis=0)
+        return trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs
+
+    @staticmethod
     def getKFoldCrossValidationSets(inputs, expectedOutputs, k):
         kf = KFold(n_splits=k)
         datasets = []
