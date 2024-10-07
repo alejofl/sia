@@ -44,15 +44,15 @@ class SingleLayerPerceptron(Perceptron):
                 if self.constants.updateWeightsEveryXInputs != -1 and seenInputs % self.constants.updateWeightsEveryXInputs == 0:
                     self.updateWeights()
                     if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
-                        self.weightsPerEpoch.append(np.copy(self.weights))
+                        self.saveWeightsForEpoch()
                         return
 
             if self.constants.updateWeightsEveryXInputs == -1:
                 self.updateWeights()
                 if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
-                    self.weightsPerEpoch.append(np.copy(self.weights))
+                    self.saveWeightsForEpoch()
                     return
-            self.weightsPerEpoch.append(np.copy(self.weights))
+            self.saveWeightsForEpoch()
         print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):
@@ -72,6 +72,9 @@ class SingleLayerPerceptron(Perceptron):
         self.weights = np.add(self.weights, self.deltaW)
         self.weightsHistory.append(np.copy(self.weights))
         self.deltaW = np.zeros(self.weightsCount)
+        
+    def saveWeightsForEpoch(self):
+        self.weightsPerEpoch.append(np.copy(self.weights))
 
     def getWeightsPerEpoch(self):
         return self.weightsPerEpoch
@@ -122,6 +125,9 @@ class MultiLayerPerceptron(Perceptron):
                         for n in layer:
                             n.updateWeights()
                     if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
+                        for layer in self.layers:
+                            for neuron in layer:
+                                neuron.saveWeightsForEpoch()
                         return
 
             if self.constants.updateWeightsEveryXInputs == -1:
@@ -129,7 +135,14 @@ class MultiLayerPerceptron(Perceptron):
                     for n in layer:
                         n.updateWeights()
                 if np.abs(self.calculateError(inputs, expectedOutputs)) <= self.constants.epsilon:
+                    for layer in self.layers:
+                        for neuron in layer:
+                            neuron.saveWeightsForEpoch()
                     return
+
+            for layer in self.layers:
+                for neuron in layer:
+                    neuron.saveWeightsForEpoch()
         print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):

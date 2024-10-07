@@ -127,3 +127,53 @@ class Plotter:
         plt.ylabel("Mean Squared Error")
         plt.legend()
         plt.show()
+        
+    @staticmethod
+    def ex3_accuracyVsEpoch_allOptimizers(gradientFilename, momentumFilename, adamFilename):
+        gradient = pd.read_csv(gradientFilename)
+        momentum = pd.read_csv(momentumFilename)
+        adam = pd.read_csv(adamFilename)
+
+        fig, ax = plt.subplots()
+        ax.set_prop_cycle("color", Plotter.COLORS)
+
+        ax.plot(gradient["epoch"], gradient["trainingAccuracy"], label="Training Set - Gradient Descent", color=Plotter.COLORS[0])
+        ax.plot(gradient["epoch"], gradient["testingAccuracy"], label="Testing Set - Gradient Descent", color=Plotter.COLOR_VARIANTS[0], linestyle="--")
+        
+        ax.plot(momentum["epoch"], momentum["trainingAccuracy"], label="Training Set - Momentum", color=Plotter.COLORS[1])
+        ax.plot(momentum["epoch"], momentum["testingAccuracy"], label="Testing Set - Momentum", color=Plotter.COLOR_VARIANTS[1], linestyle="--")
+        
+        ax.plot(adam["epoch"], adam["trainingAccuracy"], label="Training Set - Adam", color=Plotter.COLORS[3])
+        ax.plot(adam["epoch"], adam["testingAccuracy"], label="Testing Set - Adam", color=Plotter.COLOR_VARIANTS[3], linestyle="--")
+        
+        ax.set_xscale("log")
+        
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy")
+        plt.legend()
+        plt.show()
+
+    @staticmethod
+    def ex3_accuracyVsEpoch_allUpdaters(onlineFilename, miniBatchFilename, batchFilename):
+        online = pd.read_csv(onlineFilename)
+        miniBatch = pd.read_csv(miniBatchFilename)
+        batch = pd.read_csv(batchFilename)
+
+        fig, ax = plt.subplots()
+        ax.set_prop_cycle("color", Plotter.COLORS)
+
+        ax.plot(online["epoch"], online["trainingAccuracy"], label="Training Set - Online", color=Plotter.COLORS[0])
+        ax.plot(online["epoch"], online["testingAccuracy"], label="Testing Set - Online", color=Plotter.COLOR_VARIANTS[0], linestyle="--")
+        
+        ax.plot(miniBatch["epoch"], miniBatch["trainingAccuracy"], label="Training Set - Mini-Batch", color=Plotter.COLORS[1])
+        ax.plot(miniBatch["epoch"], miniBatch["testingAccuracy"], label="Testing Set - Mini-Batch", color=Plotter.COLOR_VARIANTS[1], linestyle="--")
+        
+        ax.plot(batch["epoch"], batch["trainingAccuracy"], label="Training Set - Batch", color=Plotter.COLORS[3])
+        ax.plot(batch["epoch"], batch["testingAccuracy"], label="Testing Set - Batch", color=Plotter.COLOR_VARIANTS[3], linestyle="--")
+        
+        ax.set_xscale("log")
+        
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy")
+        plt.legend()
+        plt.show()

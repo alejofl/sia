@@ -4,7 +4,7 @@
 	"seed": 732,
 	"learning": {
 		"optimizer": {
-			"type": "GRADIENT_DESCENT",
+			"type": "MOMENTUM",
 			"options": {
 				"rate": 1e-2,
 				"alpha": 0.9,
