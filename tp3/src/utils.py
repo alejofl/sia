@@ -188,9 +188,9 @@ class Utils:
                 for neuron in layer:
                     neuron.weights = neuron.getWeightsPerEpoch()[epoch]
             
-            trainingPredicted = np.array([perceptron.test(input)[0] for input in trainingInputs])
+            trainingPredicted = np.array([Utils.parseParityOutput(perceptron.test(input))[0] for input in trainingInputs])
             trainingExpected = np.array([expected[0] for expected in trainingExpectedOutputs])
-            testingPredicted = np.array([perceptron.test(input)[0] for input in testingInputs])
+            testingPredicted = np.array([Utils.parseParityOutput(perceptron.test(input))[0] for input in testingInputs])
             testingExpected = np.array([expected[0] for expected in testingExpectedOutputs])
             trainingMetrics = Metrics(trainingExpected, trainingPredicted)
             testingMetrics = Metrics(testingExpected, testingPredicted)
@@ -207,9 +207,13 @@ class Utils:
         with open(filepath, "w") as file:
             writer = csv.DictWriter(file, fieldnames=["epoch", "trainingAccuracy", "stdTrainingAccuracy", "testingAccuracy", "stdTestingAccuracy"])
             writer.writeheader()
-            for i in range(len(accuracy[0])):
+            for i in range(np.min([len(x) for x in accuracy])):
                 trainingAccuracy = np.mean([x[i][0] for x in accuracy])
                 stdTrainingAccuracy = np.std([x[i][0] for x in accuracy])
                 testingAccuracy = np.mean([x[i][1] for x in accuracy])
                 stdTestingAccuracy = np.std([x[i][1] for x in accuracy])
                 writer.writerow({"epoch": i, "trainingAccuracy": trainingAccuracy, "stdTrainingAccuracy": stdTrainingAccuracy, "testingAccuracy": testingAccuracy, "stdTestingAccuracy": stdTestingAccuracy})
+
+    @staticmethod
+    def parseParityOutput(output):
+        return [1] if output[0] > 0 else [-1]
