@@ -163,24 +163,32 @@ def solveParity(config):
         expectedOutputs.append([o])
 
     inputs = Utils.getPerceptronInputFromDigits(digits)
-    # noisyInputs = Utils.getPerceptronInputFromDigits(digits, 0.2)
-    # inputs = np.vstack((inputs, noisyInputs))
-    # expectedOutputs = np.tile(expectedOutputs, 2)
-    
-    architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
     o = OptimizerFunction.getFunction(config["learning"]["optimizer"]["type"])
-    p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
-    p.train(inputs, expectedOutputs)
+    
+    metrics = []
+    # for xTrain, yTrain, xTest, yTest in Utils.getArbitrarySets(inputs, expectedOutputs, 0.7):
+    for xTrain, yTrain, xTest, yTest in Utils.getShuffleSplitSets(inputs, expectedOutputs, 5):
+    # for xTrain, yTrain, xTest, yTest in Utils.getKFoldCrossValidationSets(inputs, expectedOutputs, 5):
+        architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
+        p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
+        print("xTrain", xTrain)
+        print("yTrain", yTrain)
+        print("Training...")
+        p.train(xTrain, yTrain)
+        
+        # metrics.append(Utils.parity_accuracyVsEpochToList(p, xTrain, yTrain, xTest, yTest))
+        print("TRAIN")
+        print("Expected", "Output")
+        for x, y in zip(xTrain, yTrain):
+            output = p.test(x)
+            print(y, output)
+        print("TEST")
+        print("Expected", "Output")
+        for x, y in zip(xTest, yTest):
+            output = p.test(x)
+            print(y, output)
 
-    testingInputs = Utils.getPerceptronInputFromDigits(digits, 2.1)
-    predicted = []
-    for digit in testingInputs:
-        x = p.test(digit)
-        print(x)
-        predicted.append(x)
-
-    metrics = Metrics(expectedOutputs, predicted)
-    metrics.displayAll()
+    # Utils.meanAccuracyVsEpoch(metrics, "ej3_parity")
 
 
 if __name__ == "__main__":

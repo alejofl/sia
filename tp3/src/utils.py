@@ -97,7 +97,9 @@ class Utils:
 
     @staticmethod
     def getArbitrarySets(inputs, expectedOutputs, trainingPercentage):
-        trainingIndices = Constants.getInstance().random.integers(0, len(inputs), np.floor(len(inputs) * trainingPercentage).astype(int))
+        inputs = np.array(inputs)
+        expectedOutputs = np.array(expectedOutputs)
+        trainingIndices = Constants.getInstance().random.choice(len(inputs), np.floor(len(inputs) * trainingPercentage).astype(int), replace=False)
         trainingInputs = inputs[trainingIndices]
         trainingExpectedOutputs = expectedOutputs[trainingIndices]
         testingInputs = np.delete(inputs, trainingIndices, axis=0)
@@ -106,6 +108,8 @@ class Utils:
 
     @staticmethod
     def getKFoldCrossValidationSets(inputs, expectedOutputs, k):
+        inputs = np.array(inputs)
+        expectedOutputs = np.array(expectedOutputs)
         kf = KFold(n_splits=k)
         datasets = []
         for trainingIndexes, testingIndexes in kf.split(inputs, expectedOutputs):
@@ -118,6 +122,8 @@ class Utils:
     
     @staticmethod
     def getShuffleSplitSets(inputs, expectedOutputs, k):
+        inputs = np.array(inputs)
+        expectedOutputs = np.array(expectedOutputs)
         rs = ShuffleSplit(n_splits=k, test_size=0.2, random_state=Constants.getInstance().seed)
         datasets = []
         for trainingIndexes, testingIndexes in rs.split(inputs, expectedOutputs):
@@ -173,3 +179,37 @@ class Utils:
             for layer in perceptron.layers:
                 for neuron in layer:
                     neuron.weights = neuron.weightsHistory[-1]
+                    
+    @staticmethod
+    def parity_accuracyVsEpochToList(perceptron: MultiLayerPerceptron, trainingInputs, trainingExpectedOutputs, testingInputs, testingExpectedOutputs):
+        accuracy = []
+        for epoch in range(len(perceptron.layers[0][0].getWeightsPerEpoch())):
+            for layer in perceptron.layers:
+                for neuron in layer:
+                    neuron.weights = neuron.getWeightsPerEpoch()[epoch]
+            
+            trainingPredicted = np.array([perceptron.test(input)[0] for input in trainingInputs])
+            trainingExpected = np.array([expected[0] for expected in trainingExpectedOutputs])
+            testingPredicted = np.array([perceptron.test(input)[0] for input in testingInputs])
+            testingExpected = np.array([expected[0] for expected in testingExpectedOutputs])
+            trainingMetrics = Metrics(trainingExpected, trainingPredicted)
+            testingMetrics = Metrics(testingExpected, testingPredicted)
+            accuracy.append((trainingMetrics.accuracy(), testingMetrics.accuracy()))
+        for layer in perceptron.layers:
+            for neuron in layer:
+                neuron.weights = neuron.weightsHistory[-1]
+        return accuracy
+    
+    @staticmethod
+    def meanAccuracyVsEpoch(accuracy, filename):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=["epoch", "trainingAccuracy", "stdTrainingAccuracy", "testingAccuracy", "stdTestingAccuracy"])
+            writer.writeheader()
+            for i in range(len(accuracy[0])):
+                trainingAccuracy = np.mean([x[i][0] for x in accuracy])
+                stdTrainingAccuracy = np.std([x[i][0] for x in accuracy])
+                testingAccuracy = np.mean([x[i][1] for x in accuracy])
+                stdTestingAccuracy = np.std([x[i][1] for x in accuracy])
+                writer.writerow({"epoch": i, "trainingAccuracy": trainingAccuracy, "stdTrainingAccuracy": stdTrainingAccuracy, "testingAccuracy": testingAccuracy, "stdTestingAccuracy": stdTestingAccuracy})
