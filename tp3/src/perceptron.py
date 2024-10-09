@@ -92,8 +92,8 @@ class MultiLayerPerceptron(Perceptron):
         self.constants = Constants.getInstance()
 
     def train(self, inputs, expectedOutputs):
+        seenInputs = 0
         for _ in range(self.constants.maxEpochs):
-            seenInputs = 0
             for input, expectedOutput in zip(inputs, expectedOutputs):
                 seenInputs += 1
 

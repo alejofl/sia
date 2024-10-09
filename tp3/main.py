@@ -171,8 +171,6 @@ def solveParity(config):
     # for xTrain, yTrain, xTest, yTest in Utils.getKFoldCrossValidationSets(inputs, expectedOutputs, 5):
         architecture = Utils.getMultilayerArchitecture(config, len(inputs[0]))
         p = MultiLayerPerceptron(architecture, o, config["learning"]["optimizer"]["options"])
-        print("xTrain", xTrain)
-        print("yTrain", yTrain)
         print("Training...")
         p.train(xTrain, yTrain)
         
