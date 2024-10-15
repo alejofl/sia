@@ -1,0 +1,12 @@
+{
+    "problem": "KOHONEN",
+    "options": {
+        "matrixSquareSize": 10,
+        "initialLearningRate": 0.1,
+        "initialRadius": 5,
+        "changeLearningRate": true,
+        "changeRadius": true,
+        "distanceCalculator": "EUCLIDEAN"
+    },
+    "seed": 732
+}
