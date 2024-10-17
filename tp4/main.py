@@ -1,19 +1,15 @@
 import json
-import os
 import sys
 import pandas as pd
 from src.constants import Constants
 from src.distance import DistanceCalculator
 from src.kohonen import Kohonen
-
-
-EUROPE_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "europe.csv")
+from src.utils import Utils
 
 
 # -- KOHONEN ----------------------------------------------------------------
 def solveKohonen(options):
-    df = pd.read_csv(EUROPE_DATASET_PATH)
-    dataset = df.to_numpy()
+    countries, dataset = Utils.getEuropeDataset()
 
     kohonen = Kohonen(
         trainingSet=dataset,
@@ -26,6 +22,10 @@ def solveKohonen(options):
         distanceCalculator=DistanceCalculator.getCalculator(options["distanceCalculator"])
     )
     kohonen.train()
+    
+    for country, data in zip(countries, dataset):
+        winnerNeuron = kohonen.test(data)
+        print(f"{country} - {winnerNeuron}")
 
 # -- END KOHONEN ------------------------------------------------------------
 

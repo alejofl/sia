@@ -33,15 +33,7 @@ class Kohonen:
             self.matrixPerEpoch.append(np.copy(self.matrix))
             x = Constants.getInstance().random.choice(self.trainingSet)
 
-            winnerI, winnerJ = None, None
-            minDistance = np.inf
-            for i in range(self.matrixSquareSize):
-                for j in range(self.matrixSquareSize):
-                    distance = self.distanceCalculator(x[1:], self.matrix[i][j])
-                    if distance < minDistance:
-                        winnerI, winnerJ = i, j
-                        minDistance = distance
-            winnerNeuron = np.array([winnerI, winnerJ])
+            winnerNeuron = np.array(self.test(x))
 
             for i in range(self.matrixSquareSize):
                 for j in range(self.matrixSquareSize):
@@ -58,3 +50,14 @@ class Kohonen:
         if not self.changeLearningRate:
             return self.initialLearningRate
         return 1 / (epoch + 1)
+
+    def test(self, x):
+        winnerI, winnerJ = None, None
+        minDistance = np.inf
+        for i in range(self.matrixSquareSize):
+            for j in range(self.matrixSquareSize):
+                distance = self.distanceCalculator(x[1:], self.matrix[i][j])
+                if distance < minDistance:
+                    winnerI, winnerJ = i, j
+                    minDistance = distance
+        return winnerI, winnerJ
