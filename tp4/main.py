@@ -23,9 +23,11 @@ def solveKohonen(options):
     )
     kohonen.train()
     
-    for country, data in zip(countries, dataset):
-        winnerNeuron = kohonen.test(data)
-        print(f"{country} - {winnerNeuron}")
+    #for country, data in zip(countries, dataset):
+    #    winnerNeuron = kohonen.test(data)
+    #    print(f"{country} - {winnerNeuron}")
+    Utils.saveKohonenOutput("output.csv", kohonen, countries, dataset)
+
 
 # -- END KOHONEN ------------------------------------------------------------
 
