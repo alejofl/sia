@@ -9,15 +9,17 @@ class Utils:
     EUROPE_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "europe.csv")
 
     @staticmethod
-    def getEuropeDataset():
+    def getEuropeDataset(onlyData=False):
         df = pd.read_csv(Utils.EUROPE_DATASET_PATH)
         df = Utils.zScoreData(df)
         countries = df["Country"].to_numpy()
-        data = df.reset_index().drop(columns=["Country"]).to_numpy()
-        return countries, data
+        data = df.reset_index().drop(columns=["Country"])
+        if onlyData:
+            return data.drop(columns=["index"]).to_numpy()
+        return countries, data.to_numpy()
 
     @staticmethod
-    def zScoreData(df):  # TODO: Check
+    def zScoreData(df):
         def zScore(col):
             mean = col.mean()
             std = col.std()

@@ -4,6 +4,7 @@ import pandas as pd
 from src.constants import Constants
 from src.distance import DistanceCalculator
 from src.kohonen import Kohonen
+from src.oja import Oja
 from src.utils import Utils
 
 
@@ -27,10 +28,23 @@ def solveKohonen(options):
     #    winnerNeuron = kohonen.test(data)
     #    print(f"{country} - {winnerNeuron}")
     Utils.saveKohonenOutput("output.csv", kohonen, countries, dataset)
-
-
 # -- END KOHONEN ------------------------------------------------------------
 
+# -- OJA --------------------------------------------------------------------
+def solveOja(options):
+    dataset = Utils.getEuropeDataset(onlyData=True)
+
+    oja = Oja(
+        data=dataset,
+        maxEpochs=options["maxEpochs"],
+        initialLearningRate=options["initialLearningRate"],
+        changeLearningRate=options["changeLearningRate"]
+    )
+    pc1 = oja.run()
+
+    print(pc1)
+    # Utils.saveKohonenOutput("output.csv", kohonen, countries, dataset)
+# -- END OJA ----------------------------------------------------------------
 
 if __name__ == "__main__":
     with open(sys.argv[1], 'r') as configFile:
@@ -41,5 +55,7 @@ if __name__ == "__main__":
         match config["problem"]:
             case "KOHONEN":
                 solveKohonen(config["options"])
+            case "OJA":
+                solveOja(config["options"])
 
     sys.exit(0)
