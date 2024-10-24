@@ -43,7 +43,6 @@ def solveOja(options):
     pc1 = oja.run()
 
     print(pc1)
-    # Utils.saveKohonenOutput("output.csv", kohonen, countries, dataset)
 # -- END OJA ----------------------------------------------------------------
 
 if __name__ == "__main__":
