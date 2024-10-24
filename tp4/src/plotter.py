@@ -7,7 +7,6 @@ from .constants import Constants
 
 
 class Plotter:
-
     @staticmethod
     def kohonenHeatmap(filename, k):
         filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "kohonen", filename)
@@ -32,3 +31,23 @@ class Plotter:
         fig.tight_layout()
         plt.show()
 
+    @staticmethod
+    def drawLetter(letters):
+        fig, axs = plt.subplots(1, len(letters))
+        for i, (ax, letter) in enumerate(zip(axs, letters)):
+            letter = np.array(letter).reshape(5, 5)
+            ax.imshow(letter, cmap="Greys", interpolation="nearest")
+            ax.tick_params(
+                axis='both',
+                which='both',
+                bottom=False,
+                top=False,
+                left=False,
+                right=False,
+                labelbottom=False,
+                labeltop=False,
+                labelleft=False,
+                labelright=False
+            )
+            ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
+        plt.show()

@@ -3,10 +3,12 @@ import os
 import sys
 import numpy as np
 import pandas as pd
+from .constants import Constants
 
 
 class Utils:
     EUROPE_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "europe.csv")
+    LETTERS_DATASET_PATH = os.path.join(os.path.dirname(sys.argv[0]), "resources", "letters.txt")
 
     @staticmethod
     def getEuropeDataset(onlyData=False):
@@ -17,6 +19,19 @@ class Utils:
         if onlyData:
             return data.drop(columns=["index"]).to_numpy()
         return countries, data.to_numpy()
+    
+    @staticmethod
+    def getLettersDataset():
+        with open(Utils.LETTERS_DATASET_PATH, "r") as file:
+            lines = file.readlines()
+            letters = []
+            letter = []
+            for i, line in enumerate(lines):
+                letter.append([int(x) for x in line.split()])
+                if i % 5 == 4:
+                    letters.append(np.array(letter).flatten())
+                    letter = []
+            return letters
 
     @staticmethod
     def zScoreData(df):
@@ -38,3 +53,11 @@ class Utils:
                 winnerNeuron = kohonen.test(data)
                 writer.writerow([country, *data[1:], *winnerNeuron])
 
+    @staticmethod
+    def saltAndPepper(data, noiseLevel):
+        random = Constants.getInstance().random
+        noisyData = np.copy(data)
+        for i in noisyData:
+            if random.random() < noiseLevel:
+                noisyData[i] = -noisyData[i]
+        return noisyData

@@ -5,7 +5,9 @@ from src.constants import Constants
 from src.distance import DistanceCalculator
 from src.kohonen import Kohonen
 from src.oja import Oja
+from src.hopfield import Hopfield
 from src.utils import Utils
+from src.plotter import Plotter
 
 
 # -- KOHONEN ----------------------------------------------------------------
@@ -45,6 +47,23 @@ def solveOja(options):
     print(pc1)
 # -- END OJA ----------------------------------------------------------------
 
+# -- HOPFIELD ---------------------------------------------------------------
+def solveHopfield(options):
+    letters = Utils.getLettersDataset()
+    patterns = []
+    for l in options["letters"]:
+        patterns.append(letters[ord(l) - ord("A")])
+    
+    hopfield = Hopfield(
+        patterns=patterns,
+        maxEpochs=options["maxEpochs"]
+    )
+    
+    noisyLetter = Utils.saltAndPepper(patterns[0], options["noiseLevel"])
+    patternsPerEpoch = hopfield.test(noisyLetter)
+    Plotter.drawLetter((noisyLetter, patternsPerEpoch[-1]))
+# -- END HOPFIELD -----------------------------------------------------------
+
 if __name__ == "__main__":
     with open(sys.argv[1], 'r') as configFile:
         config = json.load(configFile)
@@ -56,5 +75,7 @@ if __name__ == "__main__":
                 solveKohonen(config["options"])
             case "OJA":
                 solveOja(config["options"])
+            case "HOPFIELD":
+                solveHopfield(config["options"])
 
     sys.exit(0)
