@@ -61,3 +61,13 @@ class Utils:
             if random.random() < noiseLevel:
                 noisyData[i] = -noisyData[i]
         return noisyData
+    
+    @staticmethod
+    def checkOrtogonality(letters, representations):
+        values = []
+        for l in letters:
+            values.append(representations[ord(l) - ord("A")])
+        values = np.array(values)
+        ortoMatrix = np.dot(values, values.T)
+        np.fill_diagonal(ortoMatrix, 0)
+        return np.abs(ortoMatrix).sum() / (len(letters) * (len(letters) - 1))

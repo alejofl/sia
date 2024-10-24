@@ -20,4 +20,13 @@ class Hopfield:
             pattern = np.sign(np.matmul(self.weights, pattern.T))
             if np.array_equal(pattern, patternPerEpoch[-1]):
                 break
+
+        if not self.patternExists(patternPerEpoch[-1]):
+            print("Did not converge")
         return patternPerEpoch
+
+    def patternExists(self, pattern):
+        for p in self.patterns:
+            if np.array_equal(p, pattern):
+                return True
+        return False

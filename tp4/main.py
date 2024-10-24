@@ -54,6 +54,8 @@ def solveHopfield(options):
     for l in options["letters"]:
         patterns.append(letters[ord(l) - ord("A")])
     
+    print(f"Letters {options['letters']} have ortogonality {Utils.checkOrtogonality(options['letters'], letters)}")
+    
     hopfield = Hopfield(
         patterns=patterns,
         maxEpochs=options["maxEpochs"]

@@ -3,7 +3,7 @@
     "options": {
         "maxEpochs": 100,
         "noiseLevel": 0.2,
-        "letters": ["A", "B", "C", "D"]
+        "letters": ["A", "U", "X", "I"]
     },
     "seed": 732
 }
