@@ -57,7 +57,7 @@ class Utils:
     def saltAndPepper(data, noiseLevel):
         random = Constants.getInstance().random
         noisyData = np.copy(data)
-        for i in noisyData:
+        for i in range(len(noisyData)):
             if random.random() < noiseLevel:
                 noisyData[i] = -noisyData[i]
         return noisyData
@@ -70,4 +70,21 @@ class Utils:
         values = np.array(values)
         ortoMatrix = np.dot(values, values.T)
         np.fill_diagonal(ortoMatrix, 0)
-        return np.abs(ortoMatrix).sum() / (len(letters) * (len(letters) - 1))
+        mean = np.abs(ortoMatrix).sum() / (len(letters) * (len(letters) - 1))
+        unique, counts = np.unique(np.abs(ortoMatrix.flatten()), return_counts=True)
+        counter = {}
+        for u, c in zip(unique, counts):
+            if u == 0:
+                continue
+            counter[int(u)] = int(c) // 2
+        return mean, counter
+    
+    @staticmethod
+    def saveHopfieldOrtogonalityOutput(filename, df, counters):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "hopfield", filename)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=["group", "mean", "counter"])
+            writer.writeheader()
+            for i, row in df.iterrows():
+                writer.writerow({"group": row["Group"], "mean": row["Mean"], "counter": counters[row["Group"]]})

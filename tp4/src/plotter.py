@@ -32,7 +32,7 @@ class Plotter:
         plt.show()
 
     @staticmethod
-    def drawLetter(letters):
+    def drawLetter(letters, showTitle=True):
         fig, axs = plt.subplots(1, len(letters))
         for i, (ax, letter) in enumerate(zip(axs, letters)):
             letter = np.array(letter).reshape(5, 5)
@@ -49,5 +49,6 @@ class Plotter:
                 labelleft=False,
                 labelright=False
             )
-            ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
+            if showTitle:
+                ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
         plt.show()

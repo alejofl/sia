@@ -1,9 +1,9 @@
 {
-    "problem": "HOPFIELD",
+    "problem": "HOPFIELD - ORTOGONALITY",
     "options": {
         "maxEpochs": 100,
-        "noiseLevel": 0.2,
-        "letters": ["A", "U", "X", "I"]
+        "noiseLevel": 0.1,
+        "letters": ["F", "I", "O", "V"]
     },
     "seed": 732
 }

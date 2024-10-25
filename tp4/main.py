@@ -1,5 +1,6 @@
 import json
 import sys
+from itertools import combinations
 import pandas as pd
 from src.constants import Constants
 from src.distance import DistanceCalculator
@@ -54,7 +55,7 @@ def solveHopfield(options):
     for l in options["letters"]:
         patterns.append(letters[ord(l) - ord("A")])
     
-    print(f"Letters {options['letters']} have ortogonality {Utils.checkOrtogonality(options['letters'], letters)}")
+    print(f"Letters {options['letters']} have ortogonality {Utils.checkOrtogonality(options['letters'], letters)[0]}")
     
     hopfield = Hopfield(
         patterns=patterns,
@@ -64,6 +65,22 @@ def solveHopfield(options):
     noisyLetter = Utils.saltAndPepper(patterns[0], options["noiseLevel"])
     patternsPerEpoch = hopfield.test(noisyLetter)
     Plotter.drawLetter((noisyLetter, patternsPerEpoch[-1]))
+    
+def checkLettersOrtogonality():
+    letters = Utils.getLettersDataset()
+    characters = []
+    for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        characters.append(c)
+    groups = combinations(characters, 4)
+    results = {}
+    counters = {}
+    for group in groups:
+        id = "-".join(group)
+        mean, counter = Utils.checkOrtogonality(group, letters)
+        results[id] = mean
+        counters[id] = counter
+    df = pd.DataFrame(results.items(), columns=["Group", "Mean"]).sort_values(by="Mean").reset_index(drop=True)
+    Utils.saveHopfieldOrtogonalityOutput("ortogonality.csv", df, counters)
 # -- END HOPFIELD -----------------------------------------------------------
 
 if __name__ == "__main__":
@@ -79,5 +96,7 @@ if __name__ == "__main__":
                 solveOja(config["options"])
             case "HOPFIELD":
                 solveHopfield(config["options"])
+            case "HOPFIELD - ORTOGONALITY":
+                checkLettersOrtogonality()
 
     sys.exit(0)
