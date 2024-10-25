@@ -88,3 +88,12 @@ class Utils:
             writer.writeheader()
             for i, row in df.iterrows():
                 writer.writerow({"group": row["Group"], "mean": row["Mean"], "counter": counters[row["Group"]]})
+                
+    @staticmethod
+    def saveHopfieldLetterPerEpoch(filename, letterPerEpoch):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "hopfield", filename)
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as file:
+            writer = csv.writer(file)
+            for epoch in letterPerEpoch:
+                writer.writerow(epoch)

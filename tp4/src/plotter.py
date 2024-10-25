@@ -33,7 +33,9 @@ class Plotter:
 
     @staticmethod
     def drawLetter(letters, showTitle=True):
-        fig, axs = plt.subplots(1, len(letters))
+        rows = len(letters) // 5 + (1 if len(letters) % 5 != 0 else 0)
+        cols = 5 if len(letters) > 5 else len(letters)
+        fig, axs = plt.subplots(rows, cols)
         for i, (ax, letter) in enumerate(zip(axs, letters)):
             letter = np.array(letter).reshape(5, 5)
             ax.imshow(letter, cmap="Greys", interpolation="nearest")
@@ -52,3 +54,12 @@ class Plotter:
             if showTitle:
                 ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
         plt.show()
+        
+    @staticmethod
+    def drawLetterPerEpoch(filename):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "hopfield", filename)
+        df = pd.read_csv(filepath, header=None)
+        letters = []
+        for _, row in df.iterrows():
+            letters.append(row.to_numpy())
+        Plotter.drawLetter(letters, showTitle=False)

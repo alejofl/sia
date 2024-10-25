@@ -1,5 +1,5 @@
 {
-    "problem": "HOPFIELD - ORTOGONALITY",
+    "problem": "HOPFIELD",
     "options": {
         "maxEpochs": 100,
         "noiseLevel": 0.1,
