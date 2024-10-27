@@ -16,7 +16,8 @@ class Plotter:
         for _, row in df.iterrows():
             i, j = int(row['row']), int(row['col'])
             values[i][j] += 1
-            labels[i][j] += Constants.getInstance().countryAbbreviations.get(row["Country"]) + '\n'
+            # labels[i][j] += Constants.getInstance().countryAbbreviations.get(row["Country"]) + '\n'
+            labels[i][j] += row["Country"] + '\n'
         fig, ax = plt.subplots()
         im = ax.imshow(values, cmap="magma")
         ax.figure.colorbar(im, ax=ax)
@@ -27,6 +28,25 @@ class Plotter:
             for j in range(k):
                 text_color = "white" if values[i][j] < 1.5 else "black"
                 ax.text(j, i, labels[i][j][:-1], ha="center", va="center", color=text_color)
+
+        fig.tight_layout()
+        plt.show()
+
+    @staticmethod
+    def averageDistanceHeatmap(distances):
+        k = len(distances) 
+        fig, ax = plt.subplots()
+        im = ax.imshow(distances, cmap="magma")
+
+        ax.figure.colorbar(im, ax=ax)
+
+        ax.set_xticks(np.arange(k))
+        ax.set_yticks(np.arange(k))
+
+        for i in range(k):
+            for j in range(k):
+                text_color = "white" if distances[i][j] < 5 else "black"
+                ax.text(j, i, f"{distances[i][j]:.2f}", ha="center", va="center", color=text_color)
 
         fig.tight_layout()
         plt.show()
@@ -63,3 +83,4 @@ class Plotter:
         for _, row in df.iterrows():
             letters.append(row.to_numpy())
         Plotter.drawLetter(letters, showTitle=False)
+    

@@ -1,9 +1,10 @@
 {
-    "problem": "OJA",
-    "options": {
-        "maxEpochs": 10000,
-        "initialLearningRate": 0.1,
-        "changeLearningRate": true
-    },
-    "seed": 732
+	"problem": "OJA",
+	"options": {
+		"maxEpochs": 10000,
+		"initialLearningRate": 0.1,
+		"changeLearningRate": true
+	},
+	"seed": 732
 }
+

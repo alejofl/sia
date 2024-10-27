@@ -61,3 +61,17 @@ class Kohonen:
                     winnerI, winnerJ = i, j
                     minDistance = distance
         return winnerI, winnerJ
+    
+    def averageNeighborDistances(self):
+        avg_distance_matrix = np.zeros((self.matrixSquareSize, self.matrixSquareSize))
+        for i in range(self.matrixSquareSize):
+            for j in range(self.matrixSquareSize):
+                distances = []
+                for di in [-1, 0, 1]:
+                    for dj in [-1, 0, 1]:
+                        ni, nj = i + di, j + dj
+                        if 0 <= ni < self.matrixSquareSize and 0 <= nj < self.matrixSquareSize and (di != 0 or dj != 0):
+                            distance = self.distanceCalculator(self.matrix[i][j], self.matrix[ni][nj])
+                            distances.append(distance)
+                avg_distance_matrix[i, j] = np.mean(distances) if distances else 0
+        return avg_distance_matrix
