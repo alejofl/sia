@@ -71,6 +71,30 @@ class Plotter:
 
         fig.tight_layout()
         plt.show()
+        
+    @staticmethod
+    def pcaVsOjaLoads(labels, pca, oja):
+        COLORS = ("#651b80", "#dd5238")
+        values = {
+            "PCA": np.abs(pca),
+            "OJA": np.abs(oja)
+        }
+
+        x = np.arange(len(labels))  # the label locations
+        width = 0.4 # the width of the bars
+        multiplier = 0
+
+        fig, ax = plt.subplots(layout='constrained')
+
+        for (attribute, measurement), color in zip(values.items(), COLORS):
+            offset = width * multiplier
+            ax.bar(x + offset, measurement, width, label=attribute, color=color, align='center')
+            multiplier += 1
+
+        ax.set_xticks(x + width / 2, labels)
+        ax.legend(loc='upper left')
+
+        plt.show()
 
     @staticmethod
     def drawLetter(letters, showTitle=True):
