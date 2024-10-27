@@ -50,6 +50,27 @@ class Plotter:
 
         fig.tight_layout()
         plt.show()
+        
+    @staticmethod
+    def kohonenVariablesComparison(filename, k, variables):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "kohonen", filename)
+        df = pd.read_csv(filepath)
+        values = np.zeros((len(variables), k, k))
+        for _, row in df.iterrows():
+            i, j = int(row['row']), int(row['col'])
+            for idx, var in enumerate(variables):
+                values[idx][i][j] += row[var]
+
+        fig, axs = plt.subplots(1, len(variables))
+        for i, (var, ax) in enumerate(zip(variables, axs)):
+            im = ax.imshow(values[i], cmap="magma")
+            ax.figure.colorbar(im, ax=ax)
+            ax.set_xticks(np.arange(k))
+            ax.set_yticks(np.arange(k))
+            ax.set_title(var)
+
+        fig.tight_layout()
+        plt.show()
 
     @staticmethod
     def drawLetter(letters, showTitle=True):

@@ -31,8 +31,8 @@ def solveKohonen(options):
     #    winnerNeuron = kohonen.test(data)
     #    print(f"{country} - {winnerNeuron}")
     Utils.saveKohonenOutput("output.csv", kohonen, countries, dataset)
-    Plotter.kohonenHeatmap("output.csv", options["matrixSquareSize"])
-    Plotter.averageDistanceHeatmap(kohonen.averageNeighborDistances())
+    # Plotter.kohonenHeatmap("output.csv", options["matrixSquareSize"])
+    # Plotter.averageDistanceHeatmap(kohonen.averageNeighborDistances())
 # -- END KOHONEN ------------------------------------------------------------
 
 # -- OJA --------------------------------------------------------------------
