@@ -98,12 +98,16 @@ class Plotter:
 
     @staticmethod
     def drawLetter(letters, showTitle=True):
-        rows = len(letters) // 5 + (1 if len(letters) % 5 != 0 else 0)
-        cols = 5 if len(letters) > 5 else len(letters)
+        rows = len(letters) // 7 + (1 if len(letters) % 7 != 0 else 0)
+        cols = 7 if len(letters) > 7 else len(letters)
         fig, axs = plt.subplots(rows, cols)
+        axs = axs.flatten()
         for i, (ax, letter) in enumerate(zip(axs, letters)):
             letter = np.array(letter).reshape(5, 5)
             ax.imshow(letter, cmap="Greys", interpolation="nearest")
+            if showTitle:
+                ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
+        for i, ax in enumerate(axs):
             ax.tick_params(
                 axis='both',
                 which='both',
@@ -116,8 +120,8 @@ class Plotter:
                 labelleft=False,
                 labelright=False
             )
-            if showTitle:
-                ax.set_title("Noisy Letter" if i == 0 else "Predicted Letter")
+            if i > len(letters) - 1:
+                fig.delaxes(ax)
         plt.show()
         
     @staticmethod
@@ -128,4 +132,32 @@ class Plotter:
         for _, row in df.iterrows():
             letters.append(row.to_numpy())
         Plotter.drawLetter(letters, showTitle=False)
-    
+        
+    @staticmethod
+    def energyPerEpoch(statesFilename, weightsFilename):
+        statesFilepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "hopfield", statesFilename)
+        weightsFilepath = os.path.join(os.path.dirname(sys.argv[0]), "results", "hopfield", weightsFilename)
+        df = pd.read_csv(statesFilepath, header=None)
+        states = []
+        for _, row in df.iterrows():
+            states.append(row.to_numpy())
+        weights = pd.read_csv(weightsFilepath, header=None).to_numpy()
+        
+        xs = []
+        ys = []
+        for epoch, state in enumerate(states):
+            energy = 0
+            for i in range(len(weights)):
+                for j in range(len(weights[0])):
+                    energy += weights[i][j] * state[i] * state[j]
+            energy = - 0.5 * energy
+            xs.append(epoch)
+            ys.append(energy)
+        
+        fig, ax = plt.subplots()
+        ax.scatter(xs, ys, color="#651b80")
+        ax.plot(xs, ys, color="#651b80")
+        
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel("Energy")
+        plt.show()

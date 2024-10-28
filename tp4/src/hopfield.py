@@ -17,13 +17,21 @@ class Hopfield:
         pattern = np.array(pattern)
         for _ in range(self.maxEpochs):
             patternPerEpoch.append(np.copy(pattern))
-            pattern = np.sign(np.matmul(self.weights, pattern.T))
+            pattern = self.sign(pattern, np.matmul(self.weights, pattern.T))
             if np.array_equal(pattern, patternPerEpoch[-1]):
                 break
 
         if not self.patternExists(patternPerEpoch[-1]):
             print("Did not converge")
         return patternPerEpoch
+    
+    def sign(self, previous, new):
+        result = np.zeros(previous.shape)
+        for i in range(len(new)):
+                result[i] = np.sign(new[i])
+                if result[i] == 0:
+                    result[i] = previous[i]
+        return result
 
     def patternExists(self, pattern):
         for p in self.patterns:

@@ -64,10 +64,11 @@ def solveHopfield(options):
         maxEpochs=options["maxEpochs"]
     )
     
-    noisyLetter = Utils.saltAndPepper(patterns[0], options["noiseLevel"])
+    noisyLetter = Utils.saltAndPepper(patterns[2], options["noiseLevel"])
     patternsPerEpoch = hopfield.test(noisyLetter)
     # Plotter.drawLetter((noisyLetter, patternsPerEpoch[-1]))
-    Utils.saveHopfieldLetterPerEpoch("f.csv", patternsPerEpoch)
+    Utils.saveHopfieldWeights("o_0p2_weights.csv", hopfield)
+    Utils.saveHopfieldLetterPerEpoch("o_0p2.csv", patternsPerEpoch)
     
 def checkLettersOrtogonality():
     letters = Utils.getLettersDataset()
