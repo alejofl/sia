@@ -1,0 +1,15 @@
+{
+    "problem": "KOHONEN | OJA | HOPFIELD | HOPFIELD - ORTOGONALITY",
+	"options": {
+		"matrixSquareSize": 3, // Only for KOHONEN
+		"initialLearningRate": 0.3, // Only for KOHONEN or OJA
+		"initialRadius": 1, // Only for KOHONEN
+		"changeLearningRate": false, // Only for KOHONEN or OJA
+		"changeRadius": false, // Only for KOHONEN
+		"distanceCalculator": "EUCLIDEAN", // Only for KOHONEN
+        "maxEpochs": 10000, // Only for OJA or HOPFIELD
+        "noiseLevel": 0.1, // Only for HOPFIELD
+        "letters": ["F", "I", "O", "V"] // Only for HOPFIELD
+	},
+	"seed": 732
+}
