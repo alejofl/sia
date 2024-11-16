@@ -1,0 +1,52 @@
+{
+	"problem": "CONVENTIONAL",
+	"hyperparameters": {
+		"epsilon": 0.1,
+		"maxEpochs": 10000,
+		"optimizer": {
+			"type": "GRADIENT_DESCENT",
+			"options": {
+				"rate": 1e-1,
+				"alpha": 0.9,
+				"beta1": 0.9,
+				"beta2": 0.999
+			}
+		},
+		"updater": {
+			"type": "ONLINE",
+			"options": {
+				"batchSize": 15
+			}
+		}
+	},
+	"encoderArchitecture": [
+		{
+			"neuronQty": 20,
+			"activationFunction": {
+				"type": "LOGISTIC",
+				"options": {
+					"beta": 0.3
+				}
+			}
+		},
+		{
+			"neuronQty": 10,
+			"activationFunction": {
+				"type": "LOGISTIC",
+				"options": {
+					"beta": 0.3
+				}
+			}
+		},
+		{
+			"neuronQty": 2,
+			"activationFunction": {
+				"type": "TANH",
+				"options": {
+					"beta": 0.5
+				}
+			}
+		}
+	],
+	"seed": 732
+}

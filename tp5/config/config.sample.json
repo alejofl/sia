@@ -1,0 +1,34 @@
+{
+	"problem": "CONVENTIONAL | DENOISING | VARIATIONAL",
+	"hyperparameters": {
+		"epsilon": 3e-2,
+		"maxEpochs": 10000,
+		"optimizer": {
+			"type": "GRADIENT_DESCENT | MOMENTUM | ADAM",
+			"options": {
+				"rate": 1e-2,
+				"alpha": 0.9, // Only needed for MOMENTUM type
+				"beta1": 0.9, // Only needed for ADAM type
+				"beta2": 0.999 // Only needed for ADAM type
+			}
+		},
+		"updater": {
+			"type": "ONLINE | BATCH | MINI-BATCH",
+			"options": {
+				"batchSize": 15 // Only needed for MINI-BATCH type
+			}
+		}
+	},
+	"architecture": [
+		{
+			"neuronQty": 35,
+			"activationFunction": {
+				"type": "LINEAR | LOGISTIC | TANH",
+				"options": {
+					"beta": 0.5 // Only needed for LOGISTIC or TANH type
+				}
+			}
+		}
+	],
+	"seed": 732
+}
