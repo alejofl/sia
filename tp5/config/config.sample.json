@@ -23,7 +23,7 @@
 		{
 			"neuronQty": 35,
 			"activationFunction": {
-				"type": "LINEAR | LOGISTIC | TANH",
+				"type": "LINEAR | LOGISTIC | TANH | RELU",
 				"options": {
 					"beta": 0.5 // Only needed for LOGISTIC or TANH type
 				}

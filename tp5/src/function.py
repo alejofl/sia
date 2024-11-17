@@ -35,6 +35,8 @@ class ActivationFunction(ABC):
             return LogisticFunction(options)
         elif name == "tanh":
             return HyperbolicTangentFunction(options)
+        elif name == "relu":
+            return ReluFunction(options)
         else:
             raise ValueError("Invalid activation function")
 
@@ -83,3 +85,16 @@ class HyperbolicTangentFunction(ActivationFunction):
     
     def denormalize(self, x):
         return np.interp(x, [-1, 1], [self.min, self.max])
+
+class ReluFunction(ActivationFunction):
+    def __call__(self, x, w):
+        return np.max([0, np.dot(w, x)])
+
+    def derivative(self, x, w):
+        return 1 if np.dot(w, x) > 0 else 0
+    
+    def normalize(self, x):
+        return x
+    
+    def denormalize(self, x):
+        return x
