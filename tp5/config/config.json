@@ -1,12 +1,12 @@
 {
 	"problem": "CONVENTIONAL",
 	"hyperparameters": {
-		"epsilon": 0.1,
-		"maxEpochs": 10000,
+		"epsilon": 0.009,
+		"maxEpochs": 100000,
 		"optimizer": {
-			"type": "GRADIENT_DESCENT",
+			"type": "ADAM",
 			"options": {
-				"rate": 1e-1,
+				"rate": 1e-4,
 				"alpha": 0.9,
 				"beta1": 0.9,
 				"beta2": 0.999
@@ -21,20 +21,20 @@
 	},
 	"encoderArchitecture": [
 		{
-			"neuronQty": 20,
+			"neuronQty": 15,
 			"activationFunction": {
-				"type": "LOGISTIC",
+				"type": "RELU",
 				"options": {
-					"beta": 0.3
+					"beta": 0.5
 				}
 			}
 		},
 		{
-			"neuronQty": 10,
+			"neuronQty": 5,
 			"activationFunction": {
-				"type": "LOGISTIC",
+				"type": "RELU",
 				"options": {
-					"beta": 0.3
+					"beta": 0.5
 				}
 			}
 		},

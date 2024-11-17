@@ -24,13 +24,13 @@ class Utils:
         inputs = []
         for letter in letters:
             input = np.array([letter])
-            inputs.append(np.insert(input, 0, bias))
+            inputs.append(np.append(input, bias))
         return inputs
 
     @staticmethod
     def generateAutoencoderArchitecture(encoderArchitecture, inputLength, zeros=False):
         r = Constants.getInstance().random
-        outputLayer = { "neuronQty": inputLength - 1, "activationFunction": { "type": "LOGISTIC", "options": { "beta": 0.5 } } }
+        outputLayer = { "neuronQty": inputLength - 1, "activationFunction": { "type": "LOGISTIC", "options": { "beta": 1 } } }
         layers = encoderArchitecture + list(reversed(encoderArchitecture[:-1])) + [outputLayer]
 
         architecture = []

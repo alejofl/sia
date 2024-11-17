@@ -11,7 +11,7 @@ from src.plotter import Plotter
 ### CONVENTIONAL AUTOENCODER ################################################################################
 def solveConventionalAutoencoder(config):
     letters = Utils.parseFont(font)
-    inputs = Utils.generateInputs(letters)
+    inputs = Utils.generateInputs(letters[:4])
     ae = Autoencoder(
         config["encoderArchitecture"],
         OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
@@ -19,8 +19,12 @@ def solveConventionalAutoencoder(config):
         inputs
     )
     ae.train()
-    output = Utils.postprocessOutput(ae.test(inputs[1]))
-    Plotter.drawLetters([letters[1], output])
+    outputs = []
+    for input in inputs:
+        output = Utils.postprocessOutput(ae.test(input))
+        outputs.append(output)
+    
+    Plotter.drawLetters([letters[1], outputs[1], letters[2], outputs[2], letters[3], outputs[3]])
 #############################################################################################################
 
 ### DENOISING AUTOENCODER ###################################################################################
