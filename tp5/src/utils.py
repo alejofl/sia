@@ -24,7 +24,7 @@ class Utils:
         inputs = []
         for letter in letters:
             input = np.array([letter])
-            inputs.append(np.append(input, bias))
+            inputs.append(np.insert(input, 0, bias))
         return inputs
 
     @staticmethod

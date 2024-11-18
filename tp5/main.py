@@ -11,7 +11,7 @@ from src.plotter import Plotter
 ### CONVENTIONAL AUTOENCODER ################################################################################
 def solveConventionalAutoencoder(config):
     letters = Utils.parseFont(font)
-    inputs = Utils.generateInputs(letters[:4])
+    inputs = Utils.generateInputs(letters)
     ae = Autoencoder(
         config["encoderArchitecture"],
         OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),

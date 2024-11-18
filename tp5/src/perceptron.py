@@ -105,12 +105,6 @@ class MultiLayerPerceptron(Perceptron):
                     layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
                     layerOutput = np.insert(layerOutput, 0, self.constants.bias)
                     outputs.append(layerOutput)
-                    
-                # for i in range(len(outputs[-1])):
-                #     if outputs[-1][i] > 0.5:
-                #         outputs[-1][i] = 1
-                #     else:
-                #         outputs[-1][i] = 0
 
                 deltas = []
                 for i, layer in reversed(list(enumerate(self.layers))):

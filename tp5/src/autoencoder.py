@@ -11,7 +11,10 @@ class Autoencoder(MultiLayerPerceptron):
         super().__init__(architecture, optimizerClass, optimizerOptions)
 
     def train(self):
-        super().train(self.inputs, self.inputs)
+        expectedOutputs = []
+        for input in self.inputs:
+            expectedOutputs.append(input[1:])
+        super().train(self.inputs, expectedOutputs)
 
     def getLatentSpaceOutput(self, input):
         outputs = []
