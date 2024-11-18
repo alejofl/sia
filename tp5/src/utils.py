@@ -46,5 +46,7 @@ class Utils:
         return architecture
 
     @staticmethod
-    def postprocessOutput(output):
-        return list(map(lambda x: 1 if x > 0.5 else 0, output))
+    def postprocessOutput(output, binarize=False):
+        if binarize:
+            return list(map(lambda x: 1 if x > 0.5 else 0, output))
+        return output
