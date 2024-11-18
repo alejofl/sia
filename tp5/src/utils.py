@@ -5,6 +5,10 @@ from .function import ActivationFunction
 
 class Utils:
     @staticmethod
+    def parseBoolean(value):
+        return value.lower() in ['true', '1', 't', 'y', 'yes']
+
+    @staticmethod
     def parseFont(font):
         letters = []
         for f in font:

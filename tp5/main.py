@@ -1,5 +1,6 @@
 import sys
 import json
+import pickle
 from resources.font import font3 as font
 from src.constants import Constants
 from src.utils import Utils
@@ -9,16 +10,25 @@ from src.plotter import Plotter
 
 
 ### CONVENTIONAL AUTOENCODER ################################################################################
-def solveConventionalAutoencoder(config):
+def solveConventionalAutoencoder(config, loadPickle=False, dumpPickle=False):
     letters = Utils.parseFont(font)
     inputs = Utils.generateInputs(letters)
-    ae = Autoencoder(
-        config["encoderArchitecture"],
-        OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
-        config["hyperparameters"]["optimizer"]["options"],
-        inputs
-    )
-    ae.train()
+
+    if loadPickle:
+        with open("lettersAE.pickle", 'rb') as file:
+            ae = pickle.load(file)
+    else:
+        ae = Autoencoder(
+            config["encoderArchitecture"],
+            OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
+            config["hyperparameters"]["optimizer"]["options"],
+            inputs
+        )
+        ae.train()
+
+    if dumpPickle:
+        with open("lettersAE.pickle", 'wb') as file:
+            pickle.dump(ae, file)
 
     outputs = []
     for input in inputs:
@@ -29,16 +39,25 @@ def solveConventionalAutoencoder(config):
 #############################################################################################################
 
 ### DENOISING AUTOENCODER ###################################################################################
-def solveDenoisingAutoencoder(config):
+def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
     letters = Utils.parseFont(font)
     inputs = Utils.generateInputs(letters)
-    ae = Autoencoder(
-        config["encoderArchitecture"],
-        OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
-        config["hyperparameters"]["optimizer"]["options"],
-        inputs
-    )
-    ae.train()
+
+    if loadPickle:
+        with open("lettersAE.pickle", 'rb') as file:
+            ae = pickle.load(file)
+    else:
+        ae = Autoencoder(
+            config["encoderArchitecture"],
+            OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
+            config["hyperparameters"]["optimizer"]["options"],
+            inputs
+        )
+        ae.train()
+
+    if dumpPickle:
+        with open("lettersAE.pickle", 'wb') as file:
+            pickle.dump(ae, file)
 
     toDraw = []
     for letter in letters:
@@ -56,7 +75,7 @@ def solveDenoisingAutoencoder(config):
 #############################################################################################################
 
 ### VARIATIONAL AUTOENCODER #################################################################################
-def solveVariationalAutoencoder(config):
+def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
     pass
 #############################################################################################################
 
@@ -77,13 +96,25 @@ if __name__ == "__main__":
             batchSize=batchSize,
             seed=config["seed"],
         )
+        
+        loadPickle = False
+        try:
+            loadPickle = Utils.parseBoolean(sys.argv[2])
+        except IndexError:
+            pass
+        
+        dumpPickle = False
+        try:
+            dumpPickle = Utils.parseBoolean(sys.argv[3])
+        except IndexError:
+            pass
 
         match config["problem"].lower():
             case "conventional":
-                solveConventionalAutoencoder(config)
+                solveConventionalAutoencoder(config, loadPickle, dumpPickle)
             case "denoising":
-                solveDenoisingAutoencoder(config)
+                solveDenoisingAutoencoder(config, loadPickle, dumpPickle)
             case "variational":
-                solveVariationalAutoencoder(config)
+                solveVariationalAutoencoder(config, loadPickle, dumpPickle)
 
     sys.exit(0)

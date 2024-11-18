@@ -2,7 +2,7 @@
 	"problem": "CONVENTIONAL",
 	"problemOptions": {},
 	"hyperparameters": {
-		"epsilon": 0.06,
+		"epsilon": 0.05,
 		"maxEpochs": 10000,
 		"optimizer": {
 			"type": "GRADIENT_DESCENT",
