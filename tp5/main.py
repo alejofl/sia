@@ -19,17 +19,40 @@ def solveConventionalAutoencoder(config):
         inputs
     )
     ae.train()
+
     outputs = []
     for input in inputs:
         output = Utils.postprocessOutput(ae.test(input))
         outputs.append(output)
     
-    Plotter.drawLetters([letters[1], outputs[1], letters[2], outputs[2], letters[3], outputs[3]])
+    Plotter.drawLetters(outputs)
 #############################################################################################################
 
 ### DENOISING AUTOENCODER ###################################################################################
 def solveDenoisingAutoencoder(config):
-    pass
+    letters = Utils.parseFont(font)
+    inputs = Utils.generateInputs(letters)
+    ae = Autoencoder(
+        config["encoderArchitecture"],
+        OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
+        config["hyperparameters"]["optimizer"]["options"],
+        inputs
+    )
+    ae.train()
+
+    toDraw = []
+    for letter in letters:
+        input = None
+        if config["problemOptions"]["noiseType"].lower() == "gaussian":
+            input = Utils.gaussianFilter(letter, config["problemOptions"]["noiseLevel"])
+        else:
+            input = Utils.saltAndPepperFilter(letter, config["problemOptions"]["noiseThreshold"])
+        output = Utils.postprocessOutput(ae.test(Utils.generateInput(input)))
+        toDraw.append(letter)
+        toDraw.append(input)
+        toDraw.append(output)
+    
+    Plotter.drawLetters(toDraw)
 #############################################################################################################
 
 ### VARIATIONAL AUTOENCODER #################################################################################
@@ -55,12 +78,12 @@ if __name__ == "__main__":
             seed=config["seed"],
         )
 
-        match config["problem"]:
-            case "CONVENTIONAL":
+        match config["problem"].lower():
+            case "conventional":
                 solveConventionalAutoencoder(config)
-            case "DENOISING":
+            case "denoising":
                 solveDenoisingAutoencoder(config)
-            case "VARIATIONAL":
+            case "variational":
                 solveVariationalAutoencoder(config)
 
     sys.exit(0)

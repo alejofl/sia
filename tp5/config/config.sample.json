@@ -1,5 +1,10 @@
 {
 	"problem": "CONVENTIONAL | DENOISING | VARIATIONAL",
+	"problemOptions": {
+		"noiseType": "GAUSSIAN | SALT_AND_PEPPER", // Only needed for DENOISING problem
+		"noiseThreshold": 0.1, // Only needed for SALT_AND_PEPPER noise type
+		"noiseLevel": 0.1 // Only needed for GAUSSIAN noise type
+	},
 	"hyperparameters": {
 		"epsilon": 3e-2,
 		"maxEpochs": 10000,

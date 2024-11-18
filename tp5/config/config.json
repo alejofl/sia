@@ -1,5 +1,6 @@
 {
 	"problem": "CONVENTIONAL",
+	"problemOptions": {},
 	"hyperparameters": {
 		"epsilon": 0.009,
 		"maxEpochs": 100000,

@@ -19,12 +19,16 @@ class Utils:
         return letters
 
     @staticmethod
-    def generateInputs(letters):
+    def generateInput(letter):
         bias = Constants.getInstance().bias
+        input = np.array([letter])
+        return np.insert(input, 0, bias)
+
+    @staticmethod
+    def generateInputs(letters):
         inputs = []
         for letter in letters:
-            input = np.array([letter])
-            inputs.append(np.insert(input, 0, bias))
+            inputs.append(Utils.generateInput(letter))
         return inputs
 
     @staticmethod
@@ -50,3 +54,18 @@ class Utils:
         if binarize:
             return list(map(lambda x: 1 if x > 0.5 else 0, output))
         return output
+
+    @staticmethod
+    def saltAndPepperFilter(data, noiseThreshold):
+        random = Constants.getInstance().random
+        noisyData = np.copy(data)
+        for i in range(len(noisyData)):
+            if random.random() < noiseThreshold:
+                noisyData[i] = 1 - noisyData[i]
+        return noisyData
+
+    @staticmethod
+    def gaussianFilter(data, std):
+        shape = np.shape(data)
+        noise = np.random.normal(0, std, shape)
+        return np.add(data, noise)

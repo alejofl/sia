@@ -1,6 +1,9 @@
 {
-	"problem": "CONVENTIONAL",
-	"problemOptions": {},
+	"problem": "DENOISING",
+	"problemOptions": {
+		"noiseType": "GAUSSIAN",
+		"noiseLevel": 0.2
+	},
 	"hyperparameters": {
 		"epsilon": 0.06,
 		"maxEpochs": 10000,
