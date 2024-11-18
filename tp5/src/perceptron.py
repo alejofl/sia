@@ -95,7 +95,10 @@ class MultiLayerPerceptron(Perceptron):
     def train(self, inputs, expectedOutputs):
         seenInputs = 0
         for _ in range(self.constants.maxEpochs):
-            print("epoch", _, self.calculateError(inputs, expectedOutputs))
+            # TODO: Remove this print
+            if _ % 100 == 0:
+                print("epoch", _, self.calculateError(inputs, expectedOutputs))
+
             for input, expectedOutput in zip(inputs, expectedOutputs):
                 seenInputs += 1
 
