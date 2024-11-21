@@ -6,7 +6,7 @@ from .utils import Utils
 class Autoencoder(MultiLayerPerceptron):
     def __init__(self, encoderArchitecture, optimizerClass, optimizerOptions, inputs):
         self.latentSpaceIndex = len(encoderArchitecture) - 1
-        self.latentSpaceDimension = encoderArchitecture[-1][0]
+        self.latentSpaceDimension = encoderArchitecture[-1]["neuronQty"]
         architecture = Utils.generateAutoencoderArchitecture(encoderArchitecture, len(inputs[0]))
         self.inputs = inputs
         super().__init__(architecture, optimizerClass, optimizerOptions)
