@@ -9,13 +9,13 @@ class Autoencoder(MultiLayerPerceptron):
         self.latentSpaceDimension = encoderArchitecture[-1]["neuronQty"]
         architecture = Utils.generateAutoencoderArchitecture(encoderArchitecture, len(inputs[0]))
         self.inputs = inputs
+        self.expectedOutputs = []
+        for input in self.inputs:
+            self.expectedOutputs.append(input[1:])
         super().__init__(architecture, optimizerClass, optimizerOptions)
 
     def train(self):
-        expectedOutputs = []
-        for input in self.inputs:
-            expectedOutputs.append(input[1:])
-        super().train(self.inputs, expectedOutputs)
+        super().train(self.inputs, self.expectedOutputs)
 
     def getLatentSpaceOutput(self, input):
         outputs = []

@@ -1,8 +1,11 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 
 class Plotter:
+    COLORS = ["#003049", "#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#007F83", "#BC3C28", "#FFD56B", "#006A4E"]
+    
     @staticmethod
     def drawLetters(letters):
         rows = len(letters) // 7 + (1 if len(letters) % 7 != 0 else 0)
@@ -29,4 +32,19 @@ class Plotter:
             )
             if i > len(letters) - 1:
                 fig.delaxes(ax)
+        plt.show()
+
+    @staticmethod
+    def mseVsEpoch(filename):
+        df = pd.read_csv(filename)
+
+        fig, ax = plt.subplots()
+        ax.set_prop_cycle("color", Plotter.COLORS)
+
+        ax.plot(df["epoch"], df["mse"])
+        
+        plt.yscale("log")
+        plt.xlabel("Epoch")
+        plt.ylabel("Mean Squared Error")
+        plt.legend()
         plt.show()
