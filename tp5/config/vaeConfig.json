@@ -1,0 +1,44 @@
+{
+	"problem": "VARIATIONAL",
+	"problemOptions": {},
+	"hyperparameters": {
+		"epsilon": 0.05,
+		"maxEpochs": 10000,
+		"optimizer": {
+			"type": "GRADIENT_DESCENT",
+			"options": {
+				"rate": 1e-2,
+				"alpha": 0.9,
+				"beta1": 0.9,
+				"beta2": 0.999
+			}
+		},
+		"updater": {
+			"type": "ONLINE",
+			"options": {
+				"batchSize": 15
+			}
+		}
+	},
+	"encoderArchitecture": [
+		{
+			"neuronQty": 10,
+			"activationFunction": {
+				"type": "TANH",
+				"options": {
+					"beta": 1
+				}
+			}
+		},
+		{
+			"neuronQty": 2,
+			"activationFunction": {
+				"type": "TANH",
+				"options": {
+					"beta": 0.5
+				}
+			}
+		}
+	],
+	"seed": 732
+}

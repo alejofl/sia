@@ -73,3 +73,8 @@ class Utils:
         shape = np.shape(data)
         noise = np.random.normal(0, std, shape)
         return np.add(data, noise)
+
+    @staticmethod
+    def sample(mu, sigma):  
+        epsilon = np.random.normal(loc=0, scale=1)
+        return sigma * epsilon + mu

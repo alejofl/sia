@@ -6,6 +6,7 @@ from src.constants import Constants
 from src.utils import Utils
 from src.optimizer import OptimizerFunction
 from src.autoencoder import Autoencoder
+from src.vae import VAE
 from src.plotter import Plotter
 
 
@@ -76,7 +77,29 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
 
 ### VARIATIONAL AUTOENCODER #################################################################################
 def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
-    pass
+    letters = Utils.parseFont(font)
+    inputs = Utils.generateInputs(letters[:5])
+
+    if loadPickle:
+        with open("lettersVAE.pickle", 'rb') as file:
+            vae = pickle.load(file)
+    else:
+        vae = VAE(
+            config["encoderArchitecture"],
+            OptimizerFunction.getFunction(config["hyperparameters"]["optimizer"]["type"]),
+            config["hyperparameters"]["optimizer"]["options"],
+            inputs
+        )
+        vae.train()
+
+    if dumpPickle:
+        with open("lettersVAE.pickle", 'wb') as file:
+            pickle.dump(vae, file)
+
+    generated_samples = vae.generateFromLatentSpace(num_samples=10)
+    generated_outputs = [Utils.postprocessOutput(sample) for sample in generated_samples]
+    
+    Plotter.drawLetters(generated_outputs)
 #############################################################################################################
 
 
