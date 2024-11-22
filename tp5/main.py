@@ -2,7 +2,7 @@ import sys
 import json
 import pickle
 from resources.font import font3 as font
-from src.constants import Constants
+from src.constants import Constants, LETTERS_AE_PICKLE_FILENAME, LETTERS_DAE_PICKLE_FILENAME, LETTERS_VAE_PICKLE_FILENAME
 from src.utils import Utils
 from src.optimizer import OptimizerFunction
 from src.autoencoder import Autoencoder
@@ -16,7 +16,7 @@ def solveConventionalAutoencoder(config, loadPickle=False, dumpPickle=False):
     inputs = Utils.generateInputs(letters)
 
     if loadPickle:
-        with open("lettersAE.pickle", 'rb') as file:
+        with open(LETTERS_AE_PICKLE_FILENAME, 'rb') as file:
             ae = pickle.load(file)
     else:
         ae = Autoencoder(
@@ -28,7 +28,7 @@ def solveConventionalAutoencoder(config, loadPickle=False, dumpPickle=False):
         ae.train()
 
     if dumpPickle:
-        with open("lettersAE.pickle", 'wb') as file:
+        with open(LETTERS_AE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(ae, file)
 
     outputs = []
@@ -45,7 +45,7 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
     inputs = Utils.generateInputs(letters)
 
     if loadPickle:
-        with open("lettersAE.pickle", 'rb') as file:
+        with open(LETTERS_DAE_PICKLE_FILENAME, 'rb') as file:
             ae = pickle.load(file)
     else:
         ae = Autoencoder(
@@ -57,7 +57,7 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
         ae.train()
 
     if dumpPickle:
-        with open("lettersAE.pickle", 'wb') as file:
+        with open(LETTERS_DAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(ae, file)
 
     toDraw = []
@@ -81,7 +81,7 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
     inputs = Utils.generateInputs(letters[:5])
 
     if loadPickle:
-        with open("lettersVAE.pickle", 'rb') as file:
+        with open(LETTERS_VAE_PICKLE_FILENAME, 'rb') as file:
             vae = pickle.load(file)
     else:
         vae = VAE(
@@ -93,7 +93,7 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
         vae.train()
 
     if dumpPickle:
-        with open("lettersVAE.pickle", 'wb') as file:
+        with open(LETTERS_VAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(vae, file)
 
     generated_samples = vae.generateFromLatentSpace(num_samples=10)

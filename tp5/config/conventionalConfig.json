@@ -2,8 +2,8 @@
 	"problem": "CONVENTIONAL",
 	"problemOptions": {},
 	"hyperparameters": {
-		"epsilon": 0.05,
-		"maxEpochs": 10000,
+		"epsilon": 0.025,
+		"maxEpochs": 20000,
 		"optimizer": {
 			"type": "GRADIENT_DESCENT",
 			"options": {

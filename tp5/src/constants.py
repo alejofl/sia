@@ -1,6 +1,11 @@
 import numpy as np
 
 
+LETTERS_AE_PICKLE_FILENAME = "lettersAE.pickle"
+LETTERS_DAE_PICKLE_FILENAME = "lettersDAE.pickle"
+LETTERS_VAE_PICKLE_FILENAME = "lettersVAE.pickle"
+
+
 class Constants:
     _instance = None
 
