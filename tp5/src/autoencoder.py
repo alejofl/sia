@@ -4,10 +4,10 @@ from .utils import Utils
 
 
 class Autoencoder(MultiLayerPerceptron):
-    def __init__(self, encoderArchitecture, optimizerClass, optimizerOptions, inputs):
+    def __init__(self, encoderArchitecture, optimizerClass, optimizerOptions, inputs, isVae=False):
         self.latentSpaceIndex = len(encoderArchitecture) - 1
         self.latentSpaceDimension = encoderArchitecture[-1]["neuronQty"]
-        architecture = Utils.generateAutoencoderArchitecture(encoderArchitecture, len(inputs[0]))
+        architecture = Utils.generateAutoencoderArchitecture(encoderArchitecture, len(inputs[0]), False, isVae)
         self.inputs = inputs
         self.expectedOutputs = []
         for input in self.inputs:

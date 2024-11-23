@@ -78,7 +78,7 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
 ### VARIATIONAL AUTOENCODER #################################################################################
 def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
     letters = Utils.parseFont(font)
-    inputs = Utils.generateInputs(letters[:5])
+    inputs = Utils.generateInputs(letters[:10])
 
     if loadPickle:
         with open(LETTERS_VAE_PICKLE_FILENAME, 'rb') as file:

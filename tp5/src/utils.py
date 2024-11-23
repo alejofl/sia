@@ -36,11 +36,14 @@ class Utils:
         return inputs
 
     @staticmethod
-    def generateAutoencoderArchitecture(encoderArchitecture, inputLength, zeros=False):
+    def generateAutoencoderArchitecture(encoderArchitecture, inputLength, zeros=False, isVae=False):
         r = Constants.getInstance().random
         outputLayer = { "neuronQty": inputLength - 1, "activationFunction": { "type": "LOGISTIC", "options": { "beta": 1 } } }
         layers = encoderArchitecture + list(reversed(encoderArchitecture[:-1])) + [outputLayer]
-
+        print(isVae)
+        if isVae:
+            print(layers[len(encoderArchitecture)-1]["neuronQty"])
+            layers[len(encoderArchitecture)-1]["neuronQty"]*=2
         architecture = []
         i = 0
         for i, layer in enumerate(layers):
@@ -49,8 +52,12 @@ class Utils:
             weights = []
             for _ in range(neuronQty):
                 weightsQty = layers[i - 1]["neuronQty"] + 1
+                if isVae and i == len(encoderArchitecture):
+                    weightsQty = weightsQty//2 + 1
+
                 weights.append(np.zeros(weightsQty) if zeros else r.uniform(-1, 1, weightsQty))
             architecture.append((neuronQty, f, weights))
+        print("architecture:", len(architecture[0][2]))
         return architecture
 
     @staticmethod
@@ -75,6 +82,7 @@ class Utils:
         return np.add(data, noise)
 
     @staticmethod
-    def sample(mu, sigma):  
-        epsilon = np.random.normal(loc=0, scale=1)
-        return sigma * epsilon + mu
+    def sample(mu, sigma):
+        random = Constants.getInstance().random
+        epsilon = random.standard_normal()
+        return epsilon, sigma * epsilon + mu
