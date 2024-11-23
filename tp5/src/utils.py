@@ -1,3 +1,6 @@
+import os
+import sys
+from PIL import Image, ImageOps
 import numpy as np
 from .constants import Constants
 from .function import ActivationFunction
@@ -21,6 +24,18 @@ class Utils:
                 bits.append(row & 0b00000001)
             letters.append(np.array(bits))
         return letters
+
+    @staticmethod
+    def parseIcons(directory, qty):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "resources", directory)
+        icons = []
+        for i in range(1, qty+1):
+            icon = Image.open(os.path.join(filepath, f"icon{i:02}.png")).convert("L")
+            icon = ImageOps.invert(icon)
+            icon = np.asarray(icon)
+            icon = icon.flatten()
+            icons.append(icon / 255)
+        return icons
 
     @staticmethod
     def generateInput(letter):

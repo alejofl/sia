@@ -86,3 +86,31 @@ class Plotter:
         ax.xaxis.set_major_formatter(lambda x, pos: str(np.round([np.interp(x, [0, partitions * imageShape[1]], xRange)],2)[0]))
         ax.yaxis.set_major_formatter(lambda x, pos: str(np.round([np.interp(partitions * imageShape[0] - x, [0, partitions * imageShape[0]], yRange)],2)[0]))
         plt.show()
+
+    @staticmethod
+    def drawIcons(icons):
+        rows = len(icons) // 4 + (1 if len(icons) % 4 != 0 else 0)
+        cols = 4 if len(icons) > 4 else len(icons)
+        fig, axs = plt.subplots(rows, cols)
+
+        axs = axs.flatten()
+        for i, (ax, icon) in enumerate(zip(axs, icons)):
+            icon = np.array(icon).reshape(20, 20)
+            ax.imshow(icon, cmap="Greys", interpolation="nearest")
+
+        for i, ax in enumerate(axs):
+            ax.tick_params(
+                axis='both',
+                which='both',
+                bottom=False,
+                top=False,
+                left=False,
+                right=False,
+                labelbottom=False,
+                labeltop=False,
+                labelleft=False,
+                labelright=False
+            )
+            if i > len(icons) - 1:
+                fig.delaxes(ax)
+        plt.show()

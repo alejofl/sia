@@ -77,8 +77,8 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
 
 ### VARIATIONAL AUTOENCODER #################################################################################
 def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
-    letters = Utils.parseFont(font)
-    inputs = Utils.generateInputs(letters[:10])
+    icons = Utils.parseIcons("icons", 8)
+    inputs = Utils.generateInputs(icons)
 
     if loadPickle:
         with open(LETTERS_VAE_PICKLE_FILENAME, 'rb') as file:
@@ -96,10 +96,7 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
         with open(LETTERS_VAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(vae, file)
 
-    generated_samples = vae.generateFromLatentSpace(num_samples=10)
-    generated_outputs = [Utils.postprocessOutput(sample) for sample in generated_samples]
-    
-    Plotter.drawLetters(generated_outputs)
+    Plotter.drawIcons(icons)
 #############################################################################################################
 
 
