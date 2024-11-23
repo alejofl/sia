@@ -34,9 +34,9 @@ class Autoencoder(MultiLayerPerceptron):
 
         input = np.insert(input, 0, self.constants.bias)
         outputs = []
-        for i in range(self.latentSpaceIndex, len(self.layers)):
+        for idx, i in enumerate(range(self.latentSpaceIndex + 1, len(self.layers))):
             layer = self.layers[i]
-            layerInput = outputs[i-1] if i>0 else input
+            layerInput = outputs[idx - 1] if idx>0 else input
             layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
             if i != len(self.layers)-1:
                 layerOutput = np.insert(layerOutput, 0, self.constants.bias)

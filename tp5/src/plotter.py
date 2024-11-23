@@ -50,3 +50,39 @@ class Plotter:
         plt.xlabel("Epoch")
         plt.ylabel("Mean Squared Error")
         plt.show()
+        
+    @staticmethod
+    def latentSpace(filename):
+        filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
+        df = pd.read_csv(filepath)
+
+        fig, ax = plt.subplots()
+
+        for _, row in df.iterrows():
+            ax.scatter(row["x"], row["y"], color=Plotter.COLORS[0])
+            ax.annotate(row["letter"], (row["x"] + 0.02, row["y"] + 0.02))
+
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.show()
+
+    @staticmethod
+    def newElements(autoencoder, partitions, xRange, yRange, imageShape):
+        figure = np.zeros((imageShape[0] * partitions, imageShape[1] * partitions))
+
+        xGrid = np.linspace(*xRange, partitions)
+        yGrid = np.linspace(*yRange, partitions)
+
+        for i, y in enumerate(xGrid):
+            for j, x in enumerate(yGrid):
+                z = np.array([x, y])
+                output = autoencoder.testWithLatentSpaceInput(z).reshape(*imageShape)
+                figure[(len(xGrid) - i - 1) * imageShape[0]:(len(xGrid) - i) * imageShape[0], j * imageShape[1]:(j + 1) * imageShape[1]] = output
+
+        fig, ax = plt.subplots()
+        ax.imshow(figure, cmap="Greys", interpolation="nearest")
+        ax.set_xticks(np.arange(0, partitions * imageShape[1], imageShape[1]))
+        ax.set_yticks(np.arange(0, partitions * imageShape[0], imageShape[0]))
+        ax.xaxis.set_major_formatter(lambda x, pos: str(np.round([np.interp(x, [0, partitions * imageShape[1]], xRange)],2)[0]))
+        ax.yaxis.set_major_formatter(lambda x, pos: str(np.round([np.interp(partitions * imageShape[0] - x, [0, partitions * imageShape[0]], yRange)],2)[0]))
+        plt.show()
