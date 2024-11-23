@@ -29,13 +29,13 @@ class Printer:
                     neuron.weights = neuron.weightsPerEpoch[-1]
 
     @staticmethod
-    def latentSpaceOutput(filename, autoencoder: Autoencoder):
+    def latentSpaceOutput(filename, autoencoder: Autoencoder, labels):
         filepath = os.path.join(os.path.dirname(sys.argv[0]), "results", filename)
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w") as file:
             writer = csv.writer(file)
-            writer.writerow(["letter", "x", "y"])
+            writer.writerow(["label", "x", "y"])
 
             for i, input in enumerate(autoencoder.inputs):
                 latentSpaceOutput = autoencoder.getLatentSpaceOutput(input)
-                writer.writerow([chr(ord('a') + i), *latentSpaceOutput[1:]])
+                writer.writerow([labels[i], *latentSpaceOutput[1:]])

@@ -60,7 +60,7 @@ class Plotter:
 
         for _, row in df.iterrows():
             ax.scatter(row["x"], row["y"], color=Plotter.COLORS[0])
-            ax.annotate(row["letter"], (row["x"] + 0.02, row["y"] + 0.02))
+            ax.annotate(row["label"], (row["x"] + 0.02, row["y"] + 0.02))
 
         plt.xlabel("x")
         plt.ylabel("y")
