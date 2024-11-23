@@ -9,10 +9,8 @@ class VAE(Autoencoder):
 
     def train(self):
         seenInputs = 0
-        totalLoss = 0
         for epoch in range(self.constants.maxEpochs):
-            # TODO: Remove this print
-            print("epoch", epoch, totalLoss)
+            totalLoss = 0
 
             for input, expectedOutput in zip(self.inputs, self.expectedOutputs):
                 seenInputs += 1
@@ -33,7 +31,7 @@ class VAE(Autoencoder):
                 
                 reconstructionLoss = 0.5 * np.mean((input[1:] - outputs[-1]) ** 2)
                 kl = -0.5 * np.sum(1 + sigma - mu**2 - np.exp(sigma))
-                totalLoss += reconstructionLoss + kl
+                totalLoss += -reconstructionLoss + kl
                 
                 # Backpropagation
                 deltas = []
@@ -80,6 +78,9 @@ class VAE(Autoencoder):
             for layer in self.layers:
                 for neuron in layer:
                     neuron.saveWeightsForEpoch()
+            
+            # TODO: Remove this print
+            print("epoch", epoch, totalLoss)
         print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):
