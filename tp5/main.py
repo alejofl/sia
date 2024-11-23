@@ -2,7 +2,7 @@ import sys
 import json
 import pickle
 from resources.font import font3 as font
-from src.constants import Constants, LETTERS_AE_PICKLE_FILENAME, LETTERS_DAE_PICKLE_FILENAME, LETTERS_VAE_PICKLE_FILENAME
+from src.constants import Constants, LETTERS_AE_PICKLE_FILENAME, LETTERS_DAE_PICKLE_FILENAME, ICONS_VAE_PICKLE_FILENAME
 from src.utils import Utils
 from src.optimizer import OptimizerFunction
 from src.autoencoder import Autoencoder
@@ -81,7 +81,7 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
     inputs = Utils.generateInputs(icons)
 
     if loadPickle:
-        with open(LETTERS_VAE_PICKLE_FILENAME, 'rb') as file:
+        with open(ICONS_VAE_PICKLE_FILENAME, 'rb') as file:
             vae = pickle.load(file)
     else:
         vae = VAE(
@@ -93,10 +93,8 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
         vae.train()
 
     if dumpPickle:
-        with open(LETTERS_VAE_PICKLE_FILENAME, 'wb') as file:
+        with open(ICONS_VAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(vae, file)
-
-    Plotter.drawIcons(icons)
 #############################################################################################################
 
 

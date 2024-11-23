@@ -2,8 +2,8 @@
 	"problem": "VARIATIONAL",
 	"problemOptions": {},
 	"hyperparameters": {
-		"epsilon": 0.05,
-		"maxEpochs": 10000,
+		"epsilon": 1e-15,
+		"maxEpochs": 1000,
 		"optimizer": {
 			"type": "ADAM",
 			"options": {
@@ -22,16 +22,7 @@
 	},
 	"encoderArchitecture": [
 		{
-			"neuronQty": 16,
-			"activationFunction": {
-				"type": "TANH",
-				"options": {
-					"beta": 1
-				}
-			}
-		},
-		{
-			"neuronQty": 8,
+			"neuronQty": 260,
 			"activationFunction": {
 				"type": "TANH",
 				"options": {

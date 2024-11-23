@@ -80,8 +80,38 @@ class VAE(Autoencoder):
                     neuron.saveWeightsForEpoch()
             
             # TODO: Remove this print
-            print("epoch", epoch, totalLoss)
+            if epoch % 200 == 0:
+                print("epoch", epoch, totalLoss)
         print("Training finished without convergence.")
 
     def calculateError(self, inputs, expectedOutputs):
         raise ValueError("Not usable in VAE")
+
+    def test(self, input):
+        outputs = []
+        for i, layer in enumerate(self.layers):
+            layerInput = outputs[i-1] if i>0 else input
+            layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+            if i == self.latentSpaceIndex:
+                mu = layerOutput[:self.latentSpaceDimension]
+                sigma = layerOutput[self.latentSpaceDimension:]
+                _, layerOutput = Utils.sample(mu, sigma)
+            if i != len(self.layers)-1:
+                layerOutput = np.insert(layerOutput, 0, self.constants.bias)
+            outputs.append(layerOutput)
+        return outputs[-1]
+
+    def getLatentSpaceOutput(self, input):
+        outputs = []
+        for i in range(self.latentSpaceIndex + 1):
+            layer = self.layers[i]
+            layerInput = outputs[i-1] if i>0 else input
+            layerOutput = np.array(list(map(lambda n: n.test(layerInput), layer)))
+            if i == self.latentSpaceIndex:
+                mu = layerOutput[:self.latentSpaceDimension]
+                sigma = layerOutput[self.latentSpaceDimension:]
+                _, layerOutput = Utils.sample(mu, sigma)
+            if i != len(self.layers)-1:
+                layerOutput = np.insert(layerOutput, 0, self.constants.bias)
+            outputs.append(layerOutput)
+        return outputs[-1]
