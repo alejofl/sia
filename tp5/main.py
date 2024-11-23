@@ -68,7 +68,6 @@ def solveDenoisingAutoencoder(config, loadPickle=False, dumpPickle=False):
         else:
             input = Utils.saltAndPepperFilter(letter, config["problemOptions"]["noiseThreshold"])
         output = Utils.postprocessOutput(ae.test(Utils.generateInput(input)))
-        toDraw.append(letter)
         toDraw.append(input)
         toDraw.append(output)
     
