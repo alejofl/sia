@@ -9,11 +9,14 @@ class VAE(Autoencoder):
 
     def train(self):
         seenInputs = 0
-        total_loss = 0
+        totalLoss = 0
         for epoch in range(self.constants.maxEpochs):
-            print("epoch", epoch, total_loss)
+            # TODO: Remove this print
+            print("epoch", epoch, totalLoss)
+
             for input, expectedOutput in zip(self.inputs, self.expectedOutputs):
                 seenInputs += 1
+
                 # Forward pass
                 outputs = []
                 for i, layer in enumerate(self.layers):
@@ -28,13 +31,11 @@ class VAE(Autoencoder):
                         layerOutput = np.insert(layerOutput, 0, self.constants.bias)
                     outputs.append(layerOutput)
                 
-                reconstruction_loss = 0.5 * np.mean((input[1:] - outputs[-1]) ** 2)
-                
+                reconstructionLoss = 0.5 * np.mean((input[1:] - outputs[-1]) ** 2)
                 kl = -0.5 * np.sum(1 + sigma - mu**2 - np.exp(sigma))
-
-                total_loss += reconstruction_loss + kl
+                totalLoss += reconstructionLoss + kl
                 
-                #Backpropagation
+                # Backpropagation
                 deltas = []
                 for i, layer in reversed(list(enumerate(self.layers))):
                     layerDeltas = []
@@ -60,7 +61,7 @@ class VAE(Autoencoder):
                     for layer in self.layers:
                         for n in layer:
                             n.updateWeights()
-                    if np.abs(total_loss) <= self.constants.epsilon:
+                    if np.abs(totalLoss) <= self.constants.epsilon:
                         for layer in self.layers:
                             for neuron in layer:
                                 neuron.saveWeightsForEpoch()
@@ -70,7 +71,7 @@ class VAE(Autoencoder):
                 for layer in self.layers:
                     for n in layer:
                         n.updateWeights()
-                if np.abs(total_loss) <= self.constants.epsilon:
+                if np.abs(totalLoss) <= self.constants.epsilon:
                     for layer in self.layers:
                         for neuron in layer:
                             neuron.saveWeightsForEpoch()

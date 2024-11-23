@@ -40,10 +40,9 @@ class Utils:
         r = Constants.getInstance().random
         outputLayer = { "neuronQty": inputLength - 1, "activationFunction": { "type": "LOGISTIC", "options": { "beta": 1 } } }
         layers = encoderArchitecture + list(reversed(encoderArchitecture[:-1])) + [outputLayer]
-        print(isVae)
         if isVae:
-            print(layers[len(encoderArchitecture)-1]["neuronQty"])
             layers[len(encoderArchitecture)-1]["neuronQty"]*=2
+
         architecture = []
         i = 0
         for i, layer in enumerate(layers):
@@ -57,7 +56,6 @@ class Utils:
 
                 weights.append(np.zeros(weightsQty) if zeros else r.uniform(-1, 1, weightsQty))
             architecture.append((neuronQty, f, weights))
-        print("architecture:", len(architecture[0][2]))
         return architecture
 
     @staticmethod
