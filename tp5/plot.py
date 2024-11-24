@@ -21,6 +21,7 @@ if __name__ == "__main__":
     #         (7, 5)
     #     )
     
+    # Plotter.drawIcons(Utils.parseIcons("icons", 8))
     # Plotter.latentSpace("latentSpaceOutput_vae.csv")
     with open("iconsVAE.pickle", 'rb') as file:
         ae = pickle.load(file)
