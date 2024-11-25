@@ -94,6 +94,14 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
     if dumpPickle:
         with open(ICONS_VAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(vae, file)
+
+    Plotter.newElements(
+            vae,
+            8,
+            [-4, 8],
+            [4, 4],
+            (20, 20)
+        )
 #############################################################################################################
 
 

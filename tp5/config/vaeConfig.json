@@ -7,7 +7,7 @@
 		"optimizer": {
 			"type": "ADAM",
 			"options": {
-				"rate": 1e-2,
+				"rate": 1e-4,
 				"alpha": 0.9,
 				"beta1": 0.9,
 				"beta2": 0.999
@@ -23,6 +23,24 @@
 	"encoderArchitecture": [
 		{
 			"neuronQty": 260,
+			"activationFunction": {
+				"type": "TANH",
+				"options": {
+					"beta": 1
+				}
+			}
+		},
+		{
+			"neuronQty": 128,
+			"activationFunction": {
+				"type": "TANH",
+				"options": {
+					"beta": 1
+				}
+			}
+		},
+		{
+			"neuronQty": 64,
 			"activationFunction": {
 				"type": "TANH",
 				"options": {

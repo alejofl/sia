@@ -31,7 +31,7 @@ class VAE(Autoencoder):
                 
                 reconstructionLoss = 0.5 * np.mean((input[1:] - outputs[-1]) ** 2)
                 kl = -0.5 * np.sum(1 + sigma - mu**2 - np.exp(sigma))
-                totalLoss += -reconstructionLoss + kl
+                totalLoss += reconstructionLoss + kl
                 
                 # Backpropagation
                 deltas = []
