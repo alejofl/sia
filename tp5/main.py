@@ -8,6 +8,7 @@ from src.optimizer import OptimizerFunction
 from src.autoencoder import Autoencoder
 from src.vae import VAE
 from src.plotter import Plotter
+from src.printer import Printer
 
 
 ### CONVENTIONAL AUTOENCODER ################################################################################
@@ -95,11 +96,19 @@ def solveVariationalAutoencoder(config, loadPickle=False, dumpPickle=False):
         with open(ICONS_VAE_PICKLE_FILENAME, 'wb') as file:
             pickle.dump(vae, file)
 
-    Plotter.newElements(
+    # Plotting logic: added here as the Pickle file is too large
+    if Utils.parseBoolean(input("Plot latent space? (y/n): ")):
+        Printer.latentSpaceOutput("latentSpaceOutput_vae.csv", vae, ["smile", "surprise", "sunglasses", "sexy", "angry", "happy", "emotionless", "dead"])
+        Plotter.latentSpace("latentSpaceOutput_vae.csv")
+    while Utils.parseBoolean(input("Plot new elements? (y/n): ")):
+        partitions = int(input("Partitions quantity: "))
+        minX, maxX = int(input("Min x: ")), int(input("Max x: "))
+        minY, maxY = int(input("Min y: ")), int(input("Max y: "))
+        Plotter.newElements(
             vae,
-            8,
-            [-4, 8],
-            [4, 4],
+            partitions,
+            (minX, maxX),
+            (minY, maxY),
             (20, 20)
         )
 #############################################################################################################
